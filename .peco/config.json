@@ -1,0 +1,8 @@
+{
+  "Prompt": "[peco]>",
+  "SelectionPrefix": ">",
+  "Keymap": {
+    "C-k": "peco.SelectUp",
+    "C-j": "peco.SelectDown"
+  }
+}
