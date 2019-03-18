@@ -18,6 +18,7 @@ if defined?(PryByebug)
   Pry.commands.alias_command 'n', 'next'
   Pry.commands.alias_command 'f', 'finish'
   Pry.commands.alias_command 'w', 'whereami'
+  Pry.commands.alias_command 'vi', 'edit'
 end
 
 command_set = Pry::CommandSet.new do
