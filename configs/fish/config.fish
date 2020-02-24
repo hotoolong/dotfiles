@@ -105,6 +105,16 @@ function fzf-find-file
   commandline -f repaint
 end
 
+function fzf_select_history
+  history | fzf | read line
+
+  if [ $line ]
+    commandline $line
+  else
+    commandline ''
+  end
+end
+
 # peco
 
 function peco
@@ -150,7 +160,7 @@ function peco-git-recent-all-branches
 end
 
 # bind
-bind \cr 'peco_select_history (commandline -b)'
+bind \cr 'fzf_select_history (commandline -b)'
 bind \cs fzf-find-file
 bind \cg\cb peco-git-recent-all-branches
 bind \cg\cr fzf_select_ghq_repository
