@@ -1,11 +1,7 @@
 #!/bin/bash
 
 create_symbolic_link () {
-  if [ ! -d $1 ]; then
-    ln -svi $1 $2
-  else
-    echo 'Directory already exists : ' $2
-  fi
+  ln -snvi $1 $2
 }
 
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
