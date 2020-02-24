@@ -6,7 +6,11 @@ CONFIGS=`ls -1a ${SCRIPT_DIR}/configs/. | grep -v -E '^(.|..|.git)$'`
 
 for file in ${FILES[@]}
 do
-  ln -svi ${SCRIPT_DIR}/${file} ${HOME}/${file}
+  if [ ! -d "${SCRIPT_DIR}/${file}" ]; then
+    ln -svi ${SCRIPT_DIR}/${file} ${HOME}/${file}
+  else
+    echo 'Directory already exists : ' ${file}
+  fi
 done
 
 if [ ! -d "${HOME}/.config" ]; then
@@ -15,5 +19,9 @@ fi
 
 for file in ${CONFIGS[@]}
 do
-  ln -svi ${SCRIPT_DIR}/configs/${file} ${HOME}/.config/${file}
+  if [ ! -d "${SCRIPT_DIR}/configs/${file}" ]; then
+    ln -svi ${SCRIPT_DIR}/configs/${file} ${HOME}/.config/${file}
+  else
+    echo 'Directory already exists : ' ${file}
+  fi
 done
