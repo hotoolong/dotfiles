@@ -181,3 +181,6 @@ function reload
 end
 
 set -g fish_user_paths "/usr/local/opt/openssl/bin" $fish_user_paths
+source /usr/local/opt/asdf/asdf.fish
+
+status --is-interactive; and source (rbenv init -|psub)
