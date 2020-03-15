@@ -75,6 +75,10 @@ if dein#load_state('~/.cache/dein')
   call dein#add('gregsexton/gitv.git')
   call dein#add('airblade/vim-gitgutter')
 
+  " fzf preview
+  call dein#add('junegunn/fzf', { 'build': './install --all', 'merged': 0 })
+  call dein#add('yuki-ycino/fzf-preview.vim')
+
   " Required:
   call dein#end()
   call dein#save_state()
@@ -506,13 +510,18 @@ function! s:deinClean()
 endfunction
 command! DeinClean :call s:deinClean()
 
-augroup Vimrc
+augroup fileTypeIndent
   autocmd!
-  autocmd InsertLeave * call <SID>auto_save()
-  function! s:auto_save()
-    if filewritable(expand('%'))
-      write
-    endif
-  endfunction
+  autocmd BufNewFile, BufRead *.tsv setlocal noexpandtab
 augroup END
+
+" augroup Vimrc
+"   autocmd!
+"   autocmd InsertLeave * call <SID>auto_save()
+"   function! s:auto_save()
+"     if filewritable(expand('%'))
+"       write
+"     endif
+"   endfunction
+" augroup END
 
