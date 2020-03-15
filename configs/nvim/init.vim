@@ -2,87 +2,81 @@ if &compatible
   set nocompatible
 endif
 
-set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+" Plugins will be downloaded under the specified directory.
+call plug#begin('~/.vim/plugged')
 
-if dein#load_state('~/.cache/dein')
-  call dein#begin('~/.cache/dein')
-
-  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
-
-  " file finder
-  call dein#add('scrooloose/nerdtree')
-  call dein#add('jistr/vim-nerdtree-tabs')
-  call dein#add('Xuyuanp/nerdtree-git-plugin')
-  call dein#add('rhysd/git-messenger.vim', {
-            \   'lazy' : 1,
-            \   'on_cmd' : 'GitMessenger',
-            \   'on_map' : '<Plug>(git-messenger',
-            \ })
+" Declare the list of plugins.
+Plug 'tpope/vim-sensible'
+Plug 'junegunn/seoul256.vim'
 
   " file finder
-  call dein#add('Shougo/denite.nvim')
-  call dein#add('Shougo/neomru.vim')
+Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'rhysd/git-messenger.vim'
+
+  " file finder
+Plug 'Shougo/denite.nvim'
+Plug 'Shougo/neomru.vim'
 
   " ほかん
-  call dein#add('Shougo/deoplete.nvim')
-  call dein#add('cohama/lexima.vim')
-  call dein#add('zxqfl/tabnine-vim', { 'lazy': 1 })
+Plug 'Shougo/deoplete.nvim'
+Plug 'cohama/lexima.vim'
+Plug 'zxqfl/tabnine-vim'
 
   " ruby rails
-  call dein#add('tpope/vim-rails')
-  call dein#add('slim-template/vim-slim')
-  call dein#add('tomtom/tcomment_vim')
+Plug 'tpope/vim-rails'
+Plug 'slim-template/vim-slim'
+Plug 'tomtom/tcomment_vim'
 
   " vimdoc
-  call dein#add('vim-jp/vimdoc-ja')
+Plug 'vim-jp/vimdoc-ja'
 
   " markdown
-  call dein#add('mattn/vim-maketable')
+Plug 'mattn/vim-maketable'
 
   " vue
-  call dein#add('posva/vim-vue')
+Plug 'posva/vim-vue'
   " call dein#add('Shougo/context_filetype.vim')
   " call dein#add('mhartington/nvim-typescript', {
     " \ 'hook_add': 'let g:nvim_typescript#vue_support = 1'
     " \ })
 
   " node
-  call dein#add('moll/vim-node')
-  call dein#add('mattn/jscomplete-vim')
-  call dein#add('myhere/vim-nodejs-complete')
-  call dein#add('pangloss/vim-javascript')
+Plug 'moll/vim-node'
+Plug 'mattn/jscomplete-vim'
+Plug 'myhere/vim-nodejs-complete'
+Plug 'pangloss/vim-javascript'
 
   " LSP
-  call dein#add('prabirshrestha/async.vim')
-  call dein#add('prabirshrestha/asyncomplete.vim')
-  call dein#add('prabirshrestha/asyncomplete-lsp.vim')
-  call dein#add('prabirshrestha/vim-lsp')
-  call dein#add('mattn/vim-lsp-settings', {'merged': 0})
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 
   " Fuzzy Finder
-  call dein#add('mattn/vim-fz')
+Plug 'mattn/vim-fz'
 
   " ctags
-  call dein#add('majutsushi/tagbar')
+Plug 'majutsushi/tagbar'
 
   " シンタックスチェック
-  call dein#add('w0rp/ale')
-  call dein#add('delphinus/lightline-delphinus')
-  call dein#add('itchyny/lightline.vim')
+Plug 'w0rp/ale'
+Plug 'delphinus/lightline-delphinus'
+Plug 'itchyny/lightline.vim'
 
   " Git
-  call dein#add('tpope/vim-fugitive.git')
-  call dein#add('gregsexton/gitv.git')
-  call dein#add('airblade/vim-gitgutter')
+Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv'
+Plug 'airblade/vim-gitgutter'
 
   " fzf preview
-  call dein#add('junegunn/fzf', { 'build': './install --all', 'merged': 0 })
-  call dein#add('yuki-ycino/fzf-preview.vim')
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'yuki-ycino/fzf-preview.vim'
 
-  " Required:
-  call dein#end()
-  call dein#save_state()
-endif
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
 
 filetype plugin indent on
 syntax enable
