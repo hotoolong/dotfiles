@@ -375,6 +375,12 @@ endfunction
 
 " }}}
 
+" tcomment {{{
+let g:tcomment_types {
+  'fish': '#'
+}
+" }}}
+
 syntax on
 set encoding=UTF-8
 " default setting
@@ -492,6 +498,8 @@ augroup fileTypeIndent
   autocmd!
   autocmd BufNewFile, BufRead *.tsv setlocal noexpandtab
 augroup END
+
+autocmd BufNewFile,BufRead *.fish setfiletype fish
 
 autocmd ColorScheme * highlight NormalFloat ctermbg=17
 colorscheme desert
