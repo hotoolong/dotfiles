@@ -376,7 +376,10 @@ endfunction
 " }}}
 
 " tcomment {{{
-let g:tcomment_types {
+if !exists('g:tcomment_types')
+  let g:tcomment_types = {}
+endif
+g:tcomment_types {
   'fish': '#'
 }
 " }}}
