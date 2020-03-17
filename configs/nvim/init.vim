@@ -60,6 +60,7 @@ Plug 'mattn/vim-fz'
 
   " ctags
 Plug 'majutsushi/tagbar'
+Plug 'pechorin/any-jump.vim'
 
   " シンタックスチェック
 Plug 'w0rp/ale'
@@ -80,15 +81,6 @@ call plug#end()
 
 filetype plugin indent on
 syntax enable
-
-" If you want to install not installed plugins on startup.
-" dein {{{
-if dein#check_install()
-  call dein#install()
-endif
-
-let g:dein#enable_notification = 1
-" }}}
 
 " vim-lsp {{
 let g:lsp_diagnostics_enabled = 0
@@ -191,7 +183,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " lightline {{{
 let g:lightline = {
-  \ 'colorscheme': 'solarized_dark',
+  \ 'colorscheme': 'seoul256',
   \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
   \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" },
   \'active': {
@@ -251,8 +243,6 @@ let g:node_usejscomplete = 1
 " git-messenger {{{
 let g:git_messenger_no_default_mappings = v:true
 nmap ,m <Plug>(git-messenger)
-" color dracula
-highlight Pmenu ctermbg=238 gui=bold
 "}}}
 
 " deoplete {{{
@@ -388,7 +378,7 @@ set encoding=UTF-8
 nnoremap ; :
 " nnoremap : ;
 set sh=bash
-colorscheme desert
+
 set autoindent
 set smartindent
 set showmatch
@@ -495,27 +485,11 @@ inoremap <expr> ,dt strftime('%H:%M')
 " sudo権限で保存
 cnoremap w!! w !sudo tee > /dev/null %<CR>
 
-function! s:deinClean()
-  if len(dein#check_clean())
-    call map(dein#check_clean(), 'delete(v:val, "rf")')
-  else
-    echo '[ERR] no disabled plugins'
-  endif
-endfunction
-command! DeinClean :call s:deinClean()
-
 augroup fileTypeIndent
   autocmd!
   autocmd BufNewFile, BufRead *.tsv setlocal noexpandtab
 augroup END
 
-" augroup Vimrc
-"   autocmd!
-"   autocmd InsertLeave * call <SID>auto_save()
-"   function! s:auto_save()
-"     if filewritable(expand('%'))
-"       write
-"     endif
-"   endfunction
-" augroup END
-
+autocmd ColorScheme * highlight NormalFloat ctermbg=17
+colorscheme desert
+set pumblend=30
