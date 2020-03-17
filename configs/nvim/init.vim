@@ -9,73 +9,73 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'
 Plug 'junegunn/seoul256.vim'
 
-  " file finder
+" file finder
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'rhysd/git-messenger.vim'
 
-  " file finder
+" file finder
 Plug 'Shougo/denite.nvim'
 Plug 'Shougo/neomru.vim'
 
-  " ほかん
+" ほかん
 Plug 'Shougo/deoplete.nvim'
 Plug 'cohama/lexima.vim'
 Plug 'zxqfl/tabnine-vim'
 
-  " ruby rails
+" ruby rails
 Plug 'tpope/vim-rails'
 Plug 'slim-template/vim-slim'
 Plug 'tomtom/tcomment_vim'
 
-  " vimdoc
+" vimdoc
 Plug 'vim-jp/vimdoc-ja'
 
-  " markdown
+" markdown
 Plug 'mattn/vim-maketable'
 
 " html
 Plug 'mattn/emmet-vim'
 
-  " vue
+" vue
 Plug 'posva/vim-vue'
   " call dein#add('Shougo/context_filetype.vim')
   " call dein#add('mhartington/nvim-typescript', {
     " \ 'hook_add': 'let g:nvim_typescript#vue_support = 1'
     " \ })
 
-  " node
+" node
 Plug 'moll/vim-node'
 Plug 'mattn/jscomplete-vim'
 Plug 'myhere/vim-nodejs-complete'
 Plug 'pangloss/vim-javascript'
 
-  " LSP
+" LSP
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 
-  " Fuzzy Finder
+" Fuzzy Finder
 Plug 'mattn/vim-fz'
 
-  " ctags
+" ctags
 Plug 'majutsushi/tagbar'
 Plug 'pechorin/any-jump.vim'
 
-  " シンタックスチェック
+" シンタックスチェック
 Plug 'w0rp/ale'
 Plug 'delphinus/lightline-delphinus'
 Plug 'itchyny/lightline.vim'
 
-  " Git
+" Git
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
 Plug 'airblade/vim-gitgutter'
 
-  " fzf preview
+" fzf preview
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'yuki-ycino/fzf-preview.vim'
 
@@ -107,29 +107,29 @@ augroup END
 if executable('pyls')
   " pip install python-language-server
   au User lsp_setup call lsp#register_server({
-      \ 'name': 'pyls',
-      \ 'cmd': {server_info->['pyls']},
-      \ 'whitelist': ['python'],
-      \ })
-endif
+    \ 'name': 'pyls',
+    \ 'cmd': {server_info->['pyls']},
+    \ 'whitelist': ['python'],
+    \ })
+endi
 
 if executable('solargraph')
   " gem install solargraph
   au User lsp_setup call lsp#register_server({
-        \ 'name': 'solargraph',
-        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
-        \ 'initialization_options': {"diagnostics": "true"},
-        \ 'whitelist': ['ruby'],
-        \ })
+    \ 'name': 'solargraph',
+    \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+    \ 'initialization_options': {"diagnostics": "true"},
+    \ 'whitelist': ['ruby'],
+    \ })
 endif
 
 if executable('gopls')
   au User lsp_setup call lsp#register_server({
-        \ 'name': 'gopls',
-        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
-        \ 'whitelist': ['go'],
-        \ })
-endif
+    \ 'name': 'gopls',
+    \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+    \ 'whitelist': ['go'],
+    \ })
+endi
 
 if executable('typescript-language-server')
   au User lsp_setup call lsp#register_server({
@@ -173,14 +173,14 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
   let g:tagbar_autofocus = 1
 
   let g:tagbar_type_ruby = {
-      \ 'kinds' : [
-          \ 'm:modules',
-          \ 'c:classes',
-          \ 'd:describes',
-          \ 'C:contexts',
-          \ 'f:methods',
-          \ 'F:singleton methods'
-      \ ]
+    \ 'kinds' : [
+      \ 'm:modules',
+      \ 'c:classes',
+      \ 'd:describes',
+      \ 'C:contexts',
+      \ 'f:methods',
+      \ 'F:singleton methods'
+    \ ]
   \ }
 " }}}
 
@@ -202,21 +202,21 @@ let g:lightline = {
 
 function! LightlineMode()
   return  &ft == 'unite' ? 'Unite' :
-        \ &ft == 'denite' ? 'Denite' :
-        \ &ft == 'vimfiler' ? 'VimFiler' :
-        \ &ft == 'vimshell' ? 'VimShell' :
-        \ winwidth(0) > 60 ? lightline#mode() : ''
+    \ &ft == 'denite' ? 'Denite' :
+    \ &ft == 'vimfiler' ? 'VimFiler' :
+    \ &ft == 'vimshell' ? 'VimShell' :
+    \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 " }}}
 
 " ale {{{
 autocmd BufRead,BufNewFile *.slim setfiletype slim
 let g:ale_linters = {
-\   'ruby': ['rubocop', 'reek', 'ruby', 'brakeman'],
-\   'slim': ['slimlint'],
-\   'markdown': ['textlint'],
-\   'text': ['textlint'],
-\}
+  \   'ruby': ['rubocop', 'reek', 'ruby', 'brakeman'],
+  \   'slim': ['slimlint'],
+  \   'markdown': ['textlint'],
+  \   'text': ['textlint'],
+  \}
 let g:ale_completion_enabled = 1
 let g:ale_ruby_rubocop_options = '--rails -c ./.rubocop.yml'
 let g:ale_sign_column_always = 1
