@@ -35,6 +35,9 @@ Plug 'vim-jp/vimdoc-ja'
   " markdown
 Plug 'mattn/vim-maketable'
 
+" html
+Plug 'mattn/emmet-vim'
+
   " vue
 Plug 'posva/vim-vue'
   " call dein#add('Shougo/context_filetype.vim')
