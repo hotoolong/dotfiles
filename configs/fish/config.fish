@@ -5,6 +5,8 @@ set -x GOPATH $HOME/gocode
 set -x PATH $HOME/bin $GOPATH/bin $PATH
 set -x PGDATA /usr/local/var/postgres
 
+set -x NEXTWORD_DATA_PATH $HOME/nextword-data
+
 alias ls='ls -la'
 alias less='less -qR'
 
