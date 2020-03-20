@@ -70,6 +70,9 @@ Plug 'w0rp/ale'
 Plug 'delphinus/lightline-delphinus'
 Plug 'itchyny/lightline.vim'
 
+" Nextword
+Plug 'high-moctane/asyncomplete-nextword.vim'
+
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
@@ -85,7 +88,7 @@ call plug#end()
 filetype plugin indent on
 syntax enable
 
-" vim-lsp {{
+" vim-lsp {{{
 let g:lsp_diagnostics_enabled = 0
 let g:lsp_log_verbose = 0
 let g:lsp_log_file = expand('~/vim-lsp.log')
@@ -147,41 +150,37 @@ let g:asyncomplete_log_file = expand('~/asyncomplete.log')
 " }}
 
 " asyncomplete {{{
-
-imap <c-space> <Plug>(asyncomplete_force_refresh)
-let g:asyncomplete_auto_popup = 0
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-  \ pumvisible() ? "\<C-n>" :
-  \ <SID>check_back_space() ? "\<TAB>" :
-  \ asyncomplete#force_refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
+set completeopt+=preview
+autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 "  }}}
 
+" high-moctane/asyncomplete-nextword.vim {{{
+call asyncomplete#register_source(asyncomplete#sources#nextword#get_source_options({
+  \   'name': 'nextword',
+  \   'whitelist': ['*'],
+  \   'args': ['-n', '10000'],
+  \   'completor': function('asyncomplete#sources#nextword#completor')
+  \   }))
+" }}}
 
 " gitgutter {{{
-  nmap <silent>,gr :<C-u>GitGutterUndoHunk<CR>
+nmap <silent>,gr :<C-u>GitGutterUndoHunk<CR>
 " }}}
 
 " tagbar {{{
-  nmap <silent> <F4> :TagbarToggle<CR>
-  let g:tagbar_autofocus = 1
+nmap <silent> <F4> :TagbarToggle<CR>
+let g:tagbar_autofocus = 1
 
-  let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-      \ 'm:modules',
-      \ 'c:classes',
-      \ 'd:describes',
-      \ 'C:contexts',
-      \ 'f:methods',
-      \ 'F:singleton methods'
-    \ ]
-  \ }
+let g:tagbar_type_ruby = {
+  \ 'kinds' : [
+    \ 'm:modules',
+    \ 'c:classes',
+    \ 'd:describes',
+    \ 'C:contexts',
+    \ 'f:methods',
+    \ 'F:singleton methods'
+  \ ]
+\ }
 " }}}
 
 " lightline {{{
@@ -379,9 +378,9 @@ endfunction
 if !exists('g:tcomment_types')
   let g:tcomment_types = {}
 endif
-g:tcomment_types {
-  'fish': '#'
-}
+let g:tcomment_types = {
+  \   'fish': '#'
+  \  }
 " }}}
 
 syntax on
