@@ -200,10 +200,7 @@ let g:lightline = {
 \ }
 
 function! LightlineMode()
-  return  &ft == 'unite' ? 'Unite' :
-    \ &ft == 'denite' ? 'Denite' :
-    \ &ft == 'vimfiler' ? 'VimFiler' :
-    \ &ft == 'vimshell' ? 'VimShell' :
+  return  &ft == 'denite' ? 'Denite' :
     \ winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 " }}}
@@ -503,6 +500,8 @@ augroup END
 
 autocmd BufNewFile,BufRead *.fish setfiletype fish
 
-autocmd ColorScheme * highlight NormalFloat ctermbg=17
+autocmd ColorScheme * highlight NormalFloat ctermbg=17 guibg=#374549
+set termguicolors
+set background=dark
 colorscheme desert
 set pumblend=30
