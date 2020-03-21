@@ -82,6 +82,9 @@ Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'yuki-ycino/fzf-preview.vim'
 
+" colorscheme
+Plug 'jacoborus/tender.vim'
+
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
@@ -502,6 +505,4 @@ autocmd BufNewFile,BufRead *.fish setfiletype fish
 
 autocmd ColorScheme * highlight NormalFloat ctermbg=17 guibg=#374549
 set termguicolors
-set background=dark
-colorscheme desert
-set pumblend=30
+colorscheme tender
