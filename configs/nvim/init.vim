@@ -449,7 +449,13 @@ inoremap <C-l> <Right>
 
 set sidescroll=1
 set ttimeoutlen=10
-set noundofile
+if has('persistent_undo')
+  if !isdirectory($HOME.'/.vim/.undodir')
+    call mkdir($HOME.'/.vim/.undodir', 'p', 0700)
+  endif
+  set undodir=~/.vim/.undodir
+  set undofile
+endif
 
 " vimrc control {{{
 nnoremap <silent><Space>. :<C-u>tabnew $MYVIMRC<CR>
