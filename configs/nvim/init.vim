@@ -86,6 +86,9 @@ Plug 'jacoborus/tender.vim'
 " line number
 Plug 'jeffkreeftmeijer/vim-numbertoggle'
 
+" operator and textobject oprator
+Plug 'machakann/vim-sandwich'
+
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
