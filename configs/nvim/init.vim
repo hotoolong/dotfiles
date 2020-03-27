@@ -40,10 +40,8 @@ Plug 'mattn/emmet-vim'
 
 " vue
 Plug 'posva/vim-vue'
-  " call dein#add('Shougo/context_filetype.vim')
-  " call dein#add('mhartington/nvim-typescript', {
-    " \ 'hook_add': 'let g:nvim_typescript#vue_support = 1'
-    " \ })
+Plug 'Shougo/context_filetype.vim'
+Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 
 " node
 Plug 'moll/vim-node'
@@ -84,6 +82,9 @@ Plug 'yuki-ycino/fzf-preview.vim'
 
 " colorscheme
 Plug 'jacoborus/tender.vim'
+
+" line number
+Plug 'jeffkreeftmeijer/vim-numbertoggle'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -383,7 +384,6 @@ let g:tcomment_types = {
   \  }
 " }}}
 
-syntax on
 set encoding=UTF-8
 " default setting
 nnoremap ; :
