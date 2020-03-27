@@ -14,6 +14,7 @@ Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'rhysd/git-messenger.vim'
+Plug 'rhysd/conflict-marker.vim'
 
 " file finder
 Plug 'Shougo/denite.nvim'
