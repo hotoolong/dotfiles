@@ -26,6 +26,7 @@ Plug 'cohama/lexima.vim'
 Plug 'zxqfl/tabnine-vim'
 
 " ruby rails
+Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'slim-template/vim-slim'
 Plug 'tomtom/tcomment_vim'
@@ -89,12 +90,23 @@ Plug 'jeffkreeftmeijer/vim-numbertoggle'
 
 " operator and textobject oprator
 Plug 'machakann/vim-sandwich'
+Plug 'terryma/vim-expand-region'
+
+" fish
+Plug 'dag/vim-fish'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 filetype plugin indent on
 syntax enable
+
+" vim-expand-region {{{
+call expand_region#custom_text_objects('ruby', {
+  \ 'im' :0,
+  \ 'am' :0,
+  \ })
+" }}}
 
 " vim-lsp {{{
 let g:lsp_diagnostics_enabled = 0
@@ -379,15 +391,6 @@ endfunction
 
 " }}}
 
-" tcomment {{{
-if !exists('g:tcomment_types')
-  let g:tcomment_types = {}
-endif
-let g:tcomment_types = {
-  \   'fish': '#'
-  \  }
-" }}}
-
 set encoding=UTF-8
 " default setting
 nnoremap ; :
@@ -510,8 +513,6 @@ augroup fileTypeIndent
   autocmd!
   autocmd BufNewFile, BufRead *.tsv setlocal noexpandtab
 augroup END
-
-autocmd BufNewFile,BufRead *.fish setfiletype fish
 
 autocmd ColorScheme * highlight NormalFloat ctermbg=17 guibg=#374549
 set termguicolors
