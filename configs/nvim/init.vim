@@ -23,7 +23,7 @@ Plug 'Shougo/neomru.vim'
 " ほかん
 Plug 'Shougo/deoplete.nvim'
 Plug 'cohama/lexima.vim'
-Plug 'zxqfl/tabnine-vim'
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
 " ruby rails
 Plug 'vim-ruby/vim-ruby'
