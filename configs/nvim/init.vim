@@ -95,6 +95,9 @@ Plug 'terryma/vim-expand-region'
 " fish
 Plug 'dag/vim-fish'
 
+" etc
+Plug 'thinca/vim-quickrun'
+
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
