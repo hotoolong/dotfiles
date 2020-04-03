@@ -84,20 +84,52 @@ end
 # fzf
 
 function fzf_git_issue
-  gh issue list --state open | fzf --prompt='Open issue list >' --preview "gh issue view -p {1}" | cut -f1 | xargs -I{} gh issue view {}
+  gh issue list --state open | fzf --prompt='Open issue list >' --preview "gh issue view {1}" | cut -f1 | xargs -I{} gh issue view -w {}
+end
+
+function fzf_git_pull_request
+  set -l query (commandline --current-buffer)
+  if test -n $query
+    set fzf_query --query "$query"
+  end
+
+  set -l out ( \
+    gh pr list | \
+    fzf $fzf_query \
+      --prompt='Select Pull Request>' \
+      --preview="gh pr view {1}" \
+      --expect=ctrl-c \
+      --header='enter: open in browser, checkout: ctrl-c' \
+  )
+  if test -z $out
+    return
+  end
+  set -l pr_id (echo $out[2] | awk '{ print $1 }')
+  if test $out[1] = 'ctrl-c'
+    echo "git check out from $out[2]"
+    gh pr checkout $pr_id
+  else
+    gh pr view --web $pr_id
+  end
+  commandline -f repaint
 end
 
 function fzf_select_ghq_repository
-  set -l query (commandline)
-
+  set -l query (commandline --current-buffer)
   if test -n $query
-    set peco_flags --query "$query"
+    set fzf_query --query "$query"
   end
 
-  ghq list --full-path | fzf --prompt='Select Repository >' | read line
+  ghq list | \
+  fzf $fzf_query \
+    --prompt='Select Repository >' \
+    --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} " | \
+  read -l line
 
   if [ $line ]
-    cd $line
+    set -l dir_path (ghq list --full-path --exact $line)
+    echo "cd $dir_path"
+    cd $dir_path
     commandline -f repaint
   end
 end
@@ -108,7 +140,7 @@ function fzf-find-file
 end
 
 function fzf_select_history
-  history | fzf | read line
+  history | fzf | read -l line
 
   if [ $line ]
     commandline $line
@@ -162,11 +194,12 @@ function peco-git-recent-all-branches
 end
 
 # bind
-bind \cr 'fzf_select_history (commandline -b)'
+bind \cr 'fzf_select_history (commandline --current-buffer)'
 bind \cs fzf-find-file
 bind \cg\cb peco-git-recent-all-branches
 bind \cg\cr fzf_select_ghq_repository
 bind \cg\ci fzf_git_issue
+bind \cg\cp fzf_git_pull_request
 # bind \e\[ prevd-or-backward-word
 # bind \e\] nextd-or-forward-word
 
