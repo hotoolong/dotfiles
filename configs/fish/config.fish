@@ -194,12 +194,17 @@ function peco-git-recent-all-branches
 end
 
 # bind
+
 bind \cr 'fzf_select_history (commandline --current-buffer)'
 bind \cs fzf-find-file
 bind \cg\cb peco-git-recent-all-branches
 bind \cg\cr fzf_select_ghq_repository
 bind \cg\ci fzf_git_issue
 bind \cg\cp fzf_git_pull_request
+
+# abbr
+
+abbr today date "+%Y%m%d%H%M%S"
 
 # cd
 
