@@ -106,12 +106,12 @@ function fzf_git_pull_request
   end
   set -l pr_id (echo $out[2] | awk '{ print $1 }')
   if test $out[1] = 'ctrl-c'
-    echo "git check out from $out[2]"
-    gh pr checkout $pr_id
+    commandline "gh pr checkout $pr_id"
+    commandline -f execute
   else
-    gh pr view --web $pr_id
+    commandline "gh pr view --web $pr_id"
+    commandline -f execute
   end
-  commandline -f repaint
 end
 
 function fzf_select_ghq_repository
@@ -128,9 +128,8 @@ function fzf_select_ghq_repository
 
   if [ $line ]
     set -l dir_path (ghq list --full-path --exact $line)
-    echo "cd $dir_path"
-    cd $dir_path
-    commandline -f repaint
+    commandline "cd $dir_path"
+    commandline -f execute
   end
 end
 
