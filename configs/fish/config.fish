@@ -18,7 +18,6 @@ alias vi='/usr/local/bin/nvim'
 alias tree "tree -NC" # N: 文字化け対策, C:色をつける
 
 # rails
-alias rails='bundle exec rails'
 alias rspec='bundle exec rspec'
 
 function dbup
