@@ -34,7 +34,6 @@ brew "mecab"
 brew "mecab-ipadic"
 brew "mysql"
 brew "neovim", args: ["HEAD"]
-brew "peco"
 brew "poco"
 brew "ruby-build"
 brew "rbenv"
