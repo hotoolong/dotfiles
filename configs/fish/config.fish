@@ -23,12 +23,12 @@ alias rspec='bundle exec rspec'
 
 function dbup
   # echo したい
-  ls -r db/migrate | peco | sed 's/_.*//' | xargs -I{} ./bin/rails db:migrate:up VERSION={}
+  ls -r db/migrate | fzf | sed 's/_.*//' | xargs -I{} ./bin/rails db:migrate:up VERSION={}
 end
 
 function dbdown
   # echo したい
-  ls -r db/migrate | peco | sed 's/_.*//' | xargs -I{} ./bin/rails db:migrate:down VERSION={}
+  ls -r db/migrate | fzf | sed 's/_.*//' | xargs -I{} ./bin/rails db:migrate:down VERSION={}
 end
 
 # rake
@@ -121,12 +121,12 @@ function fzf_select_ghq_repository
   end
 
   ghq list | \
-  fzf $fzf_query \
-    --prompt='Select Repository >' \
-    --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} " | \
-  read -l line
+    fzf $fzf_query \
+      --prompt='Select Repository >' \
+      --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} " | \
+    read -l line
 
-  if [ $line ]
+  if test -n $line
     set -l dir_path (ghq list --full-path --exact $line)
     commandline "cd $dir_path"
     commandline -f execute
@@ -144,50 +144,25 @@ function fzf_select_history
   if [ $line ]
     commandline $line
   else
-    commandline ''
-  end
-end
-
-# peco
-
-function peco
-  command peco --layout=bottom-up $argv
-end
-
-function peco_select_ghq_repository
-  set -l query (commandline)
-
-  if test -n $query
-    set peco_flags --query "$query"
-  end
-
-  ghq list --full-path | peco $peco_flags | read line
-
-  if [ $line ]
-    cd $line
     commandline -f repaint
   end
 end
 
-function peco-find-file
-  if is_git_dir
-    # git ls-files | peco | xargs -I{} fish -c 'vi -p {} < /dev/tty'
-    git ls-files | peco | xargs -o /usr/local/bin/nvim
-  else
-    # find . -type f | peco | xargs -I{} fish -c 'vi -p {} < /dev/tty'
-    find . -type f | peco | xargs -o /usr/local/bin/nvim
+function fzf-git-recent-all-branches
+  set -l query (commandline --current-buffer)
+  if test -n $query
+    set fzf_query --query "$query"
   end
-  commandline -f repaint
-end
 
-function peco-git-recent-all-branches
-  if is_git_dir
-    git for-each-ref --format='%(refname)' --sort=-committerdate refs/heads | perl -pne 's{^refs/heads/}{}' | peco | read selected_branch
-    if [ -n "$selected_branch" ]
-      git checkout $selected_branch
-    end
-  else
-    echo 'not found git repo'
+  git for-each-ref --sort=creatordate | \
+    fzf $fzf_query \
+      --prompt='Select Branch >' \
+      --preview="git diff master {3} " | \
+    read -l selected_branch
+
+  if test -n $selected_branch
+    commandline "git checkout $selected_branch"
+    commandline -f execute
   end
   commandline -f repaint
 end
@@ -196,7 +171,7 @@ end
 
 bind \cr 'fzf_select_history (commandline --current-buffer)'
 bind \cs fzf-find-file
-bind \cg\cb peco-git-recent-all-branches
+bind \cg\cl fzf-git-recent-all-branches
 bind \cg\cr fzf_select_ghq_repository
 bind \cg\ci fzf_git_issue
 bind \cg\cp fzf_git_pull_request
