@@ -18,7 +18,6 @@ alias vi='/usr/local/bin/nvim'
 alias tree "tree -NC" # N: 文字化け対策, C:色をつける
 
 # rails
-alias rails='bundle exec rails'
 alias rspec='bundle exec rspec'
 
 function dbup
@@ -43,14 +42,53 @@ alias gd 'git diff'
 alias gco 'git checkout'
 alias gcom 'git checkout master'
 alias gdc 'git diff --cached'
-alias gst 'git status'
-alias gss 'git status -s'
 alias ggpull 'git pull origin (git_current_branch)'
 alias ggpush 'git push origin (git_current_branch)'
 alias ggpushf 'git push --force-with-lease origin (git_current_branch)'
 
 function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
+end
+
+function gst --description 'git status -s'
+  if ! is_git_dir
+    return
+  end
+  set -l base_command git status -s
+  set -l bind_reload "reload($base_command)"
+  set -l bind_commands "ctrl-a:execute-silent(git add {2})+$bind_reload"
+  set bind_commands $bind_commands "ctrl-u:execute-silent(git restore --staged {2})+$bind_reload"
+  set -l bind_str (string join ',' $bind_commands)
+
+  set -l out (command $base_command | \
+    fzf --preview="git diff {2}" \
+        --expect=ctrl-m,ctrl-r,ctrl-v,ctrl-c \
+        --bind $bind_str \
+        --header='C-a: add, C-u: unstage, C-c: commit, C-m(Enter): mv, C-r: rm, C-v: edit' \
+  )
+  [ $status != 0 ]; and commandline -f repaint; and return
+
+  if string length -q -- $out
+    set -l key $out[1]
+    set -l file (echo $out[2] | awk -F ' ' '{ print $NF }')
+    echo $out
+
+    if test $key = 'ctrl-m'
+      commandline -f repaint
+      commandline "git mv $file "
+    else if test $key = 'ctrl-r'
+      commandline "git rm $file "
+      commandline -f execute
+    else if test $key = 'ctrl-v'
+      commandline "$EDITOR $file"
+      commandline -f execute
+    else if test $key = 'ctrl-c'
+      commandline "git commit -v"
+      commandline -f execute
+    else
+      commandline -f repaint
+    end
+  end
 end
 
 function gg --description 'grep directory'
@@ -120,14 +158,14 @@ function fzf_select_ghq_repository
     set fzf_query --query "$query"
   end
 
-  ghq list | \
+  set -l out (ghq list | \
     fzf $fzf_query \
       --prompt='Select Repository >' \
-      --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} " | \
-    read -l line
+      --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} ")
+  [ $status != 0 ]; and commandline -f repaint; and return
 
-  if test -n $line
-    set -l dir_path (ghq list --full-path --exact $line)
+  if test -n $out
+    set -l dir_path (ghq list --full-path --exact $out)
     commandline "cd $dir_path"
     commandline -f execute
   end
