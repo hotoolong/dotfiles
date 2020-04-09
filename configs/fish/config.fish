@@ -58,12 +58,11 @@ function gst --description 'git status -s'
   set -l bind_reload "reload($base_command)"
   set -l bind_commands "ctrl-a:execute-silent(git add {2})+$bind_reload"
   set bind_commands $bind_commands "ctrl-u:execute-silent(git restore --staged {2})+$bind_reload"
-  set bind_commands $bind_commands "ctrl-c:execute(git commit -v)"
   set -l bind_str (string join ',' $bind_commands)
 
   set -l out (command $base_command | \
     fzf --preview="git diff {2}" \
-        --expect=ctrl-m,ctrl-r,ctrl-v \
+        --expect=ctrl-m,ctrl-r,ctrl-v,ctrl-c \
         --bind $bind_str \
         --header='C-a: add, C-u: unstage, C-c: commit, C-m(Enter): mv, C-r: rm, C-v: edit' \
   )
@@ -82,6 +81,9 @@ function gst --description 'git status -s'
       commandline -f execute
     else if test $key = 'ctrl-v'
       commandline "$EDITOR $file"
+      commandline -f execute
+    else if test $key = 'ctrl-c'
+      commandline "git commit -v"
       commandline -f execute
     else
       commandline -f repaint
