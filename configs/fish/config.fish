@@ -65,7 +65,7 @@ function gst --description 'git status -s'
         --preview="git diff {2}" \
         --expect=ctrl-m,ctrl-r,ctrl-v,ctrl-c \
         --bind $bind_str \
-        --header='C-a: add, C-u: unstage, C-c: commit, C-m(Enter): mv, C-r: rm, C-v: edit' \
+        --header='C-a: add, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv' \
   )
   [ $status != 0 ]; and commandline -f repaint; and return
 
@@ -73,13 +73,13 @@ function gst --description 'git status -s'
     set -l key $out[1]
     set -l file (echo $out[2] | awk -F ' ' '{ print $NF }')
 
-    if test $key = 'ctrl-m'
+    if test $key = 'ctrl-v'
       commandline -f repaint
       commandline "git mv $file "
     else if test $key = 'ctrl-r'
       commandline "git rm $file "
       commandline -f execute
-    else if test $key = 'ctrl-v'
+    else if test $key = 'ctrl-m'
       commandline "$EDITOR $file"
       commandline -f execute
     else if test $key = 'ctrl-c'
