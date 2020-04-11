@@ -166,15 +166,17 @@ if executable('typescript-language-server')
     \ })
 endif
 
-" }}
+" }}}
 
 " for asyncomplete.vim log {{{
 let g:asyncomplete_log_file = expand('~/asyncomplete.log')
-" }}
+" }}}
 
 " asyncomplete {{{
 set completeopt+=preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+
+let g:asyncomplete_popup_delay = 20
 "  }}}
 
 " high-moctane/asyncomplete-nextword.vim {{{
