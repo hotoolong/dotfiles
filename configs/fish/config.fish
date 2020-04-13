@@ -4,7 +4,6 @@ set -lx TERM screen-256color-bce;
 set -x GOPATH $HOME/gocode
 set -x PATH $HOME/bin $GOPATH/bin $PATH
 set -x PGDATA /usr/local/var/postgres
-
 set -x NEXTWORD_DATA_PATH $HOME/nextword-data
 
 alias ls='ls -la'
@@ -20,14 +19,29 @@ alias tree "tree -NC" # N: 文字化け対策, C:色をつける
 # rails
 alias rspec='bundle exec rspec'
 
-function dbup
-  # echo したい
-  ls -r db/migrate | fzf | sed 's/_.*//' | xargs -I{} ./bin/rails db:migrate:up VERSION={}
-end
+function migrate
+  set -l out (ls -1 db/migrate | grep -v -e '^\.' | \
+    fzf --exit-0 \
+      --preview="bat --color=always db/migrate/{}" \
+      --expect=ctrl-u,ctrl-d,ctrl-m \
+      --header='C-u: up, C-d: down, C-m(Enter): edit' \
+  )
+  [ $status != 0 ]; and commandline -f repaint; and return
+  echo $out
 
-function dbdown
-  # echo したい
-  ls -r db/migrate | fzf | sed 's/_.*//' | xargs -I{} ./bin/rails db:migrate:down VERSION={}
+  if string length -q -- $out
+    set -l key $out[1]
+    set -l time (echo $out[2] | awk -F '_' '{ print $1 }')
+    echo $key
+    if test $key = 'ctrl-u'
+      commandline "./bin/rails db:migrate:up VERSION=$time"
+    else if test $key = 'ctrl-d'
+      commandline "./bin/rails db:migrate:down VERSION=$time"
+    else if test $key = 'ctrl-m'
+      commandline "$EDITOR db/migrate/$out[2]"
+    end
+    commandline -f execute
+  end
 end
 
 # rake
