@@ -261,7 +261,7 @@ end
 # reload
 
 function reload
-  exec fish
+  exec $SHELL
 end
 
 set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
