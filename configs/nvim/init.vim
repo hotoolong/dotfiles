@@ -485,8 +485,10 @@ nnoremap xp "0x"0p
 nnoremap cw "_cw
 nnoremap ce "_ce
 
-"ビジュアルモード時vで行末まで選択
+" ビジュアルモード時vで行末まで選択
 vnoremap v $h
+" ビジュアルモードyank後最後の行に移動
+vnoremap y y`>
 
 " ddでレジスタを更新しても対応
 noremap PP "0p
