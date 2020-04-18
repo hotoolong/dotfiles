@@ -76,7 +76,7 @@ function gst --description 'git status -s'
 
   set -l out (command $base_command | \
     fzf --exit-0 \
-        --preview="git diff {2}" \
+    --preview="[ '??' = {1} ] && bat --color=always {2} || git diff {2}" \
         --expect=ctrl-m,ctrl-r,ctrl-v,ctrl-c \
         --bind $bind_str \
         --header='C-a: add, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv' \
