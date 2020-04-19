@@ -18,6 +18,7 @@ alias tree "tree -NC" # N: 文字化け対策, C:色をつける
 
 # rails
 alias rspec='bundle exec rspec'
+alias rails='bundle exec rails'
 
 function migrate
   if test ! -d 'db/migrate'
@@ -31,13 +32,11 @@ function migrate
       --expect=ctrl-u,ctrl-d,ctrl-r,ctrl-m \
       --header='C-u: up, C-d: down, C-r: redo, C-m(Enter): edit' \
   )
-  [ $status != 0 ]; and commandline -f repaint; and return
-  echo $out
+  [ $status != 0 ] && commandline -f repaint && return
 
   if string length -q -- $out
     set -l key $out[1]
     set -l time (echo $out[2] | awk -F '_' '{ print $1 }')
-    echo $key
     if test $key = 'ctrl-u'
       commandline "./bin/rails db:migrate:up VERSION=$time"
     else if test $key = 'ctrl-d'
