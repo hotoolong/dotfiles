@@ -28,8 +28,8 @@ function migrate
   set -l out (ls -1 db/migrate | grep -v -e '^\.' | \
     fzf --exit-0 \
       --preview="bat --color=always db/migrate/{}" \
-      --expect=ctrl-u,ctrl-d,ctrl-m \
-      --header='C-u: up, C-d: down, C-m(Enter): edit' \
+      --expect=ctrl-u,ctrl-d,ctrl-r,ctrl-m \
+      --header='C-u: up, C-d: down, C-r: redo, C-m(Enter): edit' \
   )
   [ $status != 0 ]; and commandline -f repaint; and return
   echo $out
@@ -42,6 +42,8 @@ function migrate
       commandline "./bin/rails db:migrate:up VERSION=$time"
     else if test $key = 'ctrl-d'
       commandline "./bin/rails db:migrate:down VERSION=$time"
+    else if test $key = 'ctrl-r'
+      commandline "./bin/rails db:migrate:redo VERSION=$time"
     else if test $key = 'ctrl-m'
       commandline "$EDITOR db/migrate/$out[2]"
     end
