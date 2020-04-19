@@ -20,6 +20,11 @@ alias tree "tree -NC" # N: 文字化け対策, C:色をつける
 alias rspec='bundle exec rspec'
 
 function migrate
+  if test ! -d 'db/migrate'
+    echo 'Go to Rails Root'
+    return
+  end
+
   set -l out (ls -1 db/migrate | grep -v -e '^\.' | \
     fzf --exit-0 \
       --preview="bat --color=always db/migrate/{}" \
