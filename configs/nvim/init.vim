@@ -21,7 +21,6 @@ Plug 'Shougo/denite.nvim'
 Plug 'Shougo/neomru.vim'
 
 " ほかん
-Plug 'Shougo/deoplete.nvim'
 Plug 'cohama/lexima.vim'
 Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
@@ -269,9 +268,6 @@ let g:git_messenger_no_default_mappings = v:true
 nmap ,m <Plug>(git-messenger)
 "}}}
 
-" deoplete {{{
-let g:deoplete#enable_at_startup = 1
-" }}}
 
 " LanguageClient {{{
 set hidden
