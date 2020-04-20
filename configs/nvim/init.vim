@@ -96,12 +96,19 @@ Plug 'dag/vim-fish'
 
 " etc
 Plug 'thinca/vim-quickrun'
+Plug 'rizzatti/dash.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 filetype plugin indent on
 syntax enable
+
+let mapleader = "\<Space>"
+
+" dash.vim {{{
+nmap <silent> <leader>d <Plug>DashSearch
+" }}}
 
 " vim-expand-region {{{
 call expand_region#custom_text_objects('ruby', {
@@ -420,6 +427,7 @@ set pumheight=10  "補完メニューの幅
 set backupskip=/tmp/*,/private/tmp/*
 set noswapfile
 set expandtab
+
 " search {{{
 set incsearch
 set ignorecase
