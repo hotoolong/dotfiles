@@ -94,9 +94,13 @@ Plug 'terryma/vim-expand-region'
 " fish
 Plug 'dag/vim-fish'
 
+" reference
+Plug 'rizzatti/dash.vim'
+Plug 'thinca/vim-ref'
+
 " etc
 Plug 'thinca/vim-quickrun'
-Plug 'rizzatti/dash.vim'
+
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -241,7 +245,7 @@ autocmd BufRead,BufNewFile *.slim setfiletype slim
 let g:ale_linters = {
   \   'ruby': ['rubocop', 'reek', 'ruby', 'brakeman'],
   \   'slim': ['slimlint'],
-  \   'markdown': ['textlint'],
+  \   'markdown': ['textlint', 'markdownlint'],
   \   'text': ['textlint'],
   \}
 let g:ale_completion_enabled = 1
