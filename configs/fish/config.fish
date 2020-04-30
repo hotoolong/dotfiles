@@ -87,7 +87,7 @@ function gst --description 'git status -s'
         --bind $bind_str \
         --header='C-a: add, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv' \
   )
-  [ $status != 0 ]; and commandline -f repaint; and return
+  [ $status != 0 ] && commandline -f repaint && return
 
   if string length -q -- $out
     set -l key $out[1]
@@ -124,7 +124,7 @@ function git_current_branch
   set -l ref (git symbolic-ref --quiet HEAD 2> /dev/null)
   set -l ret $status
   if [ $ret != 0 ]
-    [ $ret == 128 ]; and return  # no git repo.
+    [ $ret == 128 ] &&  return  # no git repo.
     set -l ref (git rev-parse --short HEAD 2> /dev/null); or return
   end
   string replace 'refs/heads/' "" $ref
@@ -214,7 +214,7 @@ function fzf_select_ghq_repository
     fzf $fzf_query \
       --prompt='Select Repository >' \
       --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} ")
-  [ $status != 0 ]; and commandline -f repaint; and return
+  [ $status != 0 ] && commandline -f repaint && return
 
   if test -n $out
     set -l dir_path (ghq list --full-path --exact $out)
@@ -275,7 +275,7 @@ abbr today date "+%Y%m%d%H%M%S"
 functions --copy cd standard_cd
 
 function cd
-  standard_cd $argv; and ls
+  standard_cd $argv && ls
 end
 
 # reload
@@ -288,4 +288,4 @@ set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 set -g fish_user_paths "/usr/local/opt/openssl/bin" $fish_user_paths
 source /usr/local/opt/asdf/asdf.fish
 
-status --is-interactive; and source (rbenv init -|psub)
+status --is-interactive && source (rbenv init -|psub)
