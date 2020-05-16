@@ -38,6 +38,7 @@ Plug 'mattn/vim-maketable'
 
 " html
 Plug 'mattn/emmet-vim'
+Plug 'othree/html5.vim'
 
 " vue
 Plug 'posva/vim-vue'
@@ -100,6 +101,7 @@ Plug 'thinca/vim-ref'
 
 " etc
 Plug 'thinca/vim-quickrun'
+Plug 'sheerun/vim-polyglot'
 
 
 " List ends here. Plugins become visible to Vim after this call.
