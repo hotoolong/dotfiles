@@ -43,7 +43,6 @@ Plug 'othree/html5.vim'
 " vue
 Plug 'posva/vim-vue'
 Plug 'Shougo/context_filetype.vim'
-Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
 
 " node
 Plug 'moll/vim-node'
