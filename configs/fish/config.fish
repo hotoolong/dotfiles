@@ -210,14 +210,14 @@ function fzf_select_ghq_repository
     set fzf_query --query "$query"
   end
 
-  set -l out (ghq list | \
+  set -l out (ghq list --vcs=git | \
     fzf $fzf_query \
       --prompt='Select Repository >' \
       --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} ")
   [ $status != 0 ] && commandline -f repaint && return
 
   if test -n $out
-    set -l dir_path (ghq list --full-path --exact $out)
+    set -l dir_path (ghq list --vcs=git --full-path --exact $out)
     commandline "cd $dir_path"
     commandline -f execute
   end
