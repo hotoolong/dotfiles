@@ -123,9 +123,9 @@ call expand_region#custom_text_objects('ruby', {
 " }}}
 
 " vim-lsp {{{
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_text_edit_enabled = 1
+let g:lsp_diagnostics_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 0
+let g:lsp_text_edit_enabled = 0
 
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
@@ -143,7 +143,7 @@ augroup END
 " }}}
 
 " asyncomplete {{{
-set completeopt=menuone,noinsert,preview
+set completeopt=menuone,noselect,preview
 inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"<buffer>
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
