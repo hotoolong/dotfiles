@@ -210,15 +210,20 @@ function fzf_select_ghq_repository
     set fzf_query --query "$query"
   end
 
-  set -l out (ghq list --vcs=git | \
+  set -l out (
+    for i in (ghq root -all)
+      fd --type d --min-depth 2 --max-depth 4 --hidden --search-path $i '.git$' | \
+      sed -e "s/\/.git\$//"
+    end | \
     fzf $fzf_query \
       --prompt='Select Repository >' \
-      --preview="echo {} | cut -d'/' -f 2- | xargs -I{} gh repo view {} ")
+      --preview="echo {} | awk -F'/' '{ print \$(NF-1)\"/\"\$NF}' | \
+    xargs -I{} gh repo view {}"
+  )
   [ $status != 0 ] && commandline -f repaint && return
 
   if test -n $out
-    set -l dir_path (ghq list --vcs=git --full-path --exact $out)
-    commandline "cd $dir_path"
+    commandline "cd $out"
     commandline -f execute
   end
 end
