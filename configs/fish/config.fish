@@ -237,9 +237,9 @@ function fzf-find-file
   )
   [ $status != 0 ] && commandline -f repaint && return
   if test -n $target_file
-    /usr/local/bin/nvim $target_file
+    commandline "$EDITOR $target_file"
+    commandline -f execute
   end
-  # commandline -f repaint
 end
 
 function fzf_select_history
