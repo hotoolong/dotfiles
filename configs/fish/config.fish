@@ -234,12 +234,11 @@ function fzf-find-file
 end
 
 function fzf_select_history
-  history | fzf | read -l line
+  set -l query (commandline --current-buffer)
+  history | fzf --query "$query" | read -l line
 
   if [ $line ]
     commandline $line
-  else
-    commandline -f repaint
   end
 end
 
