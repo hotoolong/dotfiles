@@ -229,8 +229,17 @@ function fzf_select_ghq_repository
 end
 
 function fzf-find-file
-  find . -type f | fzf --prompt='Select files' | xargs -o /usr/local/bin/nvim
-  commandline -f repaint
+  set -l query (commandline --current-buffer)
+
+  set -l target_file (
+    fd --type f --search-path . | \
+    fzf --prompt='Select files > ' --query "$query" \
+  )
+  [ $status != 0 ] && commandline -f repaint && return
+  if test -n $target_file
+    /usr/local/bin/nvim $target_file
+  end
+  # commandline -f repaint
 end
 
 function fzf_select_history
