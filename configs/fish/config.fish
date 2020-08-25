@@ -111,12 +111,18 @@ function gst --description 'git status -s'
   end
 end
 
-function gg --description 'grep directory'
-  if is_git_dir
-    git grep --line-number --heading --break --show-function $argv
-  else
-    # grep -nr $argv .
-    rg $argv
+function gg --description 'Customizing file grep'
+  set -l out ( \
+    rg --vimgrep --color always $argv | fzf --ansi
+  )
+  [ $status != 0 ] && commandline -f repaint && return
+
+  if test -n $out
+    echo $out
+    set -l file_name (echo $out | awk -F':' '{print $1}')
+    set -l line_number (echo $out | awk -F':' '{print $2}')
+    commandline "$EDITOR +$line_number +/$argv $file_name "
+    commandline -f execute
   end
 end
 
