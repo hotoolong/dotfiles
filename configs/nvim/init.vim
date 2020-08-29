@@ -76,6 +76,8 @@ Plug 'high-moctane/asyncomplete-nextword.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv'
 Plug 'airblade/vim-gitgutter'
+Plug 'iberianpig/tig-explorer.vim'
+Plug 'rbgrouleff/bclose.vim'
 
 " fzf preview
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
