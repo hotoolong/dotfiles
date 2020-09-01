@@ -23,6 +23,11 @@ Plug 'Shougo/neomru.vim'
 " ほかん
 Plug 'cohama/lexima.vim'
 
+" snippet
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+
 " ruby rails
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
@@ -110,6 +115,19 @@ filetype plugin indent on
 syntax enable
 
 let mapleader = "\<Space>"
+
+" UltiSnips {{{
+let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+ 
+let g:UltiSnipsEditSplit="vertical"
+call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+    \ 'name': 'ultisnips',
+    \ 'whitelist': ['*'],
+    \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+    \ }))
+" }}}
 
 " dash.vim {{{
 nmap <silent> <leader>d <Plug>DashSearch
