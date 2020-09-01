@@ -22,7 +22,6 @@ Plug 'Shougo/neomru.vim'
 
 " ほかん
 Plug 'cohama/lexima.vim'
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
 " ruby rails
 Plug 'vim-ruby/vim-ruby'
@@ -103,7 +102,6 @@ Plug 'thinca/vim-ref'
 " etc
 Plug 'thinca/vim-quickrun'
 Plug 'sheerun/vim-polyglot'
-
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -243,19 +241,6 @@ let g:node_usejscomplete = 1
 let g:git_messenger_no_default_mappings = v:true
 nmap ,m <Plug>(git-messenger)
 "}}}
-
-
-" LanguageClient {{{
-set hidden
-let g:LanguageClient_serverCommands = {
-  \ 'ruby': ['solargraph', 'stdio'],
-  \ 'javascript': ['vls'],
-  \ 'vue': ['vls'],
-\}
-call deoplete#custom#var('omni', 'input_patterns', {
-  \ 'ruby': ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::'],
-\})
-" }}}
 
 " NERDTree {{{
 let NERDTreeChDirMode=2
