@@ -22,6 +22,7 @@ Plug 'Shougo/neomru.vim'
 
 " ほかん
 Plug 'cohama/lexima.vim'
+Plug 'zxqfl/tabnine-vim'
 
 " snippet
 Plug 'SirVer/ultisnips'
@@ -288,7 +289,7 @@ let g:nerdtree_tabs_autofind=1
 " }}}
 
 " Xuyuanp/nerdtree-git-plugin {{{
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeGitStatusIndicatorMapCustom = {
   \ "Modified"  : "✹",
   \ "Staged"    : "✚",
   \ "Untracked" : "✭",
