@@ -22,7 +22,7 @@ Plug 'Shougo/neomru.vim'
 
 " ほかん
 Plug 'cohama/lexima.vim'
-Plug 'zxqfl/tabnine-vim', { 'on': [] }
+" Plug 'zxqfl/tabnine-vim', { 'on': [] }
 
 " snippet
 Plug 'SirVer/ultisnips'
@@ -108,6 +108,7 @@ Plug 'thinca/vim-ref'
 " etc
 Plug 'thinca/vim-quickrun'
 Plug 'sheerun/vim-polyglot'
+Plug 'ryanoasis/vim-devicons'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -122,7 +123,6 @@ function! s:load_plug(timer)
                 \ 'nerdtree-git-plugin',
                 \ 'vim-lsp',
                 \ 'vim-lsp-settings',
-                \ 'tabnine-vim',
                 \ )
 endfunction
 
@@ -279,7 +279,7 @@ let g:node_usejscomplete = 1
 
 " git-messenger {{{
 let g:git_messenger_no_default_mappings = v:true
-nmap ,m <Plug>(git-messenger)
+nmap ,gm <Plug>(git-messenger)
 "}}}
 
 " NERDTree {{{
