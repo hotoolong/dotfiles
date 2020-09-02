@@ -17,7 +17,7 @@ Plug 'rhysd/git-messenger.vim'
 Plug 'rhysd/conflict-marker.vim'
 
 " file finder
-Plug 'Shougo/denite.nvim'
+Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neomru.vim'
 
 " ほかん
