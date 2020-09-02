@@ -181,6 +181,10 @@ call asyncomplete#register_source(asyncomplete#sources#nextword#get_source_optio
 " }}}
 
 " gitgutter {{{
+
+" default ]c [c
+nmap gn <Plug>(GitGutterNextHunk)
+nmap gp <Plug>(GitGutterPrevHunk)
 nmap <silent>,gr :<C-u>GitGutterUndoHunk<CR>
 " }}}
 
