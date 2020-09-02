@@ -12,7 +12,7 @@ Plug 'junegunn/seoul256.vim'
 " file finder
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': [] }
 Plug 'rhysd/git-messenger.vim'
 Plug 'rhysd/conflict-marker.vim'
 
@@ -22,7 +22,7 @@ Plug 'Shougo/neomru.vim'
 
 " ほかん
 Plug 'cohama/lexima.vim'
-Plug 'zxqfl/tabnine-vim'
+Plug 'zxqfl/tabnine-vim', { 'on': [] }
 
 " snippet
 Plug 'SirVer/ultisnips'
@@ -30,10 +30,10 @@ Plug 'honza/vim-snippets'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 
 " ruby rails
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
-Plug 'slim-template/vim-slim'
-Plug 'tomtom/tcomment_vim'
+Plug 'vim-ruby/vim-ruby', { 'on': [] }
+Plug 'tpope/vim-rails', { 'on': [] }
+Plug 'slim-template/vim-slim', { 'on': [] }
+Plug 'tomtom/tcomment_vim', { 'on': [] }
 
 " vimdoc
 Plug 'vim-jp/vimdoc-ja'
@@ -59,8 +59,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/vim-lsp', { 'on': [] }
+Plug 'mattn/vim-lsp-settings', { 'on': [] }
 
 " Fuzzy Finder
 Plug 'mattn/vim-fz'
@@ -111,6 +111,23 @@ Plug 'sheerun/vim-polyglot'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
+
+" Load Event
+function! s:load_plug(timer)
+    call plug#load(
+                \ 'vim-ruby',
+                \ 'vim-rails',
+                \ 'vim-slim',
+                \ 'tcomment_vim',
+                \ 'nerdtree-git-plugin',
+                \ 'vim-lsp',
+                \ 'vim-lsp-settings',
+                \ 'tabnine-vim',
+                \ )
+endfunction
+
+" Heavy plug-ins will be loaded later.
+call timer_start(500, function("s:load_plug"))
 
 filetype plugin indent on
 syntax enable
