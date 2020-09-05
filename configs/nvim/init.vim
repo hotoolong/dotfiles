@@ -10,9 +10,10 @@ Plug 'tpope/vim-sensible'
 Plug 'junegunn/seoul256.vim'
 
 " file finder
-Plug 'scrooloose/nerdtree'
+Plug 'preservim/nerdtree' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+            \ Plug 'ryanoasis/vim-devicons'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': [] }
 Plug 'rhysd/git-messenger.vim'
 Plug 'rhysd/conflict-marker.vim'
 
@@ -105,7 +106,6 @@ Plug 'thinca/vim-ref'
 " etc
 Plug 'thinca/vim-quickrun'
 Plug 'sheerun/vim-polyglot'
-Plug 'ryanoasis/vim-devicons'
 Plug 'skanehira/translate.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -118,7 +118,6 @@ function! s:load_plug(timer)
                 \ 'vim-rails',
                 \ 'vim-slim',
                 \ 'tcomment_vim',
-                \ 'nerdtree-git-plugin',
                 \ 'vim-lsp',
                 \ 'vim-lsp-settings',
                 \ )
@@ -305,21 +304,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " デフォルトでツリーを表示させる
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:nerdtree_tabs_autofind=1
-" }}}
-
-" Xuyuanp/nerdtree-git-plugin {{{
-let g:NERDTreeGitStatusIndicatorMapCustom = {
-  \ "Modified"  : "✹",
-  \ "Staged"    : "✚",
-  \ "Untracked" : "✭",
-  \ "Renamed"   : "➜",
-  \ "Unmerged"  : "═",
-  \ "Deleted"   : "✖",
-  \ "Dirty"     : "✗",
-  \ "Clean"     : "✔︎",
-  \ 'Ignored'   : '☒',
-  \ "Unknown"   : "?"
-  \ }
 " }}}
 
 " denite.vim {{{
