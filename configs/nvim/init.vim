@@ -35,9 +35,6 @@ Plug 'tpope/vim-rails', { 'on': [] }
 Plug 'slim-template/vim-slim', { 'on': [] }
 Plug 'tomtom/tcomment_vim', { 'on': [] }
 
-" vimdoc
-Plug 'vim-jp/vimdoc-ja'
-
 " markdown
 Plug 'mattn/vim-maketable'
 
@@ -109,6 +106,7 @@ Plug 'thinca/vim-ref'
 Plug 'thinca/vim-quickrun'
 Plug 'sheerun/vim-polyglot'
 Plug 'ryanoasis/vim-devicons'
+Plug 'skanehira/translate.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
