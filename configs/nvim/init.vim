@@ -68,7 +68,7 @@ Plug 'majutsushi/tagbar'
 Plug 'pechorin/any-jump.vim'
 
 " シンタックスチェック
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'delphinus/lightline-delphinus'
 Plug 'itchyny/lightline.vim'
 
