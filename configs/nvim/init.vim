@@ -133,8 +133,8 @@ let mapleader = "\<Space>"
 
 " UltiSnips {{{
 let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-l>"
-let g:UltiSnipsJumpBackwardTrigger="<c-h>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
  
 let g:UltiSnipsEditSplit="vertical"
 call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
