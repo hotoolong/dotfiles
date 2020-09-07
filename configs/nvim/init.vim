@@ -489,9 +489,9 @@ nnoremap <silent> tp :<C-u>tabprevious<CR>
 nnoremap <silent> t<C-]> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
 
 " 日付追加
-inoremap <expr> ,df strftime('%Y-%m-%d %H:%M')
-inoremap <expr> ,dd strftime('%Y-%m-%d')
-inoremap <expr> ,dt strftime('%H:%M')
+inoremap <expr> <leader>df strftime('%Y-%m-%d %H:%M')
+inoremap <expr> <leader>dd strftime('%Y-%m-%d')
+inoremap <expr> <leader>dt strftime('%H:%M')
 
 " sudo権限で保存
 cnoremap w!! w !sudo tee > /dev/null %<CR>
