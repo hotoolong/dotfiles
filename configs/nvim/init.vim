@@ -131,6 +131,16 @@ syntax enable
 
 let mapleader = "\<Space>"
 
+" quickrun {{{
+nnoremap \r :write<CR>:QuickRun<CR>
+
+let g:quickrun_config = {
+\   "_" : {
+  \   'outputter/buffer/split': '10'
+  \ }
+\ }
+" }}}
+
 " UltiSnips {{{
 let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
