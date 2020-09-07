@@ -189,7 +189,7 @@ let g:asyncomplete_popup_delay = 20
 call asyncomplete#register_source(asyncomplete#sources#nextword#get_source_options({
   \   'name': 'nextword',
   \   'whitelist': ['*'],
-  \   'args': ['-n', '10000'],
+  \   'args': ['-n', '100'],
   \   'completor': function('asyncomplete#sources#nextword#completor')
   \   }))
 " }}}
