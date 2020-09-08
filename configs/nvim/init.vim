@@ -136,7 +136,7 @@ nnoremap \r :write<CR>:QuickRun<CR>
 
 let g:quickrun_config = {
 \   "_" : {
-  \   'outputter/buffer/split': '10'
+  \  'outputter/buffer/split': '50vsplit',
   \ }
 \ }
 " }}}
@@ -496,7 +496,7 @@ nnoremap <silent> tn :<C-u>tabnext<CR>
 nnoremap <silent> tp :<C-u>tabprevious<CR>
 " tag のリンクを tabで開く
 " nnoremap <silent> <C-t><C-]> <C-w><C-]><C-w>T
-nnoremap <silent> t<C-]> :<C-u>tab stj <C-R>=expand('<cword>')<CR><CR>
+nnoremap <silent> tj :<C-u>tab stjump <C-R>=expand('<cword>')<CR><CR>zz
 
 " 日付追加
 inoremap <expr> <leader>df strftime('%Y-%m-%d %H:%M')
