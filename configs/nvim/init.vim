@@ -503,6 +503,11 @@ inoremap <expr> <leader>df strftime('%Y-%m-%d %H:%M')
 inoremap <expr> <leader>dd strftime('%Y-%m-%d')
 inoremap <expr> <leader>dt strftime('%H:%M')
 
+" filetype of ruby 
+autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby
+autocmd BufNewFile,BufRead .pryrc     set filetype=ruby
+autocmd FileType ruby setl iskeyword+=?
+
 " sudo権限で保存
 cnoremap w!! w !sudo tee > /dev/null %<CR>
 
