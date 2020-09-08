@@ -57,8 +57,8 @@ Plug 'pangloss/vim-javascript'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/vim-lsp', { 'on': [] }
-Plug 'mattn/vim-lsp-settings', { 'on': [] }
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 
 " Fuzzy Finder
 Plug 'mattn/vim-fz'
@@ -118,8 +118,6 @@ function! s:load_plug(timer)
                 \ 'vim-rails',
                 \ 'vim-slim',
                 \ 'tcomment_vim',
-                \ 'vim-lsp',
-                \ 'vim-lsp-settings',
                 \ )
 endfunction
 
@@ -173,6 +171,7 @@ let g:lsp_text_edit_enabled = 0
 function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
   nmap <buffer> gd <plug>(lsp-definition)
   nmap <buffer> <f2> <plug>(lsp-rename)
   " refer to doc to add more commands
@@ -187,12 +186,25 @@ augroup END
 
 " asyncomplete {{{
 set completeopt=menuone,noselect,preview
-inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"<buffer>
+inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><CR>   pumvisible() ? "<C-y>" : "<CR>"<buffer>
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 0
 let g:asyncomplete_popup_delay = 20
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <TAB>
+  \ pumvisible() ? "\<C-n>" :
+  \ <SID>check_back_space() ? "\<TAB>" :
+  \ asyncomplete#force_refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 "  }}}
 
 " high-moctane/asyncomplete-nextword.vim {{{
