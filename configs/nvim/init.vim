@@ -449,6 +449,9 @@ inoremap <C-k> <Up>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 
+" terminal mode
+tnoremap <silent> <ESC> <C-\><C-n>
+
 set sidescroll=1
 set ttimeoutlen=10
 if has('persistent_undo')
