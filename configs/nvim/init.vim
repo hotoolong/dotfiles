@@ -23,7 +23,6 @@ Plug 'Shougo/neomru.vim'
 
 " ほかん
 Plug 'cohama/lexima.vim'
-" Plug 'zxqfl/tabnine-vim', { 'on': [] }
 
 " snippet
 Plug 'SirVer/ultisnips'
