@@ -462,6 +462,8 @@ inoremap <C-l> <Right>
 
 " terminal mode
 tnoremap <silent> <ESC> <C-\><C-n>
+tnoremap <silent> <C-s> <Nop>
+
 
 set sidescroll=1
 set ttimeoutlen=10
