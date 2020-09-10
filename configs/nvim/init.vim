@@ -210,7 +210,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 call asyncomplete#register_source(asyncomplete#sources#nextword#get_source_options({
   \   'name': 'nextword',
   \   'whitelist': ['*'],
-  \   'args': ['-n', '100'],
+  \   'args': ['-n', '20'],
   \   'completor': function('asyncomplete#sources#nextword#completor')
   \   }))
 " }}}
