@@ -313,7 +313,7 @@ let NERDTreeAutoDeleteBuffer = 1
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> td :<C-u>NERDTreeFind<CR>
 " nnoremap <silent> <F3> :<C-u>NERDTreeToggle<CR>
-" 隠しファイルを表示する
+" show hidden file
 let NERDTreeShowHidden = 1
 "nnoremap <silent><C-e> :NERDTreeFocusToggle<CR>
 
