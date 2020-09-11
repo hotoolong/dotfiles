@@ -82,7 +82,7 @@ function gst --description 'git status -s'
 
   set -l out (command $base_command | \
     fzf --exit-0 --ansi \
-    --preview="[ '??' = {1} ] && bat --color=always {2} || git diff {2}" \
+    --preview="[ '??' = (echo {} | cut -c 1-2) ] && bat --color=always {2} || [ 'M ' = (echo {} | cut -c 1-2) ] && unbuffer git diff --staged {2} || unbuffer git diff {2}" \
         --expect=ctrl-m,ctrl-r,ctrl-v,ctrl-c,ctrl-p \
         --bind $bind_str \
         --header='C-a: add, C-p: partial, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv' \
