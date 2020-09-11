@@ -74,7 +74,7 @@ function gst --description 'git status -s'
   if ! is_git_dir
     return
   end
-  set -l base_command git status -s
+  set -l base_command unbuffer git status -s
   set -l bind_reload "reload($base_command)"
   set -l bind_commands "ctrl-a:execute-silent(git add {2})+$bind_reload"
   set bind_commands $bind_commands "ctrl-u:execute-silent(git restore --staged {2})+$bind_reload"
