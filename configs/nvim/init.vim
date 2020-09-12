@@ -71,8 +71,9 @@ Plug 'dense-analysis/ale'
 Plug 'delphinus/lightline-delphinus'
 Plug 'itchyny/lightline.vim'
 
-" Nextword
+" asyncomplete sources
 Plug 'high-moctane/asyncomplete-nextword.vim'
+Plug 'andreypopp/asyncomplete-ale.vim'
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -127,6 +128,13 @@ filetype plugin indent on
 syntax enable
 
 let mapleader = "\<Space>"
+
+" andreypopp/asyncomplete-ale.vim {{{ 
+au User asyncomplete_setup call asyncomplete#ale#register_source({
+    \ 'name': 'reason',
+    \ 'linter': 'flow',
+    \ })
+" }}}
 
 " quickrun {{{
 nnoremap \r :write<CR>:QuickRun<CR>
