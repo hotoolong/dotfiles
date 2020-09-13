@@ -73,6 +73,7 @@ Plug 'itchyny/lightline.vim'
 
 " asyncomplete sources
 Plug 'high-moctane/asyncomplete-nextword.vim'
+Plug 'hotoolong/asyncomplete-tabnine.vim', { 'do': './install.sh' }
 Plug 'andreypopp/asyncomplete-ale.vim'
 
 " Git
@@ -144,6 +145,18 @@ let g:quickrun_config = {
   \  'outputter/buffer/split': '50vsplit',
   \ }
 \ }
+" }}}
+
+" hotoolong/asyncomplete-tabnine {{{
+call asyncomplete#register_source(asyncomplete#sources#tabnine#get_source_options({
+  \ 'name': 'tabnine',
+  \ 'allowlist': ['*'],
+  \ 'completor': function('asyncomplete#sources#tabnine#completor'),
+  \ 'config': {
+  \   'line_limit': 1000,
+  \   'max_num_result': 20,
+  \  },
+  \ })) 
 " }}}
 
 " UltiSnips {{{
