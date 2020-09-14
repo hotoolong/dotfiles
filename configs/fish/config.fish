@@ -1,6 +1,6 @@
 set -x EDITOR /usr/local/bin/nvim
 set -x NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
-set -lx TERM screen-256color-bce;
+set -x TERM screen-256color-bce;
 set -x GOPATH $HOME/gocode
 set -x PATH $HOME/bin $GOPATH/bin $PATH
 set -x PGDATA /usr/local/var/postgres
