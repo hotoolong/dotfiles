@@ -116,15 +116,18 @@ end
 
 function gg --description 'Customizing file grep'
   set -l out ( \
-    rg --vimgrep --color always $argv | fzf --ansi
+    rg --vimgrep --color always $argv | \
+        fzf --ansi --multi \
+        --preview="set -l line_number (echo {1} | cut -d':' -f 2);bat --highlight-line \$line_number --line-range (if [ \$line_number -gt 10 ]; math \$line_number - 10;else; echo 0;end): --color=always (echo {1} | cut -d':' -f 1)" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
-  if test -n $out
-    echo $out
-    set -l file_name (echo $out | awk -F':' '{print $1}')
-    set -l line_number (echo $out | awk -F':' '{print $2}')
-    commandline "$EDITOR +$line_number +/$argv $file_name "
+  if test -n (count $out)
+    set -l file_names
+    for line in $out
+      set file_names (echo $line | awk -F':' '{print $1}') $file_names
+    end
+    commandline "$EDITOR +/$argv $file_names"
     commandline -f execute
   end
 end
