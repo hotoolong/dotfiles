@@ -118,7 +118,7 @@ function gg --description 'Customizing file grep'
   set -l out ( \
     rg --vimgrep --color always $argv | \
         fzf --ansi --multi \
-        --preview="set -l line_number (echo {1} | cut -d':' -f 2);bat --highlight-line \$line_number --line-range (if [ \$line_number -gt 10 ]; math \$line_number - 10;else; echo 0;end): --color=always (echo {1} | cut -d':' -f 1)" \
+        --preview="set -l line (echo {1} | cut -d':' -f 2);set -l file (echo {1} | cut -d':' -f 1);bat --highlight-line \$line --line-range (if [ \$line -gt 10 ]; math \$line - 10;else; echo 0;end): --color=always \$file" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
