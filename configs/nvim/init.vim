@@ -108,6 +108,7 @@ Plug 'thinca/vim-ref'
 Plug 'thinca/vim-quickrun'
 Plug 'sheerun/vim-polyglot'
 Plug 'skanehira/translate.vim'
+Plug 'AndrewRadev/switch.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -129,6 +130,17 @@ filetype plugin indent on
 syntax enable
 
 let mapleader = "\<Space>"
+
+" AndrewRadev/switch.vim {{{
+nnoremap <silent><C-c> :<C-u>Switch<CR>
+autocmd FileType eruby let b:switch_custom_definitions =
+    \ [
+    \   {
+    \     ':\(\k\+\)\s\+=>': '\1:',
+    \     '\<\(\k\+\):':     ':\1 =>',
+    \   },
+    \ ]
+" }}}
 
 " andreypopp/asyncomplete-ale.vim {{{ 
 au User asyncomplete_setup call asyncomplete#ale#register_source({
