@@ -246,6 +246,7 @@ function fzf-find-file
   set -l target_file (
     fd --type f --search-path . | \
     fzf --prompt='Select files > ' --query "$query" \
+        --preview="bat --color=always {}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
   if test -n $target_file
