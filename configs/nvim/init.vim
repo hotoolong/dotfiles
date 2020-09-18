@@ -75,6 +75,9 @@ Plug 'itchyny/lightline.vim'
 Plug 'high-moctane/asyncomplete-nextword.vim'
 Plug 'hotoolong/asyncomplete-tabnine.vim', { 'do': './install.sh' }
 Plug 'andreypopp/asyncomplete-ale.vim'
+if executable('ctags')
+  Plug 'prabirshrestha/asyncomplete-tags.vim'
+endif
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -130,6 +133,17 @@ filetype plugin indent on
 syntax enable
 
 let mapleader = "\<Space>"
+
+" prabirshrestha/asyncomplete-tags.vim {{{
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
+    \ 'name': 'tags',
+    \ 'whitelist': ['c'],
+    \ 'completor': function('asyncomplete#sources#tags#completor'),
+    \ 'config': {
+    \    'max_file_size': 50000000,
+    \  },
+    \ }))
+" }}}
 
 " AndrewRadev/switch.vim {{{
 nnoremap <silent><C-c> :<C-u>Switch<CR>
