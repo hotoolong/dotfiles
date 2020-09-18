@@ -458,6 +458,7 @@ set pumheight=10  "補完メニューの幅
 set backupskip=/tmp/*,/private/tmp/*
 set noswapfile
 set expandtab
+set tags+=.git/tags
 
 " search {{{
 set incsearch
