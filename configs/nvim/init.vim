@@ -134,6 +134,13 @@ syntax enable
 
 let mapleader = "\<Space>"
 
+" tpope/vim-fugitive {{{
+autocmd BufWritePost *
+      \ if exists('b:git_dir') && executable(b:git_dir.'/hooks/create_tags') |
+      \   call system('"'.b:git_dir.'/hooks/create_ctags" &') |
+      \ endif
+" }}}
+
 " prabirshrestha/asyncomplete-tags.vim {{{
 au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
     \ 'name': 'tags',
