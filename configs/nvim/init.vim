@@ -74,7 +74,6 @@ Plug 'itchyny/lightline.vim'
 " asyncomplete sources
 Plug 'high-moctane/asyncomplete-nextword.vim'
 Plug 'hotoolong/asyncomplete-tabnine.vim', { 'do': './install.sh' }
-Plug 'andreypopp/asyncomplete-ale.vim'
 if executable('ctags')
   Plug 'prabirshrestha/asyncomplete-tags.vim'
 endif
@@ -163,13 +162,6 @@ autocmd FileType eruby let b:switch_custom_definitions =
     \ ]
 " }}}
 
-" andreypopp/asyncomplete-ale.vim {{{ 
-au User asyncomplete_setup call asyncomplete#ale#register_source({
-    \ 'name': 'reason',
-    \ 'linter': 'flow',
-    \ })
-" }}}
-
 " quickrun {{{
 nnoremap \r :write<CR>:QuickRun<CR>
 
@@ -245,6 +237,11 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 0
 let g:asyncomplete_popup_delay = 20
+
+autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
+\ 'priority': 10
+\ }))
+
 "  }}}
 
 " high-moctane/asyncomplete-nextword.vim {{{
