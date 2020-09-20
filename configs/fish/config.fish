@@ -85,7 +85,7 @@ function gst --description 'git status -s'
     --preview="set -l git_status (echo {} | cut -c 1-2);[ \$git_status = '??' ] && bat --color=always {2} || [ \$git_status = 'M ' -o \$git_status = 'A ' ] && git diff --color --staged {2} || git diff --color {2}" \
         --expect=ctrl-m,ctrl-r,ctrl-v,ctrl-c,ctrl-p,ctrl-d \
         --bind $bind_str \
-        --header='C-a: add, C-p: partial, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv' \
+        --header='C-a: add, C-p: partial, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv, C-d: diff' \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
@@ -107,6 +107,14 @@ function gst --description 'git status -s'
       commandline -f execute
     else if test $key = 'ctrl-p'
       commandline "git add -p $file"
+      commandline -f execute
+    else if test $key = 'ctrl-d'
+      set -l state (echo $out[2] | cut -c 1-2)
+      if [ $state = 'M ' -o $state = 'A ' ]
+        commandline "git diff --staged $file"
+      else
+        commandline "git diff $file"
+      end
       commandline -f execute
     else
       commandline -f repaint
