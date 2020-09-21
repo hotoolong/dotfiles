@@ -8,7 +8,8 @@ Pry.config.prompt = proc do |obj, nest_level, _pry_|
   current_branch = "#{current_branch[0..14]}.." if current_branch.length > 16
   current_branch = "(#{current_branch})" if current_branch
 
-  num = "[#{_pry_.input_array.size}]"
+  num = "[#{_pry_.input_ring.size}]" if _pry_.respond_to?(:input_ring)
+  num = "[#{_pry_.input_array.size}]" if _pry_.respond_to?(:input_array)
   "#{num} #{current_branch} (#{Pry.view_clip(obj)})> "
 end
 
