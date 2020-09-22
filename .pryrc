@@ -13,6 +13,17 @@ Pry.config.prompt = proc do |obj, nest_level, _pry_|
   "#{num} #{current_branch} (#{Pry.view_clip(obj)})> "
 end
 
+Pry.config.commands.import(Pry::CommandSet.new do
+  command 'reload!', 'Reload Pry' do
+    target.eval <<-EVAL
+      at_exit { puts "Reloading pry..."; exec "pry" }
+      exit
+    EVAL
+  end
+
+  alias_command 'r', 'reload!'
+end)
+
 if defined?(PryByebug)
   Pry.commands.alias_command 'c', 'continue'
   Pry.commands.alias_command 's', 'step'
