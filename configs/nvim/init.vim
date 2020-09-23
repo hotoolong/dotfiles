@@ -109,7 +109,7 @@ Plug 'thinca/vim-ref'
 " etc
 Plug 'thinca/vim-quickrun'
 Plug 'sheerun/vim-polyglot'
-Plug 'skanehira/translate.vim'
+Plug 'hotoolong/translate.nvim'
 Plug 'AndrewRadev/switch.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
