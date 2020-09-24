@@ -170,6 +170,12 @@ let g:quickrun_config = {
   \  'outputter/buffer/split': '50vsplit',
   \ }
 \ }
+
+augroup QRunRSpec
+  autocmd!
+  autocmd BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.rspec
+augroup END
+
 " }}}
 
 " hotoolong/asyncomplete-tabnine {{{
