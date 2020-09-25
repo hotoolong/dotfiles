@@ -37,7 +37,9 @@ brew "mecab"
 brew "mecab-ipadic"
 brew "mysql"
 brew "neovim", args: ["HEAD"]
+brew "openjdk"
 brew "poco"
+brew "postgresql", restart_service: true
 brew "ruby-build"
 brew "rbenv"
 brew "ripgrep"
@@ -49,7 +51,3 @@ brew "vim", args: ["with-lua"]
 brew "watchman"
 brew "z"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
-cask "chromedriver"
-cask "crunch"
-cask "java"
-cask "vnote"
