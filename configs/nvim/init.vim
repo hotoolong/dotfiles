@@ -108,6 +108,7 @@ Plug 'thinca/vim-ref'
 
 " etc
 Plug 'thinca/vim-quickrun'
+Plug 'lambdalisue/vim-quickrun-neovim-job'
 Plug 'sheerun/vim-polyglot'
 Plug 'hotoolong/translate.nvim'
 Plug 'AndrewRadev/switch.vim'
@@ -165,17 +166,31 @@ autocmd FileType eruby let b:switch_custom_definitions =
 " quickrun {{{
 nnoremap \r :write<CR>:QuickRun<CR>
 
-let g:quickrun_config = {
-\   "_" : {
-  \  'outputter/buffer/split': '50vsplit',
+let g:quickrun_config = {'_': {}}
+
+if has('nvim')
+  let g:quickrun_config._.runner = 'neovim_job'
+elseif exists('*ch_close_in')
+  let g:quickrun_config._.runner = 'job'
+endif
+
+let g:quickrun_config['ruby.rspec'] = {
+  \   'command': 'rspec',
+  \   'cmdopt': '-f p',
+  \   'exec': 'bundle exec %c %o %s',
+  \   'filetype': 'rspec-result'
   \ }
-\ }
-
-augroup QRunRSpec
-  autocmd!
-  autocmd BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.rspec
-augroup END
-
+let g:quickrun_config['rspec.line'] = {
+  \   'command': 'rspec',
+  \   'exec': 'bundle exec %c %s:%a',
+  \   'filetype': 'rspec-result'
+  \ }
+function! s:RSpecQuickrun()
+  set filetype=ruby.rspec
+  let b:quickrun_config = { 'type': 'rspec' }
+  nnoremap <silent> \t :write<CR>:execute 'QuickRun rspec.line -args ' . line('.')<CR>
+endfunction
+autocmd BufWinEnter,BufNewFile *_spec.rb call <SID>RSpecQuickrun()
 " }}}
 
 " hotoolong/asyncomplete-tabnine {{{
