@@ -252,7 +252,7 @@ augroup END
 
 " asyncomplete {{{
 set completeopt=menuone,noselect,preview,noinsert
-inoremap <expr><Tab>  pumvisible() ? "\<C-y>" : "\<cr>"
+inoremap <expr><Tab>  pumvisible() ? "\<C-y>" : "\<Tab>"
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
 let g:asyncomplete_auto_popup = 1
