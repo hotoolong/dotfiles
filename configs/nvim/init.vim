@@ -541,7 +541,7 @@ nnoremap <silent><Space>s. :<C-u>source $MYVIMRC<CR>
 " }}}
 
 " bell {{{
-" ビープを止める
+" stop bell
 set visualbell t_vb=
 " }}}
 
