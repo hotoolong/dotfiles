@@ -519,6 +519,8 @@ cnoremap <C-n> <Down>
 cnoremap <C-p> <Up>
 cnoremap <C-y> <C-r>*
 cnoremap <C-g> <C-c>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
 
 " 入力モードでのカーソル移動
 inoremap <C-j> <Down>
