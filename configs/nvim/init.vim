@@ -410,9 +410,9 @@ nnoremap <silent> [denite]f :<C-u>DeniteWithBufferDir file<CR>
 nnoremap <silent> [denite]rg :<C-u>Denite -resume -buffer-name=search-buffer-denite<CR>
 nnoremap <silent> [denite]g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
 " resumeした検索結果の次の行の結果へ飛ぶ
-nnoremap <silent> [denite]n :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
+nnoremap <silent> [denite]n :<C-u>Denite -resume -buffer-name=search-buffer-denite -cursor-pos=+1 -immediately<CR>
 " resumeした検索結果の前の行の結果へ飛ぶ
-nnoremap <silent> [denite]p :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
+nnoremap <silent> [denite]p :<C-u>Denite -resume -buffer-name=search-buffer-denite -cursor-pos=-1 -immediately<CR>
 " denite/insert モードのときは，C- で移動できるようにする
 call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>')
 call denite#custom#map('insert', "<C-k>", '<denite:move_to_previous_line>')
