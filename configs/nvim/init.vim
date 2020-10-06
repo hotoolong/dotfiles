@@ -1,7 +1,6 @@
 if &compatible
   set nocompatible
 endif
-
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
@@ -310,9 +309,16 @@ let g:lightline = {
   \  ]
   \},
   \'component_function': {
+  \  'filename': 'LightlineFilename',
   \  'ale': 'ALEGetStatusLine'
   \}
 \ }
+
+function! LightlineFilename()
+  let filename = expand('%:t') !=# '' ? expand('%:h') . '/' . expand('%:t') : '[No Name]'
+  let modified = &modified ? ' +' : ''
+  return filename . modified
+endfunction
 
 function! LightlineMode()
   return  &ft == 'denite' ? 'Denite' :
