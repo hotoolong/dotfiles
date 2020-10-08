@@ -424,13 +424,14 @@ call denite#custom#map('normal', "v", '<denite:do_action:vsplit>')
 call denite#custom#var('file_rec', 'command',
       \ ['rg', '--follow', '--nocolor', '--nogroup', '-g', ''])
 " Ripgrep command on grep source
-call denite#custom#var('grep', 'command', ['rg'])
-call denite#custom#var('grep', 'default_opts',
-    \ ['--vimgrep', '--no-heading'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
+call denite#custom#var('grep', {
+  \ 'command': ['rg'],
+  \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
+  \ 'recursive_opts': [],
+  \ 'pattern_opt': ['--regexp'],
+  \ 'separator': ['--'],
+  \ 'final_opts': [],
+  \ })
 " use flating
 let s:denite_win_width_percent = 0.85
 let s:denite_win_height_percent = 0.7
