@@ -210,7 +210,7 @@ function fzf_git_pull_request
         --prompt='Select Pull Request>' \
         --preview="gh pr view {1}" \
         --expect=ctrl-k,ctrl-m \
-        --header='enter: open in browser, C-k: checkout, C-a: all, C-o: open, C-c: closed, C-g: merged, C-a: all' \
+        --header='enter: open in browser, C-k: checkout, C-a: all, C-o: open, C-c: closed, C-g: merged' \
   )
   if test -z $out
     return
