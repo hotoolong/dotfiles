@@ -133,6 +133,10 @@ syntax enable
 
 let mapleader = "\<Space>"
 
+" hotoolong/translate.nvim {{{
+let g:translate_copy_result = 1
+" }}}
+
 " tpope/vim-fugitive {{{
 autocmd BufWritePost *
       \ if exists('b:git_dir') && executable(b:git_dir.'/hooks/create_tags') |
