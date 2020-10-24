@@ -335,9 +335,14 @@ function prompt_pwd --description "Print the current working directory, shortene
   if [ $fish_prompt_pwd_dir_length -eq 0 ]
     echo $tmp
   else
-   # Shorten to at most $fish_prompt_pwd_dir_length characters per directory
-   set -l folders (string split -rm2 / $tmp)
-   echo (string replace -ar '(\.?[^/]{'"$fish_prompt_pwd_dir_length"'})[^/]*/' '$1/' $folders[1]'/')$folders[2]'/'$folders[3]
+    set -q fish_prompt_dir_full_name_range
+    or set -l fish_prompt_dir_full_name_range 2
+    if [ $fish_prompt_dir_full_name_range -le 0 ]
+      set fish_prompt_dir_full_name_range 1
+    end
+    set -l folders (string split -rm$fish_prompt_dir_full_name_range / $tmp)
+    # Shorten to at most $fish_prompt_pwd_dir_length characters per directory
+    echo (string replace -ar '(\.?[^/]{'"$fish_prompt_pwd_dir_length"'})[^/]*/' '$1/' $folders[1]'/')(string join / $folders[2..-1])
   end
 end
 
