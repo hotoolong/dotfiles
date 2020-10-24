@@ -397,36 +397,72 @@ let g:nerdtree_tabs_autofind=1
 " }}}
 
 " denite.vim {{{
-" 入力モードで開始する
-let g:unite_enable_start_insert = 1
-" 履歴の取得
-let g:unite_source_history_yank_enable =1
 
-" The prefix key.
-nnoremap  [denite] <Nop>
-nmap , [denite]
+augroup denite_filter
+  autocmd FileType denite call s:denite_my_settings()
+  function! s:denite_my_settings() abort
+    nnoremap <silent><buffer><expr> <CR>    denite#do_map('do_action')
+    nnoremap <silent><buffer><expr> d       denite#do_map('do_action', 'delete')
+    nnoremap <silent><buffer><expr> p       denite#do_map('do_action', 'preview')
+    nnoremap <silent><buffer><expr> q       denite#do_map('quit')
+    nnoremap <silent><buffer><expr> i       denite#do_map('open_filter_buffer')
+    nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
+  endfunction
 
-nnoremap [denite]  :<C-u>Denite -no-split<Space>
-nnoremap <silent> [denite]b :<C-u>Denite -split=floating buffer<CR>
-nnoremap <silent> [denite]m :<C-u>Denite<Space>file_mru<CR>
-nnoremap <silent> [denite]r :<C-u>Denite<Space>file_rec<CR>
-nnoremap <silent> [denite]f :<C-u>DeniteWithBufferDir file<CR>
-nnoremap <silent> [denite]rg :<C-u>Denite -resume -buffer-name=search-buffer-denite<CR>
-nnoremap <silent> [denite]g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
-" resumeした検索結果の次の行の結果へ飛ぶ
-nnoremap <silent> [denite]n :<C-u>Denite -resume -buffer-name=search-buffer-denite -cursor-pos=+1 -immediately<CR>
-" resumeした検索結果の前の行の結果へ飛ぶ
-nnoremap <silent> [denite]p :<C-u>Denite -resume -buffer-name=search-buffer-denite -cursor-pos=-1 -immediately<CR>
-" denite/insert モードのときは，C- で移動できるようにする
-call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>')
-call denite#custom#map('insert', "<C-k>", '<denite:move_to_previous_line>')
-" tabopen や vsplit のキーバインドを割り当て
-call denite#custom#map('insert', "<C-t>", '<denite:do_action:tabopen>')
-call denite#custom#map('insert', "<C-v>", '<denite:do_action:vsplit>')
-call denite#custom#map('normal', "v", '<denite:do_action:vsplit>')
-"カレントディレクトリ内の検索もrgを使用する
-call denite#custom#var('file_rec', 'command',
-      \ ['rg', '--follow', '--nocolor', '--nogroup', '-g', ''])
+	autocmd FileType denite-filter call s:denite_filter_my_settings()
+	function! s:denite_filter_my_settings() abort
+	  inoremap <silent><buffer> <C-j> <Esc>
+	        \:call denite#move_to_parent()<CR>
+	        \:call cursor(line('.')+1,0)<CR>
+	        \:call denite#move_to_filter()<CR>A
+	  inoremap <silent><buffer> <C-k> <Esc>
+	        \:call denite#move_to_parent()<CR>
+	        \:call cursor(line('.')-1,0)<CR>
+	        \:call denite#move_to_filter()<CR>A
+	  " inoremap <silent><buffer> <C-t> <Esc>
+	  "       \:call denite#move_to_parent()<CR>
+	  "       \:call denite#do_action(context, 'tabopen', context['targets'])<CR>A
+	endfunction
+
+  " denite/insert モードのときは，C- で移動できるようにする
+  " call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>', 'noremap')
+  " call denite#custom#map('insert', "<C-k>", '<denite:move_to_previous_line>', 'noremap')
+  call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
+  call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
+  " tabopen や vsplit のキーバインドを割り当て
+  call denite#custom#map('insert', "<C-t>", '<denite:do_action:tabopen>')
+  call denite#custom#map('insert', "<C-v>", '<denite:do_action:vsplit>')
+  call denite#custom#map('normal', "v", '<denite:do_action:vsplit>')
+
+augroup END
+
+" use flating
+let s:denite_win_width_percent = 0.8
+let s:denite_win_height_percent = 0.7
+
+let s:denite_default_options = {
+    \ 'split': 'floating',
+    \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
+    \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
+    \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
+    \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
+    \ 'highlight_filter_background': 'DeniteFilter',
+    \ 'prompt': '$ ',
+    \ 'start_filter': v:true,
+    \ }
+let s:denite_option_array = []
+for [key, value] in items(s:denite_default_options)
+  call add(s:denite_option_array, '-'.key.'='.value)
+endfor
+call denite#custom#option('default', s:denite_default_options)
+
+call denite#custom#var('file/rec', 'command',
+    \ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
+
+call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+    \ [ '.git/', '.ropeproject/', '__pycache__/',
+    \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
+
 " Ripgrep command on grep source
 call denite#custom#var('grep', {
   \ 'command': ['rg'],
@@ -436,34 +472,38 @@ call denite#custom#var('grep', {
   \ 'separator': ['--'],
   \ 'final_opts': [],
   \ })
-" use flating
-let s:denite_win_width_percent = 0.85
-let s:denite_win_height_percent = 0.7
 
-call denite#custom#option('default', {
-  \ 'split': 'floating',
-  \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
-  \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
-  \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
-  \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
-  \ })
-
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-  \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> q
-  \ denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
+" grep
+command! -nargs=? Dgrep call s:Dgrep(<f-args>)
+function s:Dgrep(...)
+  if a:0 > 0
+    execute(':Denite -buffer-name=grep-buffer-denite grep -path='.a:1)
+  else
+    execute(':Denite -buffer-name=grep-buffer-denite '.join(s:denite_option_array, ' ').' grep')
+  endif
 endfunction
+" show Denite grep results
+command! Dresume execute(':Denite -resume -buffer-name=grep-buffer-denite '.join(s:denite_option_array, ' ').'')
+" next Denite grep result
+command! Dnext execute(':Denite -resume -buffer-name=grep-buffer-denite -cursor-pos=+1 -immediately '.join(s:denite_option_array, ' ').'')
+" previous Denite grep result
+command! Dprev execute(':Denite -resume -buffer-name=grep-buffer-denite -cursor-pos=-1 -immediately '.join(s:denite_option_array, ' ').'')
 
+" The prefix key.
+nnoremap  [denite] <Nop>
+nmap , [denite]
+
+" nnoremap [denite]  :<C-u>Denite -no-split<Space>
+nnoremap <silent> [denite]b  :<C-u>Denite -split=floating buffer<CR>
+nnoremap <silent> [denite]m  :<C-u>Denite<Space>file_mru<CR>
+nnoremap <silent> [denite]r  :<C-u>Denite<Space>file/rec<CR>
+nnoremap <silent> [denite]f  :<C-u>Denite<Space>file<CR>
+nnoremap <silent> [denite]g  :<C-u>Dgrep<CR>
+nnoremap <silent> [denite]rg :<C-u>DResume<CR>
+nnoremap <silent> [denite]n  :<C-u>Dnext<CR>
+nnoremap <silent> [denite]p  :<C-u>Dprev<CR>
+nnoremap <silent> [denite]c  :<C-u>Denite command command_history<CR>
+nnoremap <silent> [denite]j  :<C-u>Denite jump<CR>
 " }}}
 
 set encoding=UTF-8
