@@ -409,20 +409,20 @@ augroup denite_filter
     nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
   endfunction
 
-	autocmd FileType denite-filter call s:denite_filter_my_settings()
-	function! s:denite_filter_my_settings() abort
-	  inoremap <silent><buffer> <C-j> <Esc>
-	        \:call denite#move_to_parent()<CR>
-	        \:call cursor(line('.')+1,0)<CR>
-	        \:call denite#move_to_filter()<CR>A
-	  inoremap <silent><buffer> <C-k> <Esc>
-	        \:call denite#move_to_parent()<CR>
-	        \:call cursor(line('.')-1,0)<CR>
-	        \:call denite#move_to_filter()<CR>A
-	  " inoremap <silent><buffer> <C-t> <Esc>
-	  "       \:call denite#move_to_parent()<CR>
-	  "       \:call denite#do_action(context, 'tabopen', context['targets'])<CR>A
-	endfunction
+  autocmd FileType denite-filter call s:denite_filter_my_settings()
+  function! s:denite_filter_my_settings() abort
+    inoremap <silent><buffer> <C-j> <Esc>
+          \:call denite#move_to_parent()<CR>
+          \:call cursor(line('.')+1,0)<CR>
+          \:call denite#move_to_filter()<CR>A
+    inoremap <silent><buffer> <C-k> <Esc>
+          \:call denite#move_to_parent()<CR>
+          \:call cursor(line('.')-1,0)<CR>
+          \:call denite#move_to_filter()<CR>A
+    " inoremap <silent><buffer> <C-t> <Esc>
+    "       \:call denite#move_to_parent()<CR>
+    "       \:call denite#do_action(context, 'tabopen', context['targets'])<CR>A
+  endfunction
 
   " denite/insert モードのときは，C- で移動できるようにする
   " call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>', 'noremap')
