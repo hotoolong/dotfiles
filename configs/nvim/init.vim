@@ -419,9 +419,6 @@ augroup denite_filter
           \:call denite#move_to_parent()<CR>
           \:call cursor(line('.')-1,0)<CR>
           \:call denite#move_to_filter()<CR>A
-    " inoremap <silent><buffer> <C-t> <Esc>
-    "       \:call denite#move_to_parent()<CR>
-    "       \:call denite#do_action(context, 'tabopen', context['targets'])<CR>A
   endfunction
 
   " denite/insert モードのときは，C- で移動できるようにする
