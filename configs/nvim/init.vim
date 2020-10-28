@@ -524,7 +524,7 @@ set listchars=tab:->,trail:_
 set ruler
 set splitright
 set backspace=indent,eol,start
-set ambiwidth=double " Unicodeで曖昧な文字2バイト表示
+" set ambiwidth=double " Unicodeで曖昧な文字2バイト表示
 set textwidth=0      " 一行に長い文章を書いていても自動折り返しをしない
 set display=lastline
 set pumheight=10  "補完メニューの幅
