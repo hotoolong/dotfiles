@@ -195,7 +195,8 @@ autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 let g:asyncomplete_auto_popup = 1
 let g:asyncomplete_auto_completeopt = 0
 let g:asyncomplete_popup_delay = 20
-
+'''
+hook_post_source = '''
 autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
 \ 'priority': 10
 \ }))
@@ -419,3 +420,16 @@ let g:translate_copy_result = 1
 [[plugins]]
 repo = 'sheerun/vim-polyglot'
 
+[[plugins]]
+repo = 'SirVer/ultisnips'
+hook_add = '''
+let g:UltiSnipsExpandTrigger="<c-e>"
+let g:UltiSnipsJumpForwardTrigger="<Tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+let g:UltiSnipsEditSplit="vertical"
+call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+    \ 'name': 'ultisnips',
+    \ 'whitelist': ['*'],
+    \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+    \ }))
+'''

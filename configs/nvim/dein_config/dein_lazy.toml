@@ -11,23 +11,6 @@ repo = 'cohama/lexima.vim'
 
 # snippet
 [[plugins]]
-repo = 'SirVer/ultisnips'
-hook_add = '''
-" UltiSnips {{{
-let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<Tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
-let g:UltiSnipsEditSplit="vertical"
-'''
-hook_post_source = '''
-call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-    \ 'name': 'ultisnips',
-    \ 'whitelist': ['*'],
-    \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-    \ }))
-'''
-
-[[plugins]]
 repo = 'honza/vim-snippets'
 depends = ['ultisnips']
 
