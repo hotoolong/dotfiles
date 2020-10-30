@@ -339,8 +339,6 @@ repo = 'iberianpig/tig-explorer.vim'
 [[plugins]]
 repo = 'rbgrouleff/bclose.vim'
 
-[[plugins]]
-
 # fzf preview
 
 # [[plugins]]
