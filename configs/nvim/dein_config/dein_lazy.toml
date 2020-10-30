@@ -1,10 +1,8 @@
 [[plugins]]
 repo = 'rhysd/git-messenger.vim'
 hook_add = '''
-" git-messenger {{{
 let g:git_messenger_no_default_mappings = v:true
 nmap ,gm <Plug>(git-messenger)
-"}}}
 '''
 
 # ほかん
@@ -76,9 +74,7 @@ repo = 'moll/vim-node'
 repo = 'mattn/jscomplete-vim'
 on_ft = ['javascript']
 hook_source = '''
-" jscomplete-vim {{{
 autocmd FileType javascript setlocal omnifunc=jscomplete#CompleteJS
-" }}}
 '''
 
 [[plugins]]
