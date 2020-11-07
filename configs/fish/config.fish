@@ -249,6 +249,28 @@ function fzf_select_ghq_repository
   end
 end
 
+function trend_ruby_week
+  if test -n $query
+    set fzf_query --query "$query"
+  end
+
+  set -l out (
+    git trend -l ruby -s week | tail -n +3 | \
+    fzf $fzf_query \
+      --no-sort \
+      --ansi \
+      --prompt='Select Repository >' \
+      --preview="gh repo view {2}"
+  )
+  [ $status != 0 ] && commandline -f repaint && return
+
+  if test -n $out
+    set -l repo (echo $out | awk '{ print $2 }')
+    commandline "gh repo view -w $repo"
+    commandline -f execute
+  end
+end
+
 function fzf-find-file
   set -l query (commandline --current-buffer)
 
