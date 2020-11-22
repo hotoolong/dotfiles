@@ -212,9 +212,7 @@ function fzf_git_pull_request
         --expect=ctrl-e,ctrl-m \
         --header='enter: open in browser, C-e: checkout, C-a: all, C-o: open, C-c: closed, C-g: merged' \
   )
-  if test -z $out
-    return
-  end
+  [ $status != 0 ] && commandline -f repaint && return
   set -l pr_id (echo $out[2] | awk '{ print $1 }')
   if test $out[1] = 'ctrl-e'
     commandline "gh pr checkout $pr_id"
