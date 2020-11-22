@@ -1,1 +1,0 @@
-/Users/matsuo_kenji/.cache/dein/repos/github.com/junegunn/fzf/shell/key-bindings.fish
