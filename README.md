@@ -5,6 +5,9 @@
 ```
 $ ./setup.sh
 ```
+```
+$ brew bundle
+```
 
 ## update Brewfile
 
