@@ -6,6 +6,7 @@ set -x PATH $HOME/bin $GOPATH/bin $PATH
 set -x PGDATA /usr/local/var/postgres
 set -x NEXTWORD_DATA_PATH $HOME/nextword-data
 set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=(brew --prefix openssl@1.1)
+set -x HOMEBREW_NO_AUTO_UPDATE 1
 
 alias ls='ls -la'
 alias less='less -qR'
