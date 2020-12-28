@@ -1,0 +1,22 @@
+[color]
+	ui = true
+[user]
+	name = hotoolong
+	email = hotoolong.hogehoge+github@gmail.com
+[core]
+	autocrlf = input
+	editor = nvim
+	trustctime = false
+[diff]
+	compactionHeuristic = true
+	noprefix = true
+[help]
+	autocorrect = 1
+[ghq]
+  root = ~/repositories
+  root = ~/.ghq
+[ghq "CODECOMMET-URL"]
+  vcs = git
+[init]
+	templatedir = ~/.git_template
+	defaultBranch = main
