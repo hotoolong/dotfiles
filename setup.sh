@@ -5,7 +5,7 @@ create_symbolic_link () {
 }
 
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
-FILES=`ls -1a | grep -E '^\.' | grep -v -E '^(.|..|.git|.config)$'`
+FILES=`ls -1a | grep -E '^\.' | grep -v -E '^(.|..|.git|.gitignore|.config)$'`
 CONFIGS=`ls -1a ${SCRIPT_DIR}/configs/. | grep -v -E '^(.|..|.git)$'`
 
 for file in ${FILES[@]}
