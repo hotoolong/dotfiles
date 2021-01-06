@@ -373,8 +373,8 @@ function reload
   exec $SHELL
 end
 
-set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
-set -g fish_user_paths "/usr/local/opt/openssl/bin" $fish_user_paths
-source /usr/local/opt/asdf/asdf.fish
+set -g fish_user_paths (brew --prefix)"/sbin" $fish_user_paths
+set -g fish_user_paths (brew --prefix openssl@1.1)"/bin" $fish_user_paths
+source (brew --prefix asdf)/asdf.fish
 
 status --is-interactive && source (rbenv init -|psub)
