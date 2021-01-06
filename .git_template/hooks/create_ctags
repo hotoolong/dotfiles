@@ -1,0 +1,23 @@
+#!/bin/sh
+set -x
+
+which ctags || {
+  echo 'Not found ctags!!'
+  exit 1
+}
+
+PATH="$HOME/local/bin:/usr/local/bin:$PATH"
+cd "$(dirname "${BASH_SOURCE:-$0}")"; cd ../../
+
+for exec_pid in `ls -1 .git/tags.* | awk -F. '{ print $NF }'`; do
+  for pid in `ps aux | grep tags | grep $exec_pid | awk '{print $2}' `; do
+    kill $pid
+  done
+done
+
+trap "rm -f .git/tags.$$" EXIT
+
+(
+  ctags --tag-relative=yes --sort=yes -R -f .git/tags.$$
+  mv .git/tags.$$ .git/tags
+) &

@@ -1,0 +1,8 @@
+#!/bin/sh
+set -x
+
+(
+  cd "$(dirname "${BASH_SOURCE:-$0}")"
+  ./create_ctags >/dev/null 2>&1 &
+)
+
