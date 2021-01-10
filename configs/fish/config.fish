@@ -1,19 +1,28 @@
-set -x EDITOR /usr/local/bin/nvim
 set -x NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
 set -x TERM screen-256color-bce;
 set -x GOPATH $HOME/gocode
 set -x PATH $HOME/bin $GOPATH/bin $PATH
 set -x PGDATA /usr/local/var/postgres
 set -x NEXTWORD_DATA_PATH $HOME/nextword-data
-set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=(brew --prefix openssl@1.1)
 set -x HOMEBREW_NO_AUTO_UPDATE 1
-
-alias ls='ls -la'
-alias less='less -qR'
+set -g fish_user_paths (brew --prefix)"/sbin" $fish_user_paths
+set -g fish_user_paths (brew --prefix openssl@1.1)"/bin" $fish_user_paths
+set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=(brew --prefix openssl@1.1)
+source (brew --prefix asdf)/asdf.fish
 
 # vim
-alias v='/usr/local/bin/nvim'
-alias vi='/usr/local/bin/nvim'
+if command -s nvim
+  set -x EDITOR (which nvim)
+  alias v (which nvim)
+  alias vi (which nvim)
+else
+  set -x EDITOR vim
+  alias vi vim
+end
+
+# ls
+alias ls='ls -la'
+alias less='less -qR'
 
 # tree
 alias tree "tree -NC" # N: 文字化け対策, C:色をつける
@@ -380,8 +389,5 @@ function reload
   exec $SHELL
 end
 
-set -g fish_user_paths (brew --prefix)"/sbin" $fish_user_paths
-set -g fish_user_paths (brew --prefix openssl@1.1)"/bin" $fish_user_paths
-source (brew --prefix asdf)/asdf.fish
 
 status --is-interactive && source (rbenv init -|psub)
