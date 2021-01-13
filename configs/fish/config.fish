@@ -71,7 +71,6 @@ alias gb 'git branch'
 alias gc 'git commit -v'
 alias gd 'git diff'
 alias gco 'git checkout'
-alias gcom 'git checkout master'
 alias gdc 'git diff --cached'
 alias ggpull 'git pull origin (git_current_branch)'
 alias ggpush 'git push origin (git_current_branch)'
@@ -79,6 +78,10 @@ alias ggpushf 'git push --force-with-lease origin (git_current_branch)'
 
 function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
+end
+
+function gcm --description 'git switch <main branch>'
+  git switch (git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
 end
 
 function gst --description 'git status -s'
