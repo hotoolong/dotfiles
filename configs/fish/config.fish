@@ -67,7 +67,7 @@ alias rake='bundle exec rake'
 # git
 alias g='git'
 alias ga 'git add'
-alias gb 'git branch'
+# alias gb 'git branch'
 alias gc 'git commit -v'
 alias gd 'git diff'
 alias gco 'git checkout'
@@ -140,6 +140,26 @@ function gst --description 'git status -s'
     else
       commandline -f repaint
     end
+  end
+end
+
+function gb --description 'git branch'
+  set -l query (commandline --current-buffer)
+  if test -n $query
+    set fzf_query --query "$query"
+  end
+
+  set -l out ( \
+    git branch | \
+      fzf $fzf_query \
+        --prompt='Select Branch >' \
+        --preview="echo {} " \
+  )
+  [ $status != 0 ] && commandline -f repaint && return
+
+  if test -n $out
+    commandline "git switch $out"
+    commandline -f execute
   end
 end
 
