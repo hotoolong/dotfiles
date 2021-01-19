@@ -5,10 +5,11 @@ set -x PATH $HOME/bin $GOPATH/bin $PATH
 set -x PGDATA /usr/local/var/postgres
 set -x NEXTWORD_DATA_PATH $HOME/nextword-data
 set -x HOMEBREW_NO_AUTO_UPDATE 1
-set -g fish_user_paths (brew --prefix)"/sbin" $fish_user_paths
-set -g fish_user_paths (brew --prefix openssl@1.1)"/bin" $fish_user_paths
-set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=(brew --prefix openssl@1.1)
-source (brew --prefix asdf)/asdf.fish
+set -x BREW_PREFIX (brew --prefix)
+set -x OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
+set -g fish_user_paths $BREW_PREFIX"/sbin" $OPENSSL_DIR"/bin" $fish_user_paths
+set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
+source $BREW_PREFIX/opt/asdf/asdf.fish
 
 # vim
 if command -s nvim
