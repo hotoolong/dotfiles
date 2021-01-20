@@ -92,10 +92,8 @@ function gst --description 'git status -s'
   set -l base_command
   if command -s unbuffer > /dev/null ^&1
     set base_command unbuffer git status -s
-    echo $base_command
   else
     set base_command git status -s
-    echo $base_command
   end
   set -l bind_reload "reload($base_command)"
   set -l bind_commands "ctrl-a:execute-silent(git add {2})+$bind_reload"
@@ -168,7 +166,7 @@ function gg --description 'Customizing file grep'
   set -l out ( \
     rg --vimgrep --color always $argv | \
         fzf --ansi --multi \
-        --preview="set -l line (echo {1} | cut -d':' -f 2);set -l file (echo {1} | cut -d':' -f 1);bat --highlight-line \$line --line-range (if [ \$line -gt 10 ]; math \$line - 10;else; echo 0;end): --color=always \$file" \
+        --preview="set -l line (echo {1} | cut -d':' -f 2);set -l file (echo {1} | cut -d':' -f 1);bat --highlight-line \$line --line-range (if [ \$line -gt 10 ]; math \$line - 10;else; echo {};end): --color=always \$file" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
