@@ -3,7 +3,7 @@ set -x TERM screen-256color-bce;
 set -x GOPATH $HOME/gocode
 set -x PATH $HOME/bin $GOPATH/bin $PATH
 set -x PGDATA /usr/local/var/postgres
-set -x NEXTWORD_DATA_PATH $HOME/nextword-data
+set -x NEXTWORD_DATA_PATH $HOME/.nextword-data
 set -x HOMEBREW_NO_AUTO_UPDATE 1
 set -x BREW_PREFIX (brew --prefix)
 set -x OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
@@ -81,7 +81,7 @@ function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
 end
 
-function gcm --description 'git switch <main branch>'
+function gcom --description 'git switch <main branch>'
   git switch (git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
 end
 
