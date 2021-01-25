@@ -507,7 +507,6 @@ nnoremap <silent> [denite]p  :<C-u>Dprev<CR>
 nnoremap <silent> [denite]c  :<C-u>Denite command command_history<CR>
 nnoremap <silent> [denite]j  :<C-u>Denite jump<CR>
 " }}}
->>>>>>> parent of d540ec6... migrate the plugin manager to dein.vim
 
 set encoding=UTF-8
 " default setting
