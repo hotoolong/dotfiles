@@ -249,13 +249,16 @@ function fzf_git_pull_request
     fzf $fzf_query \
         --prompt='Select Pull Request>' \
         --preview="gh pr view {1}" \
-        --expect=ctrl-e,ctrl-m \
-        --header='enter: open in browser, C-e: checkout, C-a: all, C-o: open, C-c: closed, C-g: merged' \
+        --expect=ctrl-e,ctrl-m,ctrl-p \
+        --header='enter: open in browser, C-e: checkout, C-p: approve , C-a: all, C-o: open, C-c: closed, C-g: merged' \
   )
   [ $status != 0 ] && commandline -f repaint && return
   set -l pr_id (echo $out[2] | awk '{ print $1 }')
   if test $out[1] = 'ctrl-e'
     commandline "gh pr checkout $pr_id"
+    commandline -f execute
+  else if test $out[1] = 'ctrl-p'
+    commandline "gh pr review $pr_id --approve"
     commandline -f execute
   else if test $out[1] = 'ctrl-m'
     commandline "gh pr view --web $pr_id"
