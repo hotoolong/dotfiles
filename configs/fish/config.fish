@@ -82,8 +82,12 @@ function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
 end
 
+function git_main_branch --description 'git main branch'
+  git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
+end
+
 function gcom --description 'git switch <main branch>'
-  git switch (git remote show origin | grep 'HEAD branch' | awk '{print $NF}')
+  git switch (git_main_branch)
 end
 
 function gst --description 'git status -s'
@@ -151,7 +155,7 @@ function gb --description 'git branch'
     git branch | \
       fzf $fzf_query \
         --prompt='Select Branch >' \
-        --preview="echo {} " \
+        --preview="set -l main (git_main_branch);[ {1} = '*' ] && git diff $main {2} || git diff $main {1}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
