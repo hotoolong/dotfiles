@@ -104,6 +104,7 @@ function gst --description 'git status -s'
   set -l bind_commands "ctrl-a:execute-silent(git add {2})+$bind_reload"
   set bind_commands $bind_commands "ctrl-u:execute-silent(git restore --staged {2})+$bind_reload"
   set bind_commands $bind_commands "ctrl-r:execute-silent([ -z (git ls-files --others --exclude-standard {2}) ] && git rm {2} || rm {2})+$bind_reload"
+  set bind_commands $bind_commands "ctrl-o:execute-silent(git restore {2})+$bind_reload"
   set -l bind_str (string join ',' $bind_commands)
 
   set -l out (command $base_command | \
@@ -111,7 +112,7 @@ function gst --description 'git status -s'
     --preview="set -l git_status (echo {} | cut -c 1-2);[ \$git_status = '??' ] && bat --color=always {2} || [ \$git_status = 'M ' -o \$git_status = 'A ' ] && git diff --color --staged {2} || git diff --color {2}" \
         --expect=ctrl-m,ctrl-v,ctrl-c,ctrl-p,ctrl-d \
         --bind $bind_str \
-        --header='C-a: add, C-p: partial, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv, C-d: diff' \
+        --header='C-a: add, C-p: partial, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv, C-d: diff, C-o: restore' \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
