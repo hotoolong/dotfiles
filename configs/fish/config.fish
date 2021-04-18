@@ -146,6 +146,10 @@ function gst --description 'git status -s'
   end
 end
 
+function commit --description 'git commit -m'
+  command git commit -m "$argv"
+end
+
 function gb --description 'git branch'
   set -l query (commandline --current-buffer)
   if test -n $query
