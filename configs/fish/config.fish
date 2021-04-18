@@ -68,7 +68,6 @@ alias rake='bundle exec rake'
 # git
 alias g='git'
 alias ga 'git add'
-# alias gb 'git branch'
 alias gc 'git commit -v'
 alias gd 'git diff'
 alias gco 'git checkout'
