@@ -1,4 +1,4 @@
-Pry.config.editor = "vim"
+Pry.config.editor = "nvim"
 
 Pry.config.color = true
 
