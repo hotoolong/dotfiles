@@ -113,6 +113,7 @@ Plug 'lambdalisue/vim-quickrun-neovim-job'
 Plug 'sheerun/vim-polyglot'
 Plug 'hotoolong/translate.nvim'
 Plug 'AndrewRadev/switch.vim'
+Plug 'lambdalisue/pastefix.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
