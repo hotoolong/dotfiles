@@ -20,9 +20,6 @@ Plug 'rhysd/conflict-marker.vim'
 Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neomru.vim'
 
-" ほかん
-Plug 'cohama/lexima.vim'
-
 " snippet
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
