@@ -26,10 +26,10 @@ Plug 'honza/vim-snippets'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 
 " ruby rails
-Plug 'vim-ruby/vim-ruby', { 'on': [] }
-Plug 'tpope/vim-rails', { 'on': [] }
-Plug 'slim-template/vim-slim', { 'on': [] }
-Plug 'tomtom/tcomment_vim', { 'on': [] }
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'slim-template/vim-slim'
+Plug 'tomtom/tcomment_vim'
 
 " markdown
 Plug 'mattn/vim-maketable'
