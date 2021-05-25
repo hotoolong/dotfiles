@@ -114,6 +114,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'hotoolong/translate.nvim'
 Plug 'AndrewRadev/switch.vim'
 Plug 'lambdalisue/pastefix.vim'
+Plug 'simeji/winresizer'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -139,6 +140,11 @@ let mapleader = "\<Space>"
 " hotoolong/translate.nvim {{{
 let g:translate_copy_result = 1
 " }}}
+
+" simeji/winresizer {{{
+let g:winresizer_start_key = '<C-a>'
+" }}}
+
 
 " tpope/vim-fugitive {{{
 autocmd BufWritePost *
