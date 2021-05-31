@@ -16,10 +16,6 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'rhysd/git-messenger.vim'
 Plug 'rhysd/conflict-marker.vim'
 
-" file finder
-Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neomru.vim'
-
 " snippet
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -89,6 +85,7 @@ Plug 'rbgrouleff/bclose.vim'
 " fzf preview
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'yuki-ycino/fzf-preview.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " colorscheme
 Plug 'jacoborus/tender.vim'
@@ -145,7 +142,6 @@ let g:translate_copy_result = 1
 let g:winresizer_start_key = '<C-a>'
 " }}}
 
-
 " tpope/vim-fugitive {{{
 autocmd BufWritePost *
       \ if exists('b:git_dir') && executable(b:git_dir.'/hooks/create_tags') |
@@ -173,6 +169,112 @@ autocmd FileType eruby let b:switch_custom_definitions =
     \     '\<\(\k\+\):':     ':\1 =>',
     \   },
     \ ]
+" }}}
+
+" yuki-ycino/fzf-preview.vim {{{
+let g:fzf_preview_if_binary_command   = "test (file -b --mime-encoding {3}) = 'binary'"
+let g:fzf_binary_preview_command      = 'echo "{3} is a binary file"'
+let g:fzf_preview_git_files_command   = 'git ls-files --exclude-standard | while read line; do if [[ ! -L $line ]] && [[ -f $line ]]; then echo $line; fi; done'
+let g:fzf_preview_grep_cmd            = 'rg --line-number --no-heading --color=never --sort=path'
+let g:fzf_preview_mru_limit           = 500
+let g:fzf_preview_use_dev_icons       = 1
+let g:fzf_preview_default_fzf_options = {
+\ '--reverse': v:true,
+\ '--preview-window': 'wrap',
+\ '--exact': v:true,
+\ '--no-sort': v:true,
+\ }
+
+if !exists('g:fzf_preview_command')
+  if executable('bat')
+    let g:fzf_preview_command = 'bat --color=always --plain {-1}'
+  else
+    let g:fzf_preview_command = 'head -100 {-1}'
+  endif
+endif
+let g:fzf_preview_git_status_preview_command = "test -z (git diff --cached -- {-1}) && git diff --cached --color=always -- {-1} || " .
+\ "test -z (git diff -- {-1}) && git diff --color=always -- {-1} || " .
+\ g:fzf_preview_command
+let $FZF_PREVIEW_PREVIEW_BAT_THEME  = 'gruvbox'
+
+
+noremap <fzf-p> <Nop>
+map     ,    <fzf-p>
+
+nnoremap <silent> <fzf-p>r     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
+nnoremap <silent> <fzf-p>w     :<C-u>CocCommand fzf-preview.ProjectMrwFiles<CR>
+nnoremap <silent> <fzf-p>a     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+" nnoremap <silent> <fzf-p>g     :<C-u>CocCommand fzf-preview.GitActions<CR>
+nnoremap <silent> <fzf-p>s     :<C-u>CocCommand fzf-preview.GitStatus<CR>
+nnoremap <silent> <fzf-p>b     :<C-u>CocCommand fzf-preview.Buffers<CR>
+nnoremap <silent> <fzf-p>B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+nnoremap <silent> <fzf-p><C-o> :<C-u>CocCommand fzf-preview.Jumps<CR>
+nnoremap <silent> <fzf-p>/     :<C-u>CocCommand fzf-preview.Lines --resume --add-fzf-arg=--no-sort<CR>
+" nnoremap <silent> <fzf-p>*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="<C-r>=expand('<cword>')<CR>"<CR>
+" xnoremap <silent> <fzf-p>*     "sy:CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="<C-r>=substitute(@s, '\(^\\v\)\\|\\\(<\\|>\)', '', 'g')<CR>"<CR>
+" nnoremap <silent> <fzf-p>n     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="<C-r>=substitute(@/, '\(^\\v\)\\|\\\(<\\|>\)', '', 'g')<CR>"<CR>
+" nnoremap <silent> <fzf-p>?     :<C-u>CocCommand fzf-preview.BufferLines --resume --add-fzf-arg=--no-sort<CR>
+" nnoremap          <fzf-p>f     :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+" xnoremap          <fzf-p>f     "sy:CocCommand fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/', 'g')<CR>"
+nnoremap <silent> <fzf-p>q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent> <fzf-p>l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+nnoremap <silent> <fzf-p>:     :<C-u>CocCommand fzf-preview.CommandPalette<CR>
+nnoremap <silent> <fzf-p>p     :<C-u>CocCommand fzf-preview.Yankround<CR>
+nnoremap <silent> <fzf-p>m     :<C-u>CocCommand fzf-preview.Bookmarks --resume<CR>
+" nnoremap <silent> <fzf-p><C-]> :<C-u>CocCommand fzf-preview.VistaCtags --add-fzf-arg=--query="<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap <silent> <fzf-p>o     :<C-u>CocCommand fzf-preview.VistaBufferCtags<CR>
+" nnoremap <silent> <fzf-p>g     :<C-u>FzfPreviewProjectGrep --add-fzf-arg=--nth=3<Space>
+" nnoremap <silent> <fzf-p>g     :<C-u>FzfPreviewProjectGrep . --resume<Space>
+nnoremap <silent> <fzf-p>g     :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+nnoremap <silent> <fzf-p>f     :<C-u>CocCommand fzf-preview.ProjectFiles<CR>
+
+" nnoremap <silent> <dev>q  :<C-u>CocCommand fzf-preview.CocCurrentDiagnostics<CR>
+" nnoremap <silent> <dev>Q  :<C-u>CocCommand fzf-preview.CocDiagnostics<CR>
+" nnoremap <silent> <dev>rf :<C-u>CocCommand fzf-preview.CocReferences<CR>
+" nnoremap <silent> <dev>t  :<C-u>CocCommand fzf-preview.CocTypeDefinitions<CR>
+
+" AutoCmd User fzf_preview#initialized call s:fzf_preview_settings()
+
+" function! s:buffers_delete_from_lines(lines) abort
+"   for line in a:lines
+"     let matches = matchlist(line, '\[\(\d\+\)\]')
+"     if len(matches) >= 1
+"       execute 'Bdelete! ' . matches[1]
+"     endif
+"   endfor
+" endfunction
+
+" function! s:fzf_preview_settings() abort
+"   let g:fzf_preview_grep_preview_cmd = 'COLORTERM=truecolor ' . g:fzf_preview_grep_preview_cmd
+"   let g:fzf_preview_command = 'COLORTERM=truecolor ' . g:fzf_preview_command
+"
+"   let g:fzf_preview_git_status_preview_command = " test (git diff --cached -- {-1}) != \"\" && git diff --cached --color=always -- {-1} || " .
+"   \ "test (git diff -- {-1}) != \"\" && git diff --color=always -- {-1} || " .
+"   \ g:fzf_preview_command
+"
+"   echo 'g:fzf_preview_git_status_preview_command'
+"   echo g:fzf_preview_git_status_preview_command
+"
+"   let g:fzf_preview_custom_processes['open-file'] = fzf_preview#remote#process#get_default_processes('open-file', 'coc')
+"   let g:fzf_preview_custom_processes['open-file']['ctrl-s'] = g:fzf_preview_custom_processes['open-file']['ctrl-x']
+"   call remove(g:fzf_preview_custom_processes['open-file'], 'ctrl-x')
+"
+"   let g:fzf_preview_custom_processes['open-buffer'] = fzf_preview#remote#process#get_default_processes('open-buffer', 'coc')
+"   let g:fzf_preview_custom_processes['open-buffer']['ctrl-s'] = g:fzf_preview_custom_processes['open-buffer']['ctrl-x']
+"   call remove(g:fzf_preview_custom_processes['open-buffer'], 'ctrl-q')
+"   let g:fzf_preview_custom_processes['open-buffer']['ctrl-x'] = get(function('s:buffers_delete_from_lines'), 'name')
+"
+"   let g:fzf_preview_custom_processes['open-bufnr'] = fzf_preview#remote#process#get_default_processes('open-bufnr', 'coc')
+"   let g:fzf_preview_custom_processes['open-bufnr']['ctrl-s'] = g:fzf_preview_custom_processes['open-bufnr']['ctrl-x']
+"   call remove(g:fzf_preview_custom_processes['open-bufnr'], 'ctrl-q')
+"   let g:fzf_preview_custom_processes['open-bufnr']['ctrl-x'] = get(function('s:buffers_delete_from_lines'), 'name')
+"
+"   let g:fzf_preview_custom_processes['git-status'] = fzf_preview#remote#process#get_default_processes('git-status', 'coc')
+"   let g:fzf_preview_custom_processes['git-status']['ctrl-s'] = g:fzf_preview_custom_processes['git-status']['ctrl-x']
+"   call remove(g:fzf_preview_custom_processes['git-status'], 'ctrl-x')
+"
+" endfunction
+
 " }}}
 
 " quickrun {{{
@@ -403,113 +505,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " デフォルトでツリーを表示させる
 let g:nerdtree_tabs_open_on_console_startup=1
 let g:nerdtree_tabs_autofind=1
-" }}}
-
-" denite.vim {{{
-
-augroup denite_filter
-  autocmd FileType denite call s:denite_my_settings()
-  function! s:denite_my_settings() abort
-    nnoremap <silent><buffer><expr> <CR>    denite#do_map('do_action')
-    nnoremap <silent><buffer><expr> d       denite#do_map('do_action', 'delete')
-    nnoremap <silent><buffer><expr> p       denite#do_map('do_action', 'preview')
-    nnoremap <silent><buffer><expr> q       denite#do_map('quit')
-    nnoremap <silent><buffer><expr> i       denite#do_map('open_filter_buffer')
-    nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
-  endfunction
-
-  autocmd FileType denite-filter call s:denite_filter_my_settings()
-  function! s:denite_filter_my_settings() abort
-    inoremap <silent><buffer> <C-j> <Esc>
-          \:call denite#move_to_parent()<CR>
-          \:call cursor(line('.')+1,0)<CR>
-          \:call denite#move_to_filter()<CR>A
-    inoremap <silent><buffer> <C-k> <Esc>
-          \:call denite#move_to_parent()<CR>
-          \:call cursor(line('.')-1,0)<CR>
-          \:call denite#move_to_filter()<CR>A
-  endfunction
-
-  " denite/insert モードのときは，C- で移動できるようにする
-  " call denite#custom#map('insert', "<C-j>", '<denite:move_to_next_line>', 'noremap')
-  " call denite#custom#map('insert', "<C-k>", '<denite:move_to_previous_line>', 'noremap')
-  call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
-  call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
-  " tabopen や vsplit のキーバインドを割り当て
-  call denite#custom#map('insert', "<C-t>", '<denite:do_action:tabopen>')
-  call denite#custom#map('insert', "<C-v>", '<denite:do_action:vsplit>')
-  call denite#custom#map('normal', "v", '<denite:do_action:vsplit>')
-
-augroup END
-
-" use flating
-let s:denite_win_width_percent = 0.8
-let s:denite_win_height_percent = 0.7
-
-let s:denite_default_options = {
-    \ 'split': 'floating',
-    \ 'winwidth': float2nr(&columns * s:denite_win_width_percent),
-    \ 'wincol': float2nr((&columns - (&columns * s:denite_win_width_percent)) / 2),
-    \ 'winheight': float2nr(&lines * s:denite_win_height_percent),
-    \ 'winrow': float2nr((&lines - (&lines * s:denite_win_height_percent)) / 2),
-    \ 'highlight_filter_background': 'DeniteFilter',
-    \ 'prompt': '$ ',
-    \ 'start_filter': v:true,
-    \ }
-let s:denite_option_array = []
-for [key, value] in items(s:denite_default_options)
-  call add(s:denite_option_array, '-'.key.'='.value)
-endfor
-call denite#custom#option('default', s:denite_default_options)
-
-call denite#custom#var('file/rec', 'command',
-    \ ['rg', '--files', '--glob', '!.git', '--color', 'never'])
-
-call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-    \ [ '.git/', '.ropeproject/', '__pycache__/',
-    \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
-
-" Ripgrep command on grep source
-call denite#custom#var('grep', {
-  \ 'command': ['rg'],
-  \ 'default_opts': ['-i', '--vimgrep', '--no-heading'],
-  \ 'recursive_opts': [],
-  \ 'pattern_opt': ['--regexp'],
-  \ 'separator': ['--'],
-  \ 'final_opts': [],
-  \ })
-
-" grep
-command! -nargs=? Dgrep call s:Dgrep(<f-args>)
-function s:Dgrep(...)
-  if a:0 > 0
-    execute(':Denite -buffer-name=grep-buffer-denite grep -path='.a:1)
-  else
-    execute(':Denite -buffer-name=grep-buffer-denite '.join(s:denite_option_array, ' ').' grep')
-  endif
-endfunction
-" show Denite grep results
-command! Dresume execute(':Denite -resume -buffer-name=grep-buffer-denite '.join(s:denite_option_array, ' ').'')
-" next Denite grep result
-command! Dnext execute(':Denite -resume -buffer-name=grep-buffer-denite -cursor-pos=+1 -immediately '.join(s:denite_option_array, ' ').'')
-" previous Denite grep result
-command! Dprev execute(':Denite -resume -buffer-name=grep-buffer-denite -cursor-pos=-1 -immediately '.join(s:denite_option_array, ' ').'')
-
-" The prefix key.
-nnoremap  [denite] <Nop>
-nmap , [denite]
-
-" nnoremap [denite]  :<C-u>Denite -no-split<Space>
-nnoremap <silent> [denite]b  :<C-u>Denite -split=floating buffer<CR>
-nnoremap <silent> [denite]m  :<C-u>Denite<Space>file_mru<CR>
-nnoremap <silent> [denite]r  :<C-u>Denite<Space>file/rec<CR>
-nnoremap <silent> [denite]f  :<C-u>Denite<Space>file<CR>
-nnoremap <silent> [denite]g  :<C-u>Dgrep<CR>
-nnoremap <silent> [denite]rg :<C-u>DResume<CR>
-nnoremap <silent> [denite]n  :<C-u>Dnext<CR>
-nnoremap <silent> [denite]p  :<C-u>Dprev<CR>
-nnoremap <silent> [denite]c  :<C-u>Denite command command_history<CR>
-nnoremap <silent> [denite]j  :<C-u>Denite jump<CR>
 " }}}
 
 set encoding=UTF-8
