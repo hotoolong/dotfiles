@@ -182,7 +182,7 @@ function gg --description 'Customizing file grep'
     for line in $out
       set file_names (echo $line | awk -F':' '{print $1}') $file_names
     end
-    commandline "$EDITOR +/$argv $file_names"
+    commandline "$EDITOR +/'$argv' $file_names"
     commandline -f execute
   end
 end
