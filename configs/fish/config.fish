@@ -38,17 +38,21 @@ function migrate
     return
   end
 
-  set -l out (ls -1 db/migrate | grep -v -e '^\.' | \
-    fzf --exit-0 \
-      --preview="bat --color=always db/migrate/{}" \
-      --expect=ctrl-u,ctrl-d,ctrl-r,ctrl-m \
-      --header='C-u: up, C-d: down, C-r: redo, C-m(Enter): edit' \
-  )
+  set -l out ( \
+     ./bin/rake db:migrate:status ^/dev/null | \
+     tail -n +6 | \
+     sed '/^$/d' | \
+     fzf --exit-0 \
+       --tac \
+       --preview="bat --color=always ./db/migrate/(ls -1 ./db/migrate | grep {2})" \
+       --expect=ctrl-u,ctrl-d,ctrl-r,ctrl-m \
+       --header='C-u: up, C-d: down, C-r: redo, C-m(Enter): edit' \
+    )
   [ $status != 0 ] && commandline -f repaint && return
 
   if string length -q -- $out
     set -l key $out[1]
-    set -l time (echo $out[2] | awk -F '_' '{ print $1 }')
+    set -l time (echo $out[2] | awk -F ' ' '{ print $2 }')
     if test $key = 'ctrl-u'
       commandline "./bin/rails db:migrate:up VERSION=$time"
     else if test $key = 'ctrl-d'
@@ -56,7 +60,8 @@ function migrate
     else if test $key = 'ctrl-r'
       commandline "./bin/rails db:migrate:redo VERSION=$time"
     else if test $key = 'ctrl-m'
-      commandline "$EDITOR db/migrate/$out[2]"
+      set -l target_file (ls -1 ./db/migrate | grep $time)
+      commandline "$EDITOR db/migrate/$target_file"
     end
     commandline -f execute
   end
