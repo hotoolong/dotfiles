@@ -380,6 +380,41 @@ function fzf-git-recent-all-branches
   commandline -f repaint
 end
 
+function fzf-git-stash
+  if ! is_git_dir
+    return
+  end
+
+  set -l out (
+    git stash list | \
+    fzf \
+      --ansi \
+      --no-sort \
+      --expect=ctrl-d,ctrl-m,ctrl-v \
+      --preview="echo {} | cut -d':' -f1 | xargs git stash show -p" \
+      --header='C-a: apply C-d: drop, C-m(Enter): pop' \
+      # --preview="git stash show show -p stash@\{0\}"
+  )
+  [ $status != 0 ] && commandline -f repaint && return
+
+  if test -n $out[1]
+    set -l stash_num (echo $out[2] | cut -d ':' -f 1)
+    echo $stash_num
+    switch $out[1]
+    case 'ctrl-a'
+      commandline "git stash apply $stash_num"
+      commandline -f execute
+    case 'ctrl-d'
+      commandline "git stash drop $stash_num"
+      commandline -f execute
+    case 'ctrl-m'
+      commandline "git stash pop $stash_num"
+      commandline -f execute
+    end
+  end
+end
+alias stash=fzf-git-stash
+
 # bind
 
 bind \cr 'fzf_select_history (commandline --current-buffer)'
