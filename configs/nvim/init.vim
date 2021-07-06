@@ -23,6 +23,7 @@ Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 
 " ruby rails
 Plug 'vim-ruby/vim-ruby'
+Plug 'noprompt/vim-yardoc'
 Plug 'tpope/vim-rails'
 Plug 'slim-template/vim-slim'
 Plug 'tomtom/tcomment_vim'
