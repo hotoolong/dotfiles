@@ -391,7 +391,7 @@ function fzf-git-stash
       --ansi \
       --no-sort \
       --expect=ctrl-d,ctrl-m,ctrl-v \
-      --preview="echo {} | cut -d':' -f1 | xargs git stash show -p" \
+      --preview="echo {} | cut -d':' -f1 | xargs git stash show -p --color=always" \
       --header='C-a: apply C-d: drop, C-m(Enter): pop'
   )
   [ $status != 0 ] && commandline -f repaint && return
