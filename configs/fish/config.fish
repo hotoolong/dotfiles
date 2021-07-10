@@ -45,15 +45,17 @@ function migrate
      fzf --exit-0 \
        --tac \
        --preview="bat --color=always ./db/migrate/(ls -1 ./db/migrate | grep {2})" \
-       --expect=ctrl-u,ctrl-d,ctrl-r,ctrl-m \
-       --header='C-u: up, C-d: down, C-r: redo, C-m(Enter): edit' \
+       --expect=ctrl-a,ctrl-u,ctrl-d,ctrl-r,ctrl-m \
+       --header='C-a: all, C-u: up, C-d: down, C-r: redo, C-m(Enter): edit' \
     )
   [ $status != 0 ] && commandline -f repaint && return
 
   if string length -q -- $out
     set -l key $out[1]
     set -l time (echo $out[2] | awk -F ' ' '{ print $2 }')
-    if test $key = 'ctrl-u'
+    if test $key = 'ctrl-a'
+      commandline "./bin/rails db:migrate"
+    else if test $key = 'ctrl-u'
       commandline "./bin/rails db:migrate:up VERSION=$time"
     else if test $key = 'ctrl-d'
       commandline "./bin/rails db:migrate:down VERSION=$time"
