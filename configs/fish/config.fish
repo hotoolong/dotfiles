@@ -185,11 +185,9 @@ function gg --description 'Customizing file grep'
   [ $status != 0 ] && commandline -f repaint && return
 
   if test -n (count $out)
-    set -l file_names
-    for line in $out
-      set file_names (echo $line | awk -F':' '{print $1}') $file_names
-    end
-    commandline "$EDITOR +/'$argv' $file_names"
+    set -l line (echo $out | cut -d':' -f 2);
+    set -l file (echo $out | cut -d':' -f 1);
+    commandline "$EDITOR +$line $file -c 'let @/ = \"$argv\"'"
     commandline -f execute
   end
 end
