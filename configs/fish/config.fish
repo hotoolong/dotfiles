@@ -72,6 +72,10 @@ end
 # rake
 alias rake='bundle exec rake'
 
+# docker
+alias d='docker'
+alias dc='docker-compose'
+
 # git
 alias g='git'
 alias ga 'git add'
