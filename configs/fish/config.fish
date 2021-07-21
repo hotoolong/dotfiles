@@ -391,7 +391,7 @@ function fzf-git-stash
 
   set -l out (
     git stash list | \
-    fzf \
+    fzf --exit-0 \
       --ansi \
       --no-sort \
       --expect=ctrl-d,ctrl-m,ctrl-v \
