@@ -140,7 +140,7 @@ let g:translate_copy_result = 1
 " }}}
 
 " simeji/winresizer {{{
-let g:winresizer_start_key = '<C-a>'
+let g:winresizer_start_key = '<C-z>'
 " }}}
 
 " tpope/vim-fugitive {{{
