@@ -12,7 +12,7 @@ set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
 source $BREW_PREFIX/opt/asdf/asdf.fish
 
 # vim
-if command -s nvim > /dev/null ^&1
+if command -q nvim
   set -x EDITOR (which nvim)
   alias v (which nvim)
   alias vi (which nvim)
@@ -105,7 +105,7 @@ function gst --description 'git status -s'
     return
   end
   set -l base_command
-  if command -s unbuffer > /dev/null ^&1
+  if command -q unbuffer
     set base_command unbuffer git status -s
   else
     set base_command git status -s
