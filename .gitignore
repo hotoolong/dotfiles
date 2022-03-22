@@ -1,3 +1,4 @@
 /configs/fish/fish_variables
 /configs/fish/functions
 /configs/fish/completions
+/configs/karabiner/automatic_backups/*.json
