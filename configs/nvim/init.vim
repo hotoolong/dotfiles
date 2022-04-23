@@ -85,7 +85,7 @@ Plug 'rbgrouleff/bclose.vim'
 
 " fzf preview
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'yuki-ycino/fzf-preview.vim'
+Plug 'yuki-yano/fzf-preview.vim', { 'branch': 'release/remote', 'do': ':UpdateRemotePlugins' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " colorscheme
