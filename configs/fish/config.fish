@@ -11,14 +11,21 @@ set -g fish_user_paths $BREW_PREFIX"/sbin" $OPENSSL_DIR"/bin" $fish_user_paths
 set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
 source $BREW_PREFIX/opt/asdf/asdf.fish
 
-# vim
+# set EDITOR
 if command -q nvim
   set -x EDITOR (which nvim)
-  alias v (which nvim)
-  alias vi (which nvim)
 else
   set -x EDITOR vim
-  alias vi vim
+end
+
+function vi
+  if command -q nvim
+    if command -q node
+      set -l global_nodejs_version (grep nodejs ~/.tool-versions | cut -d' ' -f 2)
+      asdf shell nodejs $global_nodejs_version
+    end
+  end
+  $EDITOR $argv
 end
 
 # ls
