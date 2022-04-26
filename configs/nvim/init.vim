@@ -113,6 +113,7 @@ Plug 'hotoolong/translate.nvim'
 Plug 'AndrewRadev/switch.vim'
 Plug 'lambdalisue/pastefix.vim'
 Plug 'simeji/winresizer'
+Plug 'github/copilot.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
