@@ -70,7 +70,7 @@ function migrate
       commandline "./bin/rails db:migrate:redo VERSION=$time"
     else if test $key = 'ctrl-m'
       set -l target_file (ls -1 ./db/migrate | grep $time)
-      commandline "$EDITOR db/migrate/$target_file"
+      commandline "vi db/migrate/$target_file"
     end
     commandline -f execute
   end
@@ -141,7 +141,7 @@ function gst --description 'git status -s'
       commandline -f repaint
       commandline "git mv $file "
     else if test $key = 'ctrl-m'
-      commandline "$EDITOR $file"
+      commandline "vi $file"
       commandline -f execute
     else if test $key = 'ctrl-c'
       commandline "git commit -v"
@@ -198,7 +198,7 @@ function gg --description 'Customizing file grep'
   if test -n (count $out)
     set -l line (echo $out | cut -d':' -f 2);
     set -l file (echo $out | cut -d':' -f 1);
-    commandline "$EDITOR +$line $file -c 'let @/ = \"$argv\"'"
+    commandline "vi +$line $file -c 'let @/ = \"$argv\"'"
     commandline -f execute
   end
 end
@@ -215,7 +215,7 @@ function gga --description "Costomizing file grep in all repositories"
     for line in $out
       set file_names (echo $line | awk -F':' '{print $1}') $file_names
     end
-    commandline "$EDITOR +/$argv $file_names"
+    commandline "vi +/$argv $file_names"
     commandline -f execute
   end
 end
@@ -358,7 +358,7 @@ function fzf-find-file
   )
   [ $status != 0 ] && commandline -f repaint && return
   if test -n $target_file
-    commandline "$EDITOR $target_file"
+    commandline "vi $target_file"
     commandline -f execute
   end
 end
