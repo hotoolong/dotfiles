@@ -197,7 +197,7 @@ endif
 let g:fzf_preview_git_status_preview_command = "test -z (git diff --cached -- {-1}) && git diff --cached --color=always -- {-1} || " .
 \ "test -z (git diff -- {-1}) && git diff --color=always -- {-1} || " .
 \ g:fzf_preview_command
-let $FZF_PREVIEW_PREVIEW_BAT_THEME  = 'gruvbox'
+let $FZF_PREVIEW_PREVIEW_BAT_THEME  = 'gruvbox-dark'
 
 
 noremap <fzf-p> <Nop>
