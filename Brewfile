@@ -52,7 +52,7 @@ brew "tree"
 brew "vim"
 brew "watchman"
 brew "wget"
-brew "z"
+brew "zoxide"
 brew "universal-ctags/universal-ctags/universal-ctags", args: ["HEAD"]
 cask "alt-tab"
 cask "chromedriver"

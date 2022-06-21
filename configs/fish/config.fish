@@ -494,3 +494,4 @@ end
 
 status --is-interactive && source (rbenv init -|psub)
 direnv hook fish | source
+zoxide init fish | source
