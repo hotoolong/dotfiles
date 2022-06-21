@@ -492,5 +492,5 @@ function reload
   exec $SHELL
 end
 
-
 status --is-interactive && source (rbenv init -|psub)
+direnv hook fish | source
