@@ -21,7 +21,7 @@ create_daily_file() {
   fi
 
   if [ ! -f "./$today_year/$today_month/$today_file" ]; then
-    cp "$(find ./*/* -maxdepth 1 -type f -name "[0-9]*$extension" | sort -r | head -1)" ./"$today_year"/"$today_month"/"$today_file"
+    cp "$(find ./*/* -maxdepth 1 -type f -name "[0-9]*$extension" | sort -r | head -1)" "./$today_year/$today_month/$today_file"
   fi
-  echo ./"$today_year"/"$today_month"/"$today_file"
+  echo "./$today_year/$today_month/$today_file"
 }
