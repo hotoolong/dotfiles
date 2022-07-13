@@ -136,6 +136,11 @@ syntax enable
 
 let mapleader = "\<Space>"
 
+" copilot.vim {{{
+let g:copilot_node_command = "~/.asdf/installs/nodejs/17.4.0/bin/node"
+" }}}
+
+
 " hotoolong/translate.nvim {{{
 let g:translate_copy_result = 1
 " }}}
