@@ -19,16 +19,6 @@ else
 end
 
 function vi
-  if command -q nvim
-    if command -q node
-      set -l local_nodejs_version (node -v | sed -e 's/v//')
-      set -l global_nodejs_version (grep nodejs ~/.tool-versions | cut -d' ' -f 2)
-      asdf shell nodejs $global_nodejs_version
-      $EDITOR $argv
-      asdf shell nodejs $local_nodejs_version
-      return
-    end
-  end
   $EDITOR $argv
 end
 
