@@ -295,10 +295,9 @@ elseif exists('*ch_close_in')
   let g:quickrun_config._.runner = 'job'
 endif
 
-let g:quickrun_config['ruby.rspec'] = {
+let g:quickrun_config['rspec'] = {
   \   'command': 'rspec',
-  \   'cmdopt': '-f p',
-  \   'exec': 'bundle exec %c %o %s',
+  \   'exec': 'bundle exec %c --no-color %s',
   \   'filetype': 'rspec-result'
   \ }
 let g:quickrun_config['rspec.line'] = {
