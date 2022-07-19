@@ -231,7 +231,7 @@ nnoremap <silent> <fzf-p>m     :<C-u>CocCommand fzf-preview.Bookmarks --resume<C
 " nnoremap <silent> <fzf-p><C-]> :<C-u>CocCommand fzf-preview.VistaCtags --add-fzf-arg=--query="<C-r>=expand('<cword>')<CR>"<CR>
 nnoremap <silent> <fzf-p>o     :<C-u>CocCommand fzf-preview.VistaBufferCtags<CR>
 " nnoremap <silent> <fzf-p>g     :<C-u>FzfPreviewProjectGrep --add-fzf-arg=--nth=3<Space>
-" nnoremap <silent> <fzf-p>g     :<C-u>FzfPreviewProjectGrep . --resume<Space>
+nnoremap <silent> <fzf-p>G     :<C-u>CocCommand fzf-preview.ProjectGrepRecall<CR>
 nnoremap <silent> <fzf-p>g     :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
 nnoremap <silent> <fzf-p>f     :<C-u>CocCommand fzf-preview.ProjectFiles<CR>
 
