@@ -22,16 +22,15 @@ function vi
   $EDITOR $argv
 end
 
-# ls
+# alias
 alias ls='ls -la'
 alias less='less -qR'
-
-# tree
 alias tree "tree -NC" # N: 文字化け対策, C:色をつける
-
-# rails
 alias rspec='bundle exec rspec'
 alias rails='bundle exec rails'
+alias tf 'terraform'
+alias tfmt 'terraform fmt -recursive'
+
 
 function migrate
   if test ! -d 'db/migrate'
