@@ -23,11 +23,11 @@ function vi
 end
 
 # alias
-alias ls='ls -la'
-alias less='less -qR'
+alias ls 'ls -la'
+alias less 'less -qR'
 alias tree "tree -NC" # N: 文字化け対策, C:色をつける
-alias rspec='bundle exec rspec'
-alias rails='bundle exec rails'
+alias rspec 'bundle exec rspec'
+alias rails 'bundle exec rails'
 alias tf 'terraform'
 alias tfmt 'terraform fmt -recursive'
 
@@ -70,14 +70,14 @@ function migrate
 end
 
 # rake
-alias rake='bundle exec rake'
+alias rake 'bundle exec rake'
 
 # docker
-alias d='docker'
-alias dc='docker-compose'
+alias d 'docker'
+alias dc 'docker-compose'
 
 # git
-alias g='git'
+alias g 'git'
 alias ga 'git add'
 alias gc 'git commit -v'
 alias gd 'git diff'
