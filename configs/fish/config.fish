@@ -88,6 +88,9 @@ alias ggpull 'git pull origin (git_current_branch)'
 alias ggpush 'git push origin (git_current_branch)'
 alias ggpushf 'git push --force-with-lease origin (git_current_branch)'
 
+abbr ghp 'gh pr view'
+abbr ghi 'gh issue view'
+
 function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
 end
