@@ -19,7 +19,6 @@ Plug 'rhysd/conflict-marker.vim'
 " snippet
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
-Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 
 " ruby rails
 Plug 'vim-ruby/vim-ruby'
@@ -45,13 +44,6 @@ Plug 'mattn/jscomplete-vim'
 Plug 'myhere/vim-nodejs-complete'
 Plug 'pangloss/vim-javascript'
 
-" LSP
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-
 " Fuzzy Finder
 Plug 'mattn/vim-fz'
 
@@ -63,18 +55,6 @@ Plug 'pechorin/any-jump.vim'
 Plug 'dense-analysis/ale'
 Plug 'delphinus/lightline-delphinus'
 Plug 'itchyny/lightline.vim'
-
-" asyncomplete sources
-Plug 'high-moctane/asyncomplete-nextword.vim'
-Plug 'hotoolong/asyncomplete-tabnine.vim', { 'do': './install.sh' }
-if executable('ctags')
-  Plug 'prabirshrestha/asyncomplete-tags.vim'
-endif
-
-filetype plugin indent on
-syntax enable
-
-let mapleader = "\<Space>"
 
 " Git
 Plug 'tpope/vim-fugitive'
@@ -154,17 +134,6 @@ autocmd BufWritePost *
       \ if exists('b:git_dir') && executable(b:git_dir.'/hooks/create_tags') |
       \   call system('"'.b:git_dir.'/hooks/create_ctags" &') |
       \ endif
-" }}}
-
-" prabirshrestha/asyncomplete-tags.vim {{{
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
-    \ 'name': 'tags',
-    \ 'whitelist': ['c'],
-    \ 'completor': function('asyncomplete#sources#tags#completor'),
-    \ 'config': {
-    \    'max_file_size': 50000000,
-    \  },
-    \ }))
 " }}}
 
 " AndrewRadev/switch.vim {{{
@@ -313,30 +282,12 @@ endfunction
 autocmd BufWinEnter,BufNewFile *_spec.rb call <SID>RSpecQuickrun()
 " }}}
 
-" hotoolong/asyncomplete-tabnine {{{
-call asyncomplete#register_source(asyncomplete#sources#tabnine#get_source_options({
-  \ 'name': 'tabnine',
-  \ 'allowlist': ['*'],
-  \ 'completor': function('asyncomplete#sources#tabnine#completor'),
-  \ 'config': {
-  \   'line_limit': 1000,
-  \   'max_num_result': 20,
-  \  },
-  \ })) 
-" }}}
-
 " UltiSnips {{{
 let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<Tab>"
 let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
  
 let g:UltiSnipsEditSplit="vertical"
-call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-    \ 'name': 'ultisnips',
-    \ 'whitelist': ['*'],
-    \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-    \ }))
-" }}}
 
 " dash.vim {{{
 nmap <silent> <leader>d <Plug>DashSearch
@@ -347,51 +298,6 @@ call expand_region#custom_text_objects('ruby', {
   \ 'im' :0,
   \ 'am' :0,
   \ })
-" }}}
-
-" vim-lsp {{{
-let g:lsp_diagnostics_enabled = 0
-let g:lsp_diagnostics_echo_cursor = 0
-let g:lsp_text_edit_enabled = 0
-
-function! s:on_lsp_buffer_enabled() abort
-  setlocal omnifunc=lsp#complete
-  setlocal signcolumn=yes
-  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-  nmap <buffer> gd <plug>(lsp-definition)
-  nmap <buffer> <f2> <plug>(lsp-rename)
-  " refer to doc to add more commands
-endfunction
-
-augroup lsp_install
-  au!
-  " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
-" }}}
-
-" asyncomplete {{{
-set completeopt=menuone,noselect,preview,noinsert
-inoremap <expr><Tab>  pumvisible() ? "\<C-y>" : "\<Tab>"
-autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-
-let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_auto_completeopt = 0
-let g:asyncomplete_popup_delay = 20
-
-autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ale#get_source_options({
-\ 'priority': 10
-\ }))
-
-"  }}}
-
-" high-moctane/asyncomplete-nextword.vim {{{
-call asyncomplete#register_source(asyncomplete#sources#nextword#get_source_options({
-  \   'name': 'nextword',
-  \   'whitelist': ['*'],
-  \   'args': ['-n', '20'],
-  \   'completor': function('asyncomplete#sources#nextword#completor')
-  \   }))
 " }}}
 
 " gitgutter {{{
