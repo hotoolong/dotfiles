@@ -48,9 +48,6 @@ Plug 'mattn/jscomplete-vim'
 Plug 'myhere/vim-nodejs-complete'
 Plug 'pangloss/vim-javascript'
 
-" Fuzzy Finder
-Plug 'mattn/vim-fz'
-
 " ctags
 Plug 'majutsushi/tagbar'
 Plug 'pechorin/any-jump.vim'
