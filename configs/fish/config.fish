@@ -39,7 +39,7 @@ function migrate
   end
 
   set -l out ( \
-     ./bin/rake db:migrate:status ^/dev/null | \
+     ./bin/rake db:migrate:status 2>/dev/null | \
      tail -n +6 | \
      sed '/^$/d' | \
      fzf --exit-0 \
