@@ -7,8 +7,9 @@ set -x NEXTWORD_DATA_PATH $HOME/.nextword-data
 set -x HOMEBREW_NO_AUTO_UPDATE 1
 set -x BREW_PREFIX (brew --prefix)
 set -x OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
-set -g fish_user_paths $BREW_PREFIX"/sbin" $OPENSSL_DIR"/bin" $fish_user_paths
 set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
+set -g fish_user_paths $BREW_PREFIX"/sbin" $OPENSSL_DIR"/bin" $fish_user_paths
+set -g fish_prompt_pwd_full_dirs 2
 source $BREW_PREFIX/opt/asdf/asdf.fish
 
 # set EDITOR
@@ -445,37 +446,56 @@ function cd
   standard_cd $argv && ls
 end
 
-# function prompt_pwd --description
-function prompt_pwd --description "Print the current working directory, shortened to fit the prompt"
-  set -l options h/help
-  argparse -n prompt_pwd --max-args=0 $options -- $argv
-  or return
+function prompt_pwd --description 'short CWD for the prompt'
+    set -l options h/help d/dir-length= D/full-length-dirs=
+    argparse -n prompt_pwd $options -- $argv
+    or return
 
-  if set -q _flag_help
-    __fish_print_help prompt_pwd
-    return 0
-  end
-
-  # This allows overriding fish_prompt_pwd_dir_length from the outside (global or universal) without leaking it
-  set -q fish_prompt_pwd_dir_length
-  or set -l fish_prompt_pwd_dir_length 1
-
-  # Replace $HOME with "~"
-  set -l realhome ~
-  set -l tmp (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
-
-  if [ $fish_prompt_pwd_dir_length -eq 0 ]
-    echo $tmp
-  else
-    set -q fish_prompt_dir_full_name_range
-    or set -l fish_prompt_dir_full_name_range 2
-    if [ $fish_prompt_dir_full_name_range -le 0 ]
-      set fish_prompt_dir_full_name_range 1
+    if set -q _flag_help
+        __fish_print_help prompt_pwd
+        return 0
     end
-    set -l folders (string split -rm$fish_prompt_dir_full_name_range / $tmp)
-    # Shorten to at most $fish_prompt_pwd_dir_length characters per directory
-    echo (string replace -ar '(\.?[^/]{'"$fish_prompt_pwd_dir_length"'})[^/]*/' '$1/' $folders[1]'/')(string join / $folders[2..-1])
-  end
+
+    set -q argv[1]
+    or set argv $PWD
+
+    set -ql _flag_d
+    and set -l fish_prompt_pwd_dir_length $_flag_d
+
+    set -q fish_prompt_pwd_dir_length
+    or set -l fish_prompt_pwd_dir_length 1
+
+    set -l fulldirs 0
+    set -ql _flag_D
+    and set -l fish_prompt_pwd_full_dirs $_flag_D
+
+    set -q fish_prompt_pwd_full_dirs
+    or set -l fish_prompt_pwd_full_dirs 1
+
+    for path in $argv
+        # Replace $HOME with "~"
+        set -l realhome (string escape --style=regex -- ~)
+        set -l tmp (string replace -r '^'"$realhome"'($|/)' '~$1' $path)
+
+        if test "$fish_prompt_pwd_dir_length" -eq 0
+            echo $tmp
+        else
+            # Shorten to at most $fish_prompt_pwd_dir_length characters per directory
+            # with full-length-dirs components left at full length.
+            set -l full
+            if test $fish_prompt_pwd_full_dirs -gt 0
+                set -l all (string split -m (math $fish_prompt_pwd_full_dirs - 1) -r / $tmp)
+                set tmp $all[1]
+                set full $all[2..]
+            else if test $fish_prompt_pwd_full_dirs -eq 0
+                # 0 means not even the last component is kept
+                string replace -ar '(\.?[^/]{'"$fish_prompt_pwd_dir_length"'})[^/]*' '$1' $tmp
+                continue
+            end
+
+            string join / (string replace -ar '(\.?[^/]{'"$fish_prompt_pwd_dir_length"'})[^/]*/' '$1/' $tmp) $full
+        end
+    end
 end
 
 # reload
