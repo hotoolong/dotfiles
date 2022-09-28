@@ -437,33 +437,6 @@ let g:git_messenger_no_default_mappings = v:true
 nmap ,gm <Plug>(git-messenger)
 "}}}
 
-" NERDTree {{{
-let NERDTreeChDirMode=2
-let NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
-let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
-let NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTab='<C-t>'
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 35
-let NERDTreeAutoDeleteBuffer = 1
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
-nnoremap <silent> td :<C-u>NERDTreeFind<CR>
-" nnoremap <silent> <F3> :<C-u>NERDTreeToggle<CR>
-" show hidden file
-let NERDTreeShowHidden = 1
-"nnoremap <silent><C-e> :NERDTreeFocusToggle<CR>
-
-" 他のバッファをすべて閉じた時にNERDTreeが開いていたらNERDTreeも一緒に閉じる。
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" }}}
-
-" jistr/vim-nerdtree-tabs {{{
-" デフォルトでツリーを表示させる
-let g:nerdtree_tabs_open_on_console_startup=1
-let g:nerdtree_tabs_autofind=1
-" }}}
-
 set encoding=UTF-8
 " default setting
 nnoremap ; :
