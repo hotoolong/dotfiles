@@ -401,7 +401,7 @@ endfunction
 " ale {{{
 autocmd BufRead,BufNewFile *.slim setfiletype slim
 let g:ale_linters = {
-  \   'ruby': ['rubocop', 'reek', 'ruby', 'brakeman'],
+  \   'ruby': ['rubocop', 'reek', 'ruby', 'brakeman', 'rails_best_practices'],
   \   'slim': ['slimlint'],
   \   'markdown': ['textlint', 'markdownlint'],
   \   'text': ['textlint'],
