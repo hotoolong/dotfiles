@@ -226,7 +226,7 @@ let $FZF_PREVIEW_PREVIEW_BAT_THEME  = 'gruvbox-dark'
 
 
 noremap <fzf-p> <Nop>
-map     ,    <fzf-p>
+map , <fzf-p>
 
 nnoremap <silent> <fzf-p>r     :<C-u>CocCommand fzf-preview.FromResources buffer project_mru<CR>
 nnoremap <silent> <fzf-p>w     :<C-u>CocCommand fzf-preview.ProjectMrwFiles<CR>
