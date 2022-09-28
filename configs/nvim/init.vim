@@ -94,7 +94,6 @@ Plug 'hotoolong/translate.nvim'
 Plug 'AndrewRadev/switch.vim'
 Plug 'lambdalisue/pastefix.vim'
 Plug 'simeji/winresizer'
-Plug 'github/copilot.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -166,11 +165,6 @@ augroup my-fern-startup
   autocmd VimEnter * ++nested Fern . -drawer -reveal=% -stay
 augroup END
 " }}}
-
-" copilot.vim {{{
-let g:copilot_node_command = "~/.asdf/installs/nodejs/17.4.0/bin/node"
-" }}}
-
 
 " hotoolong/translate.nvim {{{
 let g:translate_copy_result = 1
