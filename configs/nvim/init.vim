@@ -499,6 +499,7 @@ set backupskip=/tmp/*,/private/tmp/*
 set noswapfile
 set expandtab
 set tags+=.git/tags
+set mouse=
 
 " search {{{
 set incsearch
