@@ -449,6 +449,7 @@ set showmatch
 set matchpairs+=<:>
 set matchtime=1
 set number relativenumber
+set confirm
 "set smarttab
 set tabstop=2
 set softtabstop=2
