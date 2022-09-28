@@ -407,7 +407,7 @@ let g:ale_linters = {
   \   'text': ['textlint'],
   \}
 let g:ale_completion_enabled = 1
-let g:ale_ruby_rubocop_options = '-c ./.rubocop.yml'
+let g:ale_ruby_rubocop_options = '--server -c ./.rubocop.yml'
 let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
