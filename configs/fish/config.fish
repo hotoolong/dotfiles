@@ -29,6 +29,7 @@ alias less 'less -qR'
 alias tree "tree -NC" # N: 文字化け対策, C:色をつける
 alias rspec 'bundle exec rspec'
 alias rails 'bundle exec rails'
+alias railsc 'bundle exec rails c'
 alias tf 'terraform'
 alias tfmt 'terraform fmt -recursive'
 
