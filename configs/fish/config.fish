@@ -71,6 +71,10 @@ function migrate
   end
 end
 
+function kill_all_spring
+  ps aux | grep 'spring ' | grep -v grep | awk '{ print $2 }' | xargs kill -9
+end
+
 # rake
 alias rake 'bundle exec rake'
 
