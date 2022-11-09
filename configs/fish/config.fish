@@ -287,8 +287,9 @@ function fzf_git_pull_request
     fzf $fzf_query \
         --prompt='Select Pull Request>' \
         --preview="gh pr view {1}" \
-        --expect=ctrl-e,ctrl-m,ctrl-v \
-        --header='enter: open in browser, C-e: checkout, C-v: approve , C-a: all, C-g: merged' \
+        --expect=ctrl-w,ctrl-e,ctrl-m,ctrl-v,ctrl-d \
+        --bind $bind_str \
+        --header='enter: view, C-w: open in browser, C-e: checkout, C-d: diff, C-v: approve , C-a: all, C-g: merged' \
   )
   [ $status != 0 ] && commandline -f repaint && return
   set -l pr_id (echo $out[2] | awk '{ print $1 }')
@@ -298,8 +299,14 @@ function fzf_git_pull_request
   else if test $out[1] = 'ctrl-v'
     commandline "gh pr review $pr_id --approve"
     commandline -f execute
-  else if test $out[1] = 'ctrl-m'
+  else if test $out[1] = 'ctrl-w'
     commandline "gh pr view --web $pr_id"
+    commandline -f execute
+  else if test $out[1] = 'ctrl-d'
+    commandline "gh pr diff $pr_id"
+    commandline -f execute
+  else if test $out[1] = 'ctrl-m'
+    commandline "gh pr view -c $pr_id"
     commandline -f execute
   end
 end
