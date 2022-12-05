@@ -24,7 +24,12 @@ else
 end
 
 function vi
-  $EDITOR $argv
+  set -l file_and_line (string split -m1 : $argv[-1])
+  if test (count $file_and_line) -eq 2
+    $EDITOR $argv[1..-2] +$file_and_line[2] $file_and_line[1]
+  else
+    $EDITOR $argv
+  end
 end
 
 # alias
