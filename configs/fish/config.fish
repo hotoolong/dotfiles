@@ -50,7 +50,7 @@ function migrate
   end
 
   set -l out ( \
-     ./bin/rake db:migrate:status 2>/dev/null | \
+     bundle exec rails db:migrate:status 2>/dev/null | \
      tail -n +6 | \
      sed '/^$/d' | \
      fzf --exit-0 \
@@ -65,13 +65,13 @@ function migrate
     set -l key $out[1]
     set -l time (echo $out[2] | awk -F ' ' '{ print $2 }')
     if test $key = 'ctrl-a'
-      commandline "./bin/rails db:migrate"
+      commandline "bundle exec rails db:migrate"
     else if test $key = 'ctrl-u'
-      commandline "./bin/rails db:migrate:up VERSION=$time"
+      commandline "bundle exec rails db:migrate:up VERSION=$time"
     else if test $key = 'ctrl-d'
-      commandline "./bin/rails db:migrate:down VERSION=$time"
+      commandline "bundle exec rails db:migrate:down VERSION=$time"
     else if test $key = 'ctrl-r'
-      commandline "./bin/rails db:migrate:redo VERSION=$time"
+      commandline "bundle exec rails db:migrate:redo VERSION=$time"
     else if test $key = 'ctrl-m'
       set -l target_file (ls -1 ./db/migrate | grep $time)
       commandline "vi db/migrate/$target_file"
