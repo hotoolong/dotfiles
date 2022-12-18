@@ -199,6 +199,15 @@ function gb --description 'git branch'
 end
 
 function gg --description 'Customizing file grep'
+  set -l options t/text
+  argparse -n gg $options -- $argv
+  or return
+
+  if set -lq _flag_text
+    rg --vimgrep --color always $argv
+    return
+  end
+
   set -l out ( \
     rg --vimgrep --color always $argv | \
         fzf --ansi --multi \
