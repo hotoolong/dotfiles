@@ -8,6 +8,7 @@ set -x HOMEBREW_NO_AUTO_UPDATE 1
 set -x BREW_PREFIX (brew --prefix)
 set -x OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
 set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
+set -x TMUX_SHELL (which fish)
 set -g fish_user_paths $BREW_PREFIX"/sbin" $OPENSSL_DIR"/bin" $fish_user_paths
 set -g fish_prompt_pwd_full_dirs 2
 source $BREW_PREFIX/opt/asdf/asdf.fish
