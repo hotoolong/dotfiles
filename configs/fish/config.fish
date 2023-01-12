@@ -25,9 +25,11 @@ else
 end
 
 function vi
-  set -l file_and_line (string split -m1 : $argv[-1])
-  if test (count $file_and_line) -eq 2
-    $EDITOR $argv[1..-2] +$file_and_line[2] $file_and_line[1]
+  if string match -r : $argv[-1] > /dev/null 2>&1
+    set -l file_and_line (string split -r -m1 : $argv[-1])
+    if test (count $file_and_line) -eq 2
+      $EDITOR $argv[1..-2] +$file_and_line[2] $file_and_line[1]
+    end
   else
     $EDITOR $argv
   end
