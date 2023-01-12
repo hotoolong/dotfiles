@@ -378,6 +378,13 @@ function trend_ruby_week
   end
 end
 
+function ruby-all-version-execute
+  for v in (rbenv versions | sed -e 's/^[ \*]*//g' | awk '{print $1}')
+    echo "Ruby version: $v"
+    RBENV_VERSION=$v $argv
+  end
+end
+
 function fzf-find-file
   set -l query (commandline --current-buffer)
 
