@@ -1,7 +1,7 @@
 set -x NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
 set -x TERM screen-256color-bce;
 set -x GOPATH $HOME/gocode
-set -x PATH $HOME/bin $GOPATH/bin $PATH
+set -x PATH $HOME/bin $GOPATH/bin ~/.cargo/bin $PATH
 set -x PGDATA /usr/local/var/postgres
 set -x NEXTWORD_DATA_PATH $HOME/.nextword-data
 set -x HOMEBREW_NO_AUTO_UPDATE 1
