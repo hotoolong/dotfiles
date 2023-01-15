@@ -102,9 +102,9 @@ alias gd 'git diff'
 alias gco 'git checkout'
 alias gsw 'git switch'
 alias gdc 'git diff --cached'
-alias ggpull 'git pull origin (git_current_branch)'
-alias ggpush 'git push origin (git_current_branch)'
-alias ggpushf 'git push --force-with-lease origin (git_current_branch)'
+alias ggpull 'git pull origin (git-current-branch)'
+alias ggpush 'git push origin (git-current-branch)'
+alias ggpushf 'git push --force-with-lease origin (git-current-branch)'
 
 abbr ghp 'gh pr view'
 abbr ghi 'gh issue view'
@@ -113,12 +113,12 @@ function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
 end
 
-function git_main_branch --description 'git main branch'
+function git-main-branch --description 'git main branch'
   git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
 end
 
 function gcom --description 'git switch <main branch>'
-  git switch (git_main_branch)
+  git switch (git-main-branch)
 end
 
 function gst --description 'git status -s'
@@ -243,7 +243,7 @@ function gga --description "Costomizing file grep in all repositories"
   end
 end
 
-function git_current_branch
+function git-current-branch
   set -l ref (git symbolic-ref --quiet HEAD 2> /dev/null)
   set -l ret $status
   if [ $ret != 0 ]
@@ -264,7 +264,7 @@ end
 
 # fzf
 
-function fzf_git_issue
+function fzf-github-issue
   set -l query (commandline --current-buffer)
   if test -n $query
     set fzf_query --query "$query"
@@ -292,7 +292,7 @@ function fzf_git_issue
   commandline -f execute
 end
 
-function fzf_git_pull_request
+function fzf-github-pull-request
   set -l query (commandline --current-buffer)
   if test -n $query
     set fzf_query --query "$query"
@@ -332,7 +332,7 @@ function fzf_git_pull_request
   end
 end
 
-function fzf_select_ghq_repository
+function fzf-select-ghq-repository
   set -l query (commandline --current-buffer)
   if test -n $query
     set fzf_query --query "$query"
@@ -356,7 +356,7 @@ function fzf_select_ghq_repository
   end
 end
 
-function trend_ruby_week
+function trend-ruby-week
   if test -n $query
     set fzf_query --query "$query"
   end
@@ -400,7 +400,7 @@ function fzf-find-file
   end
 end
 
-function fzf_select_history
+function fzf-select-history
   set -l query (commandline --current-buffer)
   history | fzf --query "$query" | read -l line
 
@@ -467,12 +467,12 @@ alias stash=fzf-git-stash
 
 # bind
 
-bind \cr 'fzf_select_history (commandline --current-buffer)'
+bind \cr 'fzf-select-history (commandline --current-buffer)'
 bind \cs fzf-find-file
 bind \cg\cl fzf-git-recent-all-branches
-bind \cg\cr fzf_select_ghq_repository
-bind \cg\ci fzf_git_issue
-bind \cg\cp fzf_git_pull_request
+bind \cg\cr fzf-select-ghq-repository
+bind \cg\ci fzf-github-issue
+bind \cg\cp fzf-github-pull-request
 
 # abbr
 
