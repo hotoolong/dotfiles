@@ -190,13 +190,25 @@ function gb --description 'git branch'
     git branch | \
       fzf $fzf_query \
         --prompt='Select Branch >' \
-        --preview="set -l main (git_main_branch);[ {1} = '*' ] && git diff $main {2} || git diff $main {1}" \
+        --header='C-d: delete, Enter: switch, Tab: choice' \
+        --expect=ctrl-m,ctrl-d \
+        --multi \
+        --preview="[ {1} = '*' ] && git diff --color (git-main-branch) {2} || git diff --color (git-main-branch) {1}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
-  if test -n $out
-    commandline "git switch $out"
-    commandline -f execute
+  if string length -q -- $out
+    set -l key $out[1]
+    if test $key = 'ctrl-d'
+      for select_data in $out[2..-1]
+        set -l branch_name (echo $select_data | sed -e 's/^[ \*]*//g')
+        git branch -D $branch_name
+      end
+    else if test $key = 'ctrl-m'
+      set -l branch_name (echo $out[2] | sed -e 's/^[ \*]*//g')
+      commandline "git switch $branch_name"
+      commandline -f execute
+    end
   end
 end
 
