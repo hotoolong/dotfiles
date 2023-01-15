@@ -45,7 +45,6 @@ alias railsc 'bundle exec rails c'
 alias tf 'terraform'
 alias tfmt 'terraform fmt -recursive'
 
-
 function migrate
   if test ! -d 'db/migrate'
     echo 'Go to Rails Root'
@@ -104,7 +103,7 @@ alias gsw 'git switch'
 alias gdc 'git diff --cached'
 alias ggpull 'git pull origin (git-current-branch)'
 alias ggpush 'git push origin (git-current-branch)'
-alias ggpushf 'git push --force-with-lease origin (git-current-branch)'
+alias ggpushf 'git push --force-with-lease --force-if-includes origin (git-current-branch)'
 
 abbr ghp 'gh pr view'
 abbr ghi 'gh issue view'
