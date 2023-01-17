@@ -449,7 +449,7 @@ function fzf-git-stash
     fzf --exit-0 \
       --ansi \
       --no-sort \
-      --expect=ctrl-d,ctrl-m,ctrl-v,ctrl-s \
+      --expect=ctrl-a,ctrl-d,ctrl-m,ctrl-s \
       --preview="echo {} | cut -d':' -f1 | xargs git stash show -p --color=always" \
       --header='C-a: apply C-d: drop, C-m(Enter): pop, C-s: show'
   )
