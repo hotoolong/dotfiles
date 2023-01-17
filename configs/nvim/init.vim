@@ -444,6 +444,10 @@ let g:git_messenger_no_default_mappings = v:true
 nmap ,gm <Plug>(git-messenger)
 "}}}
 
+" iberianpig/tig-explorer {{{
+cnoreabbrev Blame TigBlame
+" }}}
+
 set encoding=UTF-8
 " default setting
 nnoremap ; :
