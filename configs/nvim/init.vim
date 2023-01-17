@@ -150,7 +150,7 @@ function! s:init_fern() abort
   nmap <buffer> I <Plug>(fern-action-hidden-toggle)
 
   nmap <buffer> q :<C-u>quit<CR>
-  nmap <buffer> <C-l> <C-w><C-w>
+  nmap <buffer> <C-l> <C-w>l
 
   nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
 endfunction
@@ -164,6 +164,10 @@ augroup my-fern-startup
   autocmd! *
   autocmd VimEnter * ++nested Fern . -drawer -reveal=% -stay
 augroup END
+" }}}
+
+" lambdalisue/fern-renderer-nerdfont.vim {{{
+let g:fern#renderer#nerdfont#indent_markers = 1
 " }}}
 
 " hotoolong/translate.nvim {{{
