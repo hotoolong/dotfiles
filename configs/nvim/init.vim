@@ -94,6 +94,7 @@ Plug 'hotoolong/translate.nvim'
 Plug 'AndrewRadev/switch.vim'
 Plug 'lambdalisue/pastefix.vim'
 Plug 'simeji/winresizer'
+Plug 'glepnir/zephyr-nvim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -586,4 +587,4 @@ augroup END
 
 autocmd ColorScheme * highlight NormalFloat ctermbg=17 guibg=#374549
 set termguicolors
-colorscheme tender
+colorscheme zephyr
