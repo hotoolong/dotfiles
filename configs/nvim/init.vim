@@ -95,6 +95,7 @@ Plug 'AndrewRadev/switch.vim'
 Plug 'lambdalisue/pastefix.vim'
 Plug 'simeji/winresizer'
 Plug 'glepnir/zephyr-nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -116,6 +117,25 @@ filetype plugin indent on
 syntax enable
 
 let mapleader = "\<Space>"
+
+" nvim-treesitter/nvim-treesitter {{{
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    disable = {
+      'toml',
+      'c_sharp',
+    }
+  },
+  indent = {
+    enable = true, -- Enable indentation by tresitter
+  }
+}
+EOF
+
+" }}}
 
 " lambdalisue/fern.vim {{{
 nnoremap <silent> td :<C-u>Fern . -drawer -reveal=%<CR>
