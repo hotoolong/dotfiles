@@ -100,19 +100,6 @@ Plug 'nvim-treesitter/nvim-treesitter'
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
-" Load Event
-function! s:load_plug(timer)
-    call plug#load(
-                \ 'vim-ruby',
-                \ 'vim-rails',
-                \ 'vim-slim',
-                \ 'tcomment_vim',
-                \ )
-endfunction
-
-" Heavy plug-ins will be loaded later.
-call timer_start(500, function("s:load_plug"))
-
 filetype plugin indent on
 syntax enable
 
