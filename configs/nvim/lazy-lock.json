@@ -18,6 +18,8 @@
   "nvim-lspconfig": { "branch": "master", "commit": "8ebe6894dddaeb1459e1397c865f54fa5ecaac80" },
   "nvim-treesitter": { "branch": "master", "commit": "fb11ba487caa012b83957e8dd2f8ba45e40da8fd" },
   "plenary.nvim": { "branch": "master", "commit": "1c7e3e6b0f4dd5a174fcea9fda8a4d7de593b826" },
+  "tcomment_vim": { "branch": "master", "commit": "b4930f9da28647e5417d462c341013f88184be7e" },
   "telescope.nvim": { "branch": "master", "commit": "2f32775405f6706348b71d0bb8a15a22852a61e4" },
-  "vimdoc-ja": { "branch": "master", "commit": "e7a5e0bd0ce4759250c5d7116050bd6ef36f821c" }
+  "vimdoc-ja": { "branch": "master", "commit": "e7a5e0bd0ce4759250c5d7116050bd6ef36f821c" },
+  "zephyr-nvim": { "branch": "main", "commit": "7fd86b7164442d3b5ec2c81b2694d040e716b5cf" }
 }
