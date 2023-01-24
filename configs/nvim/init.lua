@@ -32,10 +32,11 @@ require('lazy').setup({
   'nvim-lua/telescope.nvim',
   'nvim-treesitter/nvim-treesitter',
   'sainnhe/gruvbox-material',
+  'tomtom/tcomment_vim',
+  'glepnir/zephyr-nvim',
 })
 
 -- set options
-vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.updatetime = 500
 vim.opt.expandtab = true
@@ -94,6 +95,8 @@ mason_lspconfig.setup({
   ensure_installed = {
     'tsserver',
     'eslint',
+    'solargraph',
+    'ruby_ls',
   },
   automatic_installation = true,
 })
@@ -178,6 +181,7 @@ cmp.setup({
 vim.keymap.set({ 'n' }, '<Leader>e', '<Cmd>Fern . -drawer<CR>')
 vim.keymap.set({ 'n' }, '<Leader>E', '<Cmd>Fern . -drawer -reveal=%<CR>')
 
+
 -- treesitter
 require('nvim-treesitter.configs').setup({
   ensure_installed = {
@@ -186,8 +190,146 @@ require('nvim-treesitter.configs').setup({
   },
   highlight = {
     enable = true,
+    disable = {
+      'toml',
+      'c_sharp',
+    },
   },
 })
 
--- gruvbox
-vim.cmd.colorscheme('gruvbox-material')
+
+-- vim.opt.clipboard = "unnamedplus"
+vim.opt.clipboard:append{'unnamedplus'}
+
+vim.opt.encoding="UTF-8"
+
+-- default setting
+vim.keymap.set({ 'n' }, ';', ':')
+vim.opt.sh = 'bash'
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.showmatch = true
+-- set matchpairs+=<:>
+-- vim.opt.matchpairs = '<:>'
+vim.opt.matchtime = 1
+vim.opt.relativenumber = true
+vim.opt.confirm = true
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.list = true
+vim.opt.listchars = "tab:->,trail:_"
+vim.opt.ruler = true
+vim.opt.splitright = true
+vim.opt.backspace = "indent,eol,start"
+vim.opt.textwidth = 0 -- 一行に長い文章を書いていても自動折り返しをしない
+vim.opt.display = 'lastline'
+vim.opt.pumheight = 10
+vim.opt.backupskip = "/tmp/*,/private/tmp/*"
+vim.opt.swapfile = false
+vim.opt.expandtab = true
+-- set tags+=.git/tags
+vim.opt.mouse= ""
+--
+-- search
+vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.hlsearch = true
+vim.keymap.set({ 'n' }, '<Esc><Esc>', ':nohlsearch<CR>', { silent = true })
+vim.opt.modeline = true
+vim.opt.modelines = 10
+vim.opt.inccommand = 'split'
+
+-- Ctrl + hjkl でウィンドウ間を移動
+vim.keymap.set({ 'n' }, '<C-h>', '<C-w>h')
+vim.keymap.set({ 'n' }, '<C-j>', '<C-w>j')
+vim.keymap.set({ 'n' }, '<C-k>', '<C-w>k')
+vim.keymap.set({ 'n' }, '<C-l>', '<C-w>l')
+
+-- command keymap
+vim.keymap.set({ 'c' }, '<C-a>', '<Home>')
+vim.keymap.set({ 'c' }, '<C-b>', '<Left>')
+vim.keymap.set({ 'c' }, '<C-d>', '<Del>')
+vim.keymap.set({ 'c' }, '<C-e>', '<End>')
+vim.keymap.set({ 'c' }, '<C-f>', '<Right>')
+vim.keymap.set({ 'c' }, '<C-n>', '<Down>')
+vim.keymap.set({ 'c' }, '<C-p>', '<Up>')
+vim.keymap.set({ 'c' }, '<C-y>', '<C-r>*')
+vim.keymap.set({ 'c' }, '<C-g>', '<C-c>')
+vim.keymap.set({ 'c' }, '<M-b>', '<S-Left>')
+vim.keymap.set({ 'c' }, '<M-f>', '<S-Right>')
+
+-- input mod keymap
+vim.keymap.set({ 'i' }, '<C-j>', '<Down>')
+vim.keymap.set({ 'i' }, '<C-k>', '<Up>')
+vim.keymap.set({ 'i' }, '<C-h>', '<Left>')
+vim.keymap.set({ 'i' }, '<C-l>', '<Right>')
+
+-- terminal mode keymap
+vim.keymap.set({ 't' }, '<ESC>', '<C-\\><C-n>')
+vim.keymap.set({ 't' }, '<C-s>', '<Nop>')
+
+vim.opt.sidescroll = 1
+vim.opt.ttimeoutlen = 10
+-- if has('persistent_undo')
+--   if !isdirectory($HOME.'/.vim/.undodir')
+--     call mkdir($HOME.'/.vim/.undodir', 'p', 0700)
+--   endif
+--   set undodir=~/.vim/.undodir
+--   set undofile
+-- endif
+--
+-- " bell {{{
+-- " stop bell
+-- set visualbell t_vb=
+-- " }}}
+
+vim.keymap.set({ 'n' }, 'Y', 'y$')
+vim.keymap.set({ 'n' }, 'x', '"_x')
+vim.keymap.set({ 'n' }, 'xp', '"0x"0p')
+vim.keymap.set({ 'n' }, 'cw', '"_cw')
+vim.keymap.set({ 'n' }, 'ce', '"_ce')
+
+-- " ビジュアルモード時vで行末まで選択
+-- vnoremap v $h
+vim.keymap.set({ 'v' }, 'v', '$h')
+-- " ビジュアルモードyank後最後の行に移動
+vim.keymap.set({ 'v' }, 'y', 'y`>')
+-- " ddでレジスタを更新しても対応
+vim.keymap.set({ 'n' }, 'PP', '"0p')
+
+-- if has('mac')
+--   set clipboard+=unnamedplus
+-- endif
+--
+-- Tab
+vim.keymap.set({ 'n' }, 't', '<Nop>')
+vim.keymap.set({ 'n' }, 'tt', ':<C-u>tabnew<CR>:tabmove<CR>', { silent = true })
+vim.keymap.set({ 'n' }, 'tw', ':<C-u>tabclose<CR>', { silent = true })
+vim.keymap.set({ 'n' }, 'tn', ':<C-u>tabnext<CR>', { silent = true })
+vim.keymap.set({ 'n' }, 'tp', ':<C-u>tabprevious<CR>', { silent = true })
+-- tag のリンクを tabで開く
+vim.keymap.set({ 'n' }, 'tj', ":<C-u>tab stjump <C-R>=expand('<cword>')<CR><CR>zz", { silent = true })
+
+-- 日付追加
+vim.keymap.set({ 'i' }, ',df', "strftime('%Y-%m-%d %H:%M')", {expr = true})
+vim.keymap.set({ 'i' }, ',dd', "strftime('%Y-%m-%d')", {expr = true})
+vim.keymap.set({ 'i' }, ',dt', "strftime('%H:%M')", {expr = true})
+
+-- filetype of ruby
+-- autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby
+-- autocmd BufNewFile,BufRead .pryrc     set filetype=ruby
+-- autocmd FileType ruby setl iskeyword+=?
+
+-- " sudo権限で保存
+-- cnoremap w!! w !sudo tee > /dev/null %<CR>
+--
+-- augroup fileTypeIndent
+--   autocmd!
+--   autocmd BufNewFile, BufRead *.tsv setlocal noexpandtab
+-- augroup END
+--
+-- autocmd ColorScheme * highlight NormalFloat ctermbg=17 guibg=#374549
+vim.opt.termguicolors = true
+vim.cmd.colorscheme('zephyr')
