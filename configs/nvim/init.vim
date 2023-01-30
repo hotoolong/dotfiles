@@ -96,6 +96,8 @@ Plug 'lambdalisue/pastefix.vim'
 Plug 'simeji/winresizer'
 Plug 'glepnir/zephyr-nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'vim-denops/denops.vim'
+Plug 'yuki-yano/ai-review.vim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
