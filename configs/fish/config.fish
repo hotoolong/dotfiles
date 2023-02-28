@@ -1,10 +1,10 @@
 set -x NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
 set -x TERM screen-256color-bce;
 set -x GOPATH $HOME/gocode
-set -x PATH $HOME/bin $GOPATH/bin ~/.cargo/bin $PATH
 set -x PGDATA /usr/local/var/postgres
 set -x HOMEBREW_NO_AUTO_UPDATE 1
 set -x BREW_PREFIX (brew --prefix)
+set -x PATH $HOME/bin $GOPATH/bin ~/.cargo/bin $BREW_PREFIX"/bin" $PATH
 set -x OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
 set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
 set -x TMUX_SHELL (which fish)
