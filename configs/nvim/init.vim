@@ -407,8 +407,7 @@ function! LightlineFilename()
 endfunction
 
 function! LightlineMode()
-  return  &ft == 'denite' ? 'Denite' :
-    \ winwidth(0) > 60 ? lightline#mode() : ''
+  return  winwidth(0) > 60 ? lightline#mode() : ''
 endfunction
 " }}}
 
