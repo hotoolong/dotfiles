@@ -12,6 +12,7 @@ Plug 'junegunn/seoul256.vim'
 Plug 'antoinemadec/FixCursorHold.nvim'
 Plug 'lambdalisue/fern.vim'
 Plug 'lambdalisue/fern-git-status.vim'
+Plug 'yuki-yano/fern-preview.vim'
 Plug 'lambdalisue/nerdfont.vim'
 Plug 'lambdalisue/glyph-palette.vim'
 Plug 'lambdalisue/fern-renderer-nerdfont.vim'
@@ -163,6 +164,12 @@ function! s:init_fern() abort
   nmap <buffer> <C-l> <C-w>l
 
   nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
+
+  " fern-preview
+  nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
+  nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
+  nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
+  nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
 endfunction
 
 augroup fern-custom
