@@ -1,5 +1,5 @@
 set -x NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
-set -x TERM screen-256color-bce;
+set -x TERM screen-256color-bce
 set -x GOPATH $HOME/gocode
 set -x PGDATA /usr/local/var/postgres
 set -x HOMEBREW_NO_AUTO_UPDATE 1
@@ -229,8 +229,8 @@ function gg --description 'Customizing file grep'
   [ $status != 0 ] && commandline -f repaint && return
 
   if test -n (count $out)
-    set -l line (echo $out | cut -d':' -f 2);
-    set -l file (echo $out | cut -d':' -f 1);
+    set -l line (echo $out | cut -d':' -f 2)
+    set -l file (echo $out | cut -d':' -f 1)
     commandline "vi +$line $file -c 'let @/ = \"$argv[1]\"'"
     commandline -f execute
   end
