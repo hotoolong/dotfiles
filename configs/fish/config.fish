@@ -231,7 +231,7 @@ function gg --description 'Customizing file grep'
   if test -n (count $out)
     set -l line (echo $out | cut -d':' -f 2);
     set -l file (echo $out | cut -d':' -f 1);
-    commandline "vi +$line $file -c 'let @/ = \"$argv\"'"
+    commandline "vi +$line $file -c 'let @/ = \"$argv[1]\"'"
     commandline -f execute
   end
 end
