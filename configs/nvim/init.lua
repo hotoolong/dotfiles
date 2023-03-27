@@ -200,42 +200,42 @@ vim.api.nvim_create_augroup( 'my-glyph-palette', {} )
 vim.api.nvim_create_autocmd('FileType', { pattern = "fern", command = "call glyph_palette#apply()", group = 'my-glyph-palette' })
 vim.api.nvim_create_autocmd('FileType', { pattern = "nerdtree,startify", command = "call glyph_palette#apply()", group = 'my-glyph-palette' })
 
-vim.cmd(
-[[
-function! s:init_fern() abort
-  set nonumber
-  nmap <buffer> o <Plug>(fern-action-open:edit)
-  nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
-  nmap <buffer> t <Plug>(fern-action-open:tabedit)
-  nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
-  nmap <buffer> i <Plug>(fern-action-open:split)
-  nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
-  nmap <buffer> s <Plug>(fern-action-open:vsplit)
-  nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
-  nmap <buffer> ma <Plug>(fern-action-new-path)
-  nmap <buffer> P gg
+-- vim.cmd(
+-- [[
+-- function! s:init_fern() abort
+--   set nonumber
+--   nmap <buffer> o <Plug>(fern-action-open:edit)
+--   nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
+--   nmap <buffer> t <Plug>(fern-action-open:tabedit)
+--   nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
+--   nmap <buffer> i <Plug>(fern-action-open:split)
+--   nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
+--   nmap <buffer> s <Plug>(fern-action-open:vsplit)
+--   nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
+--   nmap <buffer> ma <Plug>(fern-action-new-path)
+--   nmap <buffer> P gg
+--
+--   nmap <buffer> C <Plug>(fern-action-enter)
+--   nmap <buffer> u <Plug>(fern-action-leave)
+--   nmap <buffer> r <Plug>(fern-action-reload)
+--   nmap <buffer> R gg<Plug>(fern-action-reload)<C-o>
+--   nmap <buffer> cd <Plug>(fern-action-cd)
+--   nmap <buffer> CD gg<Plug>(fern-action-cd)<C-o>
+--
+--   nmap <buffer> I <Plug>(fern-action-hidden-toggle)
+--
+--   nmap <buffer> q :<C-u>quit<CR>
+--   nmap <buffer> <C-l> <C-w>l
+--
+--   nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
+-- endfunction
+-- ]])
 
-  nmap <buffer> C <Plug>(fern-action-enter)
-  nmap <buffer> u <Plug>(fern-action-leave)
-  nmap <buffer> r <Plug>(fern-action-reload)
-  nmap <buffer> R gg<Plug>(fern-action-reload)<C-o>
-  nmap <buffer> cd <Plug>(fern-action-cd)
-  nmap <buffer> CD gg<Plug>(fern-action-cd)<C-o>
+-- vim.api.nvim_create_augroup('fern-custom', {})
+-- vim.api.nvim_create_autocmd('FileType', { pattern = "fern", command = "call s:init_fern()", group = 'fern-custom' })
 
-  nmap <buffer> I <Plug>(fern-action-hidden-toggle)
-
-  nmap <buffer> q :<C-u>quit<CR>
-  nmap <buffer> <C-l> <C-w>l
-
-  nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
-endfunction
-]])
-
-vim.api.nvim_create_augroup('fern-custom', {})
-vim.api.nvim_create_autocmd('FileType', { pattern = "fern", command = "call s:init_fern()", group = 'fern-custom' })
-
-vim.api.nvim_create_augroup('my-fern-startup', {})
-vim.api.nvim_create_autocmd('VimEnter', { pattern = "*", nested = true, command = "Fern . -drawer -reveal=% -stay", group = 'my-fern-startup' })
+-- vim.api.nvim_create_augroup('my-fern-startup', {})
+-- vim.api.nvim_create_autocmd('VimEnter', { pattern = "*", nested = true, command = "Fern . -drawer -reveal=% -stay", group = 'my-fern-startup' })
 
 -- treesitter
 require('nvim-treesitter.configs').setup({
