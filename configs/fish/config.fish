@@ -14,6 +14,7 @@ source $BREW_PREFIX/opt/asdf/asdf.fish
 
 # fundle setting
 fundle plugin 'edc/bass'
+fundle plugin 'tuvistavie/fish-asdf'
 fundle init
 
 # set EDITOR
