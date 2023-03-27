@@ -237,20 +237,11 @@ function gg --description 'Customizing file grep'
 end
 
 function gga --description "Costomizing file grep in all repositories"
-  set -l out ( \
-    rg --vimgrep --color always $argv (ghq root --all) | \
-        fzf --ansi --multi \
-        --preview="set -l line (echo {1} | cut -d':' -f 2);set -l file (echo {1} | cut -d':' -f 1);bat --highlight-line \$line --line-range (if [ \$line -gt 10 ]; math \$line - 10;else; echo 1;end): --color=always \$file" \
-  )
-  [ $status != 0 ] && commandline -f repaint && return
-  if test -n (count $out)
-    set -l file_names
-    for line in $out
-      set file_names (echo $line | awk -F':' '{print $1}') $file_names
-    end
-    commandline "vi +/$argv $file_names"
-    commandline -f execute
-  end
+  set -l options t/text
+  argparse -n gga $options -- $argv
+  or return
+
+  gg $argv[1] (ghq root --all)
 end
 
 function git-current-branch
