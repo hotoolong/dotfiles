@@ -546,6 +546,7 @@ function reload
   exec $SHELL
 end
 
+eval (gh completion -s fish| source)
 status --is-interactive && source (rbenv init -|psub)
 direnv hook fish | source
 zoxide init fish | source
