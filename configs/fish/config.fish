@@ -1,15 +1,21 @@
-set -x NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
-set -x TERM screen-256color-bce
-set -x GOPATH $HOME/gocode
-set -x PGDATA /usr/local/var/postgres
-set -x HOMEBREW_NO_AUTO_UPDATE 1
-set -x BREW_PREFIX (brew --prefix)
-set -x PATH $HOME/bin $GOPATH/bin ~/.cargo/bin $BREW_PREFIX"/bin" $PATH
-set -x OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
-set -x RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
-set -x TMUX_SHELL (which fish)
-set -g fish_user_paths $BREW_PREFIX"/sbin" $OPENSSL_DIR"/bin" $fish_user_paths
-set -g fish_prompt_pwd_full_dirs 2
+set -gx NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
+set -gx TERM screen-256color-bce;
+set -gx GOPATH $HOME/gocode
+set -gx PGDATA /usr/local/var/postgres
+set -gx NEXTWORD_DATA_PATH $HOME/.nextword-data
+set -gx HOMEBREW_NO_AUTO_UPDATE 1
+set -gx BREW_PREFIX (brew --prefix)
+set -gx OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
+set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
+set -gx TMUX_SHELL (which fish)
+set -gx fish_prompt_pwd_full_dirs 2
+fish_add_path $BREW_PREFIX/bin
+fish_add_path $BREW_PREFIX/sbin
+fish_add_path $OPENSSL_DIR/bin
+fish_add_path $GOPATH/bin
+fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/bin
+
 source $BREW_PREFIX/opt/asdf/asdf.fish
 
 # fundle setting
@@ -19,9 +25,9 @@ fundle init
 
 # set EDITOR
 if command -q nvim
-  set -x EDITOR (which nvim)
+  set -gx EDITOR (which nvim)
 else
-  set -x EDITOR vim
+  set -gx EDITOR vim
 end
 
 function vi
