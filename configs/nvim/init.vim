@@ -685,7 +685,13 @@ inoremap <expr> ,df strftime('%Y-%m-%d %H:%M')
 inoremap <expr> ,dd strftime('%Y-%m-%d')
 inoremap <expr> ,dt strftime('%H:%M')
 
-" filetype of ruby 
+augroup filetype_eruby
+  autocmd!
+  autocmd FileType eruby inoremap <buffer> <silent> %- <%-  -%><Left><Left><Left><Left>
+  autocmd FileType eruby inoremap <buffer> <silent> %% <%=  %><Left><Left><Left>
+augroup END
+
+" filetype of ruby
 autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby
 autocmd BufNewFile,BufRead .pryrc     set filetype=ruby
 autocmd FileType ruby setl iskeyword+=?
