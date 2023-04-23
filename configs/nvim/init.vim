@@ -73,9 +73,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " colorscheme
 Plug 'jacoborus/tender.vim'
 
-" line number
-Plug 'jeffkreeftmeijer/vim-numbertoggle'
-
 " operator and textobject oprator
 Plug 'machakann/vim-sandwich'
 Plug 'terryma/vim-expand-region'
@@ -474,7 +471,7 @@ set smartindent
 set showmatch
 set matchpairs+=<:>
 set matchtime=1
-set number relativenumber
+set number
 set confirm
 "set smarttab
 set tabstop=2
