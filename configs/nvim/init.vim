@@ -96,6 +96,7 @@ Plug 'glepnir/zephyr-nvim'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'vim-denops/denops.vim'
 Plug 'yuki-yano/ai-review.vim'
+Plug 'rgroli/other.nvim'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -458,6 +459,98 @@ nmap ,gm <Plug>(git-messenger)
 
 " iberianpig/tig-explorer {{{
 cnoreabbrev Blame TigBlame
+" }}}
+
+" other.nvim {{{
+lua <<EOF
+require("other-nvim").setup({
+  mappings = {
+    {
+      pattern = "/app/models/(.*).rb",
+      target = {
+        { target = "/app/api/**/%1.rb", context = "api" },
+        { target = "/app/components/**/%1_component.rb", context = "component", transformer = "pluralize" },
+        { target = "/app/controllers/**/%1_controller.rb", context = "controller", transformer = "pluralize" },
+        { target = "/app/views/%1/**/*.html.*", context = "view", transformer = "pluralize" },
+        { target = "/app/policies/**/%1_policy.rb", context = "policy" },
+        { target = "/spec/mailers/%1_spec.rb", context = "mailer" },
+        { target = "/spec/models/%1_spec.rb", context = "spec" },
+        { target = "/spec/**/%1_spec.rb", context = "spec" },
+        { target = "/spec/factories/%1.rb", context = "factory", transformer = "pluralize" },
+        { target = "/sig/**/%1.rbs", context = "rbs" },
+      },
+    },
+    {
+      pattern = "/spec/models/(.*)_spec.rb",
+      target = {
+        { target = "/spec/factories/%1.rb", context = "factory", transformer = "pluralize" },
+        { target = "/app/models/%1.rb", context = "models" },
+      },
+    },
+    {
+      pattern = "/spec/factories/(.*).rb",
+      target = {
+        { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
+        { target = "/spec/models/%1_spec.rb", context = "spec", transformer = "singularize" },
+      },
+    },
+    {
+      pattern = "/app/services/**/(.*).rb",
+      target = {
+        { target = "/spec/services/**/%1_spec.rb", context = "spec" },
+      },
+    },
+    {
+      pattern = "/spec/services/**/(.*)_spec.rb",
+      target = {
+        { target = "/app/services/**/%1.rb", context = "services" },
+      },
+    },
+    {
+      pattern = "/app/controllers/.*/(.*)_controller.rb",
+      target = {
+        { target = "/spec/controllers/%1_spec.rb", context = "spec" },
+        { target = "/spec/requests/%1_spec.rb", context = "spec" },
+        { target = "/app/services/**/%1.rb", context = "services", transformer = "pluralize" },
+        { target = "/app/services/**/%1/*.rb", context = "services", transformer = "pluralize" },
+        { target = "/spec/factories/%1.rb", context = "factories", transformer = "singularize" },
+        { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
+        { target = "/app/views/%1/**/*.html.*", context = "view" },
+      },
+    },
+    {
+      pattern = "/app/views/(.*)/.*.html.*",
+      target = {
+        { target = "/spec/factories/%1.rb", context = "factories", transformer = "singularize" },
+        { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
+        { target = "/app/controllers/**/%1_controller.rb", context = "controller", transformer = "pluralize" },
+      },
+    },
+    {
+      pattern = "/lib/(.*).rb",
+      target = {
+        { target = "/spec/%1_spec.rb", context = "spec" },
+        { target = "/sig/%1.rbs", context = "sig" },
+      },
+    },
+    {
+      pattern = "/sig/**/(.*).rbs",
+      target = {
+        { target = "/lib/%1.rb", context = "lib" },
+        { target = "/**/%1.rb" },
+      },
+    },
+    {
+      pattern = "/spec/(.*)_spec.rb",
+      target = {
+        { target = "/lib/%1.rb", context = "lib" },
+        { target = "/sig/%1.rbs", context = "sig" },
+      },
+    },
+  },
+})
+EOF
+nnoremap <silent> <F3> :Other<CR>
 " }}}
 
 set encoding=UTF-8
