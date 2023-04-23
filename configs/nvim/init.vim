@@ -469,7 +469,6 @@ require("other-nvim").setup({
       pattern = "/app/models/(.*).rb",
       target = {
         { target = "/app/api/**/%1.rb", context = "api" },
-        { target = "/app/components/**/%1_component.rb", context = "component", transformer = "pluralize" },
         { target = "/app/controllers/**/%1_controller.rb", context = "controller", transformer = "pluralize" },
         { target = "/app/views/%1/**/*.html.*", context = "view", transformer = "pluralize" },
         { target = "/app/policies/**/%1_policy.rb", context = "policy" },
@@ -478,6 +477,8 @@ require("other-nvim").setup({
         { target = "/spec/**/%1_spec.rb", context = "spec" },
         { target = "/spec/factories/%1.rb", context = "factory", transformer = "pluralize" },
         { target = "/sig/**/%1.rbs", context = "rbs" },
+        { target = "/app/components/**/%1_component.rb", context = "component" },
+        { target = "/app/components/**/%1_component.html.*", context = "view" },
       },
     },
     {
@@ -516,6 +517,8 @@ require("other-nvim").setup({
         { target = "/spec/factories/%1.rb", context = "factories", transformer = "singularize" },
         { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
         { target = "/app/views/%1/**/*.html.*", context = "view" },
+        { target = "/app/components/**/%1_component.rb", context = "component" },
+        { target = "/app/components/**/%1_component.html.*", context = "view" },
       },
     },
     {
@@ -536,6 +539,7 @@ require("other-nvim").setup({
     {
       pattern = "/sig/**/(.*).rbs",
       target = {
+        { target = "/app/models/%1.rb", context = "model" },
         { target = "/lib/%1.rb", context = "lib" },
         { target = "/**/%1.rb" },
       },
@@ -550,7 +554,7 @@ require("other-nvim").setup({
   },
 })
 EOF
-nnoremap <silent> <F3> :Other<CR>
+nnoremap <silent> <leader>o :Other<CR>
 " }}}
 
 set encoding=UTF-8
