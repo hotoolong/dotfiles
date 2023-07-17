@@ -496,7 +496,7 @@ vim.api.nvim_create_autocmd({'ColorScheme'}, {
 })
 
 vim.api.nvim_create_autocmd({ 'CursorHold' }, {
-  pattern = { '*' },
+  pattern = '*',
   callback = function()
     require('lspsaga.diagnostic').show_cursor_diagnostics()
   end,
@@ -663,15 +663,15 @@ vim.opt.pumheight = 10
 vim.opt.backupskip = "/tmp/*,/private/tmp/*"
 vim.opt.swapfile = false
 vim.opt.expandtab = true
--- set tags+=.git/tags
-vim.opt.mouse= ""
+vim.opt.tags:append('.git/tags')
+vim.opt.mouse = ""
 --
 -- search
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.hlsearch = true
-vim.keymap.set({ 'n' }, '<Esc><Esc>', ':nohlsearch<CR>', { silent = true })
+vim.keymap.set({ 'n' }, '<Esc><Esc>', '<Cmd>nohlsearch<CR>', { silent = true })
 vim.opt.modeline = true
 vim.opt.modelines = 10
 vim.opt.inccommand = 'split'
