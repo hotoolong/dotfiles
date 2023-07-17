@@ -331,18 +331,14 @@ vim.keymap.set({ 't' }, '<C-s>', '<Nop>')
 
 vim.opt.sidescroll = 1
 vim.opt.ttimeoutlen = 10
--- if has('persistent_undo')
---   if !isdirectory($HOME.'/.vim/.undodir')
---     call mkdir($HOME.'/.vim/.undodir', 'p', 0700)
---   endif
---   set undodir=~/.vim/.undodir
---   set undofile
--- endif
---
--- " bell {{{
--- " stop bell
--- set visualbell t_vb=
--- " }}}
+
+if vim.fn.has('persistent_undo') == 1 then
+  if not vim.fn.isdirectory(vim.env.HOME .. '/.vim/undodir') then
+    vim.fn.mkdir(vim.env.HOME .. '/.vim/undodir', 'p', 0700)
+  end
+  vim.opt.undodir = vim.env.HOME .. '/.vim/undodir'
+  vim.opt.undofile = true
+end
 
 vim.keymap.set({ 'n' }, 'Y', 'y$')
 vim.keymap.set({ 'n' }, 'x', '"_x')
