@@ -18,32 +18,370 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ' '
 
 require('lazy').setup({
-  'vim-jp/vimdoc-ja',
-  'neovim/nvim-lspconfig',
-  'williamboman/mason.nvim',
-  'williamboman/mason-lspconfig',
-  'jose-elias-alvarez/null-ls.nvim',
-  'jayp0521/mason-null-ls.nvim',
+  { 'vim-jp/vimdoc-ja', ft = 'help' },
+  {
+    'williamboman/mason.nvim',
+    build = ':MasonUpdate', -- :MasonUpdate updates registry contents
+    config = function()
+      require('mason').setup()
+    end,
+  },
+  {
+    'williamboman/mason-lspconfig',
+    dependencies = {
+      'williamboman/mason.nvim',
+      'neovim/nvim-lspconfig',
+    }
+  },
+  {
+    'jayp0521/mason-null-ls.nvim',
+    dependencies = {
+      'jose-elias-alvarez/null-ls.nvim',
+      "williamboman/mason.nvim",
+    }
+  },
   'stevearc/dressing.nvim',
-  'tami5/lspsaga.nvim',
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ":TSUpdate",
+    branch = 'master',
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        ensure_installed = {
+          'typescript',
+          'tsx',
+        },
+        highlight = {
+          enable = true,
+          disable = {
+            'toml',
+            'c_sharp',
+          },
+        },
+        indent = {
+          enable = true, -- Enable indentation by tresitter
+        }
+      })
+    end
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  },
+  {
+    'tami5/lspsaga.nvim',
+    event = "LspAttach",
+    config = function()
+      require("lspsaga").setup({})
+    end,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+      'nvim-treesitter/nvim-treesitter'
+    }
+  },
+  'ryanoasis/vim-devicons',
   'ray-x/lsp_signature.nvim',
   'onsails/lspkind-nvim',
-  'j-hui/fidget.nvim',
+  {
+    'j-hui/fidget.nvim',
+    tag = 'legacy'
+  },
+  -- {
+  --   "hrsh7th/nvim-cmp",
+  --   -- load cmp on InsertEnter
+  --   event = "InsertEnter",
+  --   -- these dependencies will only be loaded when cmp loads
+  --   -- dependencies are always lazy-loaded unless specified otherwise
+  --   dependencies = {
+  --     "hrsh7th/cmp-nvim-lsp",
+  --     'hrsh7th/cmp-nvim-lsp-signature-help',
+  --     'hrsh7th/cmp-buffer',
+  --     'hrsh7th/cmp-path',
+  --     'hrsh7th/vim-vsnip',
+  --     'hrsh7th/cmp-vsnip',
+  --   },
+  --   -- config = function()
+  --   --   -- ...
+  --   -- end,
+  -- },
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-nvim-lsp-signature-help',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
-  'lambdalisue/fern.vim',
-  'lambdalisue/fern-git-status.vim',
-  'lambdalisue/nerdfont.vim',
+  'hrsh7th/vim-vsnip',
+  {
+    'hrsh7th/vim-vsnip-integ',
+    dependencies = { 'hrsh7th/vim-vsnip' }
+  },
+  'hrsh7th/cmp-vsnip',
+  'folke/trouble.nvim',
   'lambdalisue/glyph-palette.vim',
-  'lambdalisue/fern-renderer-nerdfont.vim',
-  'nvim-lua/plenary.nvim',
-  'nvim-lua/telescope.nvim',
-  'nvim-treesitter/nvim-treesitter',
+  {
+    'lambdalisue/fern.vim',
+    keys = {
+      { "td", "<Cmd>Fern . -drawer -reveal=%<CR>" },
+    }
+  },
+  {
+    'lambdalisue/fern-renderer-nerdfont.vim',
+    dependencies = {
+      'lambdalisue/fern.vim',
+      'lambdalisue/nerdfont.vim',
+      'lambdalisue/fern-git-status.vim'
+    },
+    config = function ()
+      vim.g["fern#renderer#nerdfont#indent_markers"] = 1
+    end
+  },
+  {
+    'yuki-yano/fern-preview.vim',
+    dependencies = { 'lambdalisue/fern.vim' }
+  },
+  {
+    "nvim-telescope/telescope.nvim",
+    cmd = 'Telescope',
+  },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  },
+  {
+    "nvim-telescope/telescope-live-grep-args.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    -- keys = {
+    --   { "<Plug>(ff)g", require('telescope').extensions.live_grep_args.live_grep_args() }
+    -- },
+    config = function()
+      local telescope = require("telescope")
+      telescope.load_extension("live_grep_args")
+      vim.keymap.set('n', '<Plug>(ff)g', require('telescope').extensions.live_grep_args.live_grep_args, {})
+    end
+  },
   'sainnhe/gruvbox-material',
   'tomtom/tcomment_vim',
-  'glepnir/zephyr-nvim',
+  {
+    'glepnir/zephyr-nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  },
+  {
+    'rgroli/other.nvim',
+    dir = '/Users/hotoolong/ghq/github.com/rgroli/other.nvim',
+    keys = {
+      { "<leader>o", "<Cmd>Other<CR>", { silent = true } },
+    }
+  },
+  {
+    'liuchengxu/vista.vim',
+    cmd = 'Vista',
+    keys = {
+      { "<F4>", "<Cmd>Vista!!<CR>", { silent = true } },
+    },
+    config = function()
+      vim.g.vista_stay_on_open = false
+      vim.g.vista_close_on_jump = 1
+      vim.g.vista_icon_indent = {"╰─▸ ", "├─▸ "}
+    end,
+    init = function ()
+      vim.api.nvim_create_autocmd('VimEnter', {
+        pattern = "*",
+        command = "Vista focus"
+      })
+      vim.api.nvim_create_autocmd('QuitPre', {
+        pattern = "*",
+        command = "Vista!"
+      })
+    end
+  },
+  -- ruby rails
+  {
+    'jlcrochet/vim-ruby',
+    ft = { 'ruby', 'eruby' }
+  },
+  'jlcrochet/vim-rbs',
+  'noprompt/vim-yardoc',
+  'tpope/vim-rails',
+  'slim-template/vim-slim',
+  -- status line
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = 'nvim-tree/nvim-web-devicons',
+    config = function ()
+      require('lualine').setup({
+        sections = {
+          lualine_c = {
+            {
+              'filename',
+              path = 1,
+            }
+          }
+        }
+      })
+    end
+  },
+  -- etc
+  'dag/vim-fish',
+  {
+    'hotoolong/translate.nvim',
+    config = function()
+      vim.g.translate_copy_result = 1
+    end
+  },
+  {
+    'simeji/winresizer',
+    config = function()
+      vim.g.winresizer_start_key = '<C-z>'
+    end
+  },
+  {
+    'thinca/vim-quickrun',
+    cmd = 'QuickRun',
+    keys = {
+      { '\\r', '<Cmd>write<CR><Cmd>QuickRun<CR>', { silent = true } },
+    },
+    config = function ()
+      vim.g.quickrun_config = {
+        _ = { runner = "neovim_job" },
+        rspec = {
+          commnad = "rspec",
+          exec = 'bundle exec %c --no-color %s',
+          filetype = 'rspec-result'
+        },
+        ['rspec.line'] = {
+          command = 'rspec',
+          exec = 'bundle exec %c %s:%a',
+          filetype = 'rspec-result'
+        }
+      }
+    end,
+    init = function()
+      vim.api.nvim_create_autocmd( { "BufWinEnter", "BufNewFile" }, {
+        pattern = "*_spec.rb",
+        callback = function()
+          vim.api.nvim_echo({{ "This is a normal message", "NormalMsg" }}, true, {})
+          vim.bo.filetype = 'ruby.rspec'
+          vim.b.quickrun_config = { type = 'rspec' }
+          vim.api.nvim_buf_set_keymap(0, 'n', '\\t', ':write<CR>:execute "QuickRun rspec.line -args " . line(".")<CR>', { nowait = true, silent = true })
+        end
+      })
+    end
+  },
+  {
+    'lambdalisue/vim-quickrun-neovim-job',
+    dependencies = { 'thinca/vim-quickrun' },
+  },
+  --html
+  'mattn/emmet-vim',
+  'othree/html5.vim',
+  --git
+  {
+    'rhysd/git-messenger.vim',
+    keys = {
+      { ",gm", "<Plug>(git-messenger)" },
+    },
+    config = function()
+      vim.g.git_messenger_no_default_mappings = true
+      vim.g.git_messenger_include_diff = "current"
+      vim.g.git_messenger_always_into_popup = true
+    end
+  },
+  {
+    'airblade/vim-gitgutter',
+    event = 'BufRead',
+    keys = {
+      -- default ]c [c
+      { 'gn', '<Plug>(GitGutterNextHunk)' },
+      { 'gp', '<Plug>(GitGutterPrevHunk)' },
+      { ',gr', '<Cmd>GitGutterUndoHunk<CR>', { silent = true } },
+    }
+  },
+  {
+    'iberianpig/tig-explorer.vim',
+    config = function ()
+      vim.cmd([[cnoreabbrev Blame TigBlame]])
+    end
+  },
+  {
+    'rhysd/conflict-marker.vim',
+    init = function()
+      -- disable the default highlight group
+      vim.g.conflict_marker_highlight_group = ''
+
+      -- Include text after begin and end markers
+      vim.g.conflict_marker_begin = '^<<<<<<< .*$'
+      vim.g.conflict_marker_end   = '^>>>>>>> .*$'
+
+      vim.cmd.highlight({ "ConflictMarkerBegin", "guibg=#2f7366" })
+      vim.cmd.highlight({ "ConflictMarkerOurs", "guibg=#2e5049" })
+      vim.cmd.highlight({ "ConflictMarkerTheirs", "guibg=#344f69" })
+      vim.cmd.highlight({ "ConflictMarkerEnd", "guibg=#2f628e" })
+      vim.cmd.highlight({ "ConflictMarkerCommonAncestorsHunk", "guibg=#754a81" })
+    end
+  },
+  -- js
+  'moll/vim-node',
+  'pangloss/vim-javascript',
+
+  -- etc
+  {
+    'AndrewRadev/switch.vim',
+    keys = {
+      { "<C-c>", "<Cmd>Switch<CR>", { silent = true } },
+    },
+    init = function()
+      -- switch.vim
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = { "eruby", "ruby" },
+        callback = function()
+          vim.b.switch_custom_definitions = {
+            {
+              [ [[[''"]\(\k\+\)[''"] => \([^),]\+\)]] ] = [[\1: \2 ]],
+              [ [[\(\k\+\):\s*\([^},]\+\)]] ] = [["\1" => \2]],
+            },
+            { 'if', 'unless' },
+            { 'present?', 'blank?' },
+            { '==', '!=' },
+          }
+        end
+      })
+    end
+  },
+  'mattn/vim-maketable',
+  'pechorin/any-jump.vim',
+  {
+    "rafamadriz/friendly-snippets",
+    dependencies = { 'hrsh7th/vim-vsnip', 'hrsh7th/cmp-vsnip' },
+  },
+  {
+    'sheerun/vim-polyglot',
+    init = function()
+      vim.g.polyglot_disabled = { 'rbs' }
+    end
+  },
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-treesitter/nvim-treesitter-textobjects' },
+    config = function()
+      require("nvim-surround").setup({})
+    end
+  },
+  -- {'romgrk/barbar.nvim',
+  --   dependencies = {
+  --     'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
+  --     'nvim-tree/nvim-web-devicons', -- OPTIONAL: for file icons
+  --   },
+  --   init = function()
+  --     vim.g.barbar_auto_setup = false
+  --     require("barbar").setup({
+  --       auto_hide = true,
+  --       highlight_inactive_file_icons = false,
+  --       highlight_visible = false
+  --     })
+  --   end,
+  --   version = '^1.0.0', -- optional: only update when a new 1.x version is released
+  -- },
 })
 
 -- set options
