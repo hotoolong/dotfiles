@@ -454,6 +454,13 @@ mason_lspconfig.setup_handlers({
       capabilities = require('cmp_nvim_lsp').default_capabilities(),
     }
 
+    if server_name == "lua_ls" then
+      opts.settings = {
+        Lua = {
+          diagnostics = { globals = { 'vim' } },
+        }
+      }
+    end
     lsp_config[server_name].setup(opts)
   end,
 })
