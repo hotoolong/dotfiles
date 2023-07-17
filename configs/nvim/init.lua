@@ -399,6 +399,8 @@ vim.keymap.set({ 'n', 'x' }, '<Plug>(ff)', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, ';', '<Plug>(ff)')
 
 -- telescope.nvim
+local actions = require "telescope.actions"
+local lga_actions = require("telescope-live-grep-args.actions")
 require('telescope').setup({
   defaults = {
     mappings = {
@@ -407,10 +409,22 @@ require('telescope').setup({
         ['<C-g>'] = require('telescope.actions').close,
       },
       i = {
-        ['<C-g>'] = require('telescope.actions').close,
-      },
-    },
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+      }
+    }
   },
+  extensions = {
+    live_grep_args = {
+      auto_quoting = true,
+      mappings = {
+        i = {
+          ["<C-w>"] = lga_actions.quote_prompt(),
+          ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+        },
+      }
+    }
+  }
 })
 vim.keymap.set({ 'n' }, '<Plug>(ff)r', '<Cmd>Telescope find_files<CR>')
 vim.keymap.set({ 'n' }, '<Plug>(ff)s', '<Cmd>Telescope git_status<CR>')
