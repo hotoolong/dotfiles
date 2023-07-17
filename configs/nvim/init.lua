@@ -428,10 +428,19 @@ require('telescope').setup({
     }
   }
 })
-vim.keymap.set({ 'n' }, '<Plug>(ff)r', '<Cmd>Telescope find_files<CR>')
-vim.keymap.set({ 'n' }, '<Plug>(ff)s', '<Cmd>Telescope git_status<CR>')
-vim.keymap.set({ 'n' }, '<Plug>(ff)b', '<Cmd>Telescope buffers<CR>')
-vim.keymap.set({ 'n' }, '<Plug>(ff)f', '<Cmd>Telescope live_grep<CR>')
+local telescope = require("telescope")
+telescope.load_extension("live_grep_args")
+
+local builtin = require('telescope.builtin')
+-- local extensions = require('telescope').extensions
+vim.keymap.set('n', '<Plug>(ff)f', builtin.find_files, {})
+-- vim.keymap.set('n', '<Plug>(ff)g', builtin.live_grep, {})
+vim.keymap.set('n', '<Plug>(ff)g', require('telescope').extensions.live_grep_args.live_grep_args, {})
+vim.keymap.set('n', '<Plug>(ff)G', builtin.resume, {})
+vim.keymap.set('n', '<Plug>(ff)m', builtin.oldfiles, {})
+vim.keymap.set('n', '<Plug>(ff)s', builtin.git_status, {})
+vim.keymap.set('n', '<Plug>(ff)b', builtin.buffers, {})
+vim.keymap.set('n', '<Plug>(ff)h', builtin.help_tags, {})
 
 -- nvim-lsp
 local lsp_config = require('lspconfig')
