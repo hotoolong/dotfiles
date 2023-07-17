@@ -398,7 +398,7 @@ vim.keymap.set({ 'n', 'x' }, '<Space>', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, '<Plug>(lsp)', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, 'm', '<Plug>(lsp)')
 vim.keymap.set({ 'n', 'x' }, '<Plug>(ff)', '<Nop>')
-vim.keymap.set({ 'n', 'x' }, ';', '<Plug>(ff)')
+vim.keymap.set({ 'n', 'x' }, ',', '<Plug>(ff)')
 
 -- telescope.nvim
 local actions = require "telescope.actions"
@@ -444,34 +444,66 @@ vim.keymap.set('n', '<Plug>(ff)h', builtin.help_tags, {})
 
 -- nvim-lsp
 local lsp_config = require('lspconfig')
-local mason = require('mason')
 local mason_lspconfig = require('mason-lspconfig')
 local mason_null_ls = require('mason-null-ls')
 local null_ls = require('null-ls')
 
 require('dressing').setup()
-require('lspsaga').setup()
 require('lsp_signature').setup({ hint_enable = false })
 require('fidget').setup()
 
-mason.setup()
-mason_null_ls.setup({
-  ensure_installed = { 'prettier' },
-  automatic_installation = true,
-})
 null_ls.setup({
-  sources = { null_ls.builtins.formatting.prettier },
+  sources = {
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.completion.spell,
+    null_ls.builtins.completion.tags,
+    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.diagnostics.erb_lint,
+    null_ls.builtins.diagnostics.fish,
+    null_ls.builtins.diagnostics.reek,
+    null_ls.builtins.diagnostics.rubocop.with({
+      prefer_local = "bundle_bin",
+      condition = function(utils)
+        return utils.root_has_file({".rubocop.yml"})
+      end
+    }),
+  },
 })
 
 mason_lspconfig.setup({
   ensure_installed = {
     'tsserver',
     'eslint',
+    'denols',
+    'tailwindcss',
     'solargraph',
     'ruby_ls',
+    -- 'standardrb',
+    'yamlls',
+    'lua_ls',
   },
   automatic_installation = true,
 })
+
+lsp_config.steep.setup({})
+-- lsp_config.steep.setup({
+--   -- 補完に対応したcapabilitiesを渡す
+--   -- capabilities = capabilities,
+--   on_attach = function(client, bufnr)
+--     -- LSP関連のキーマップの基本定義
+--     on_attach(client, bufnr)
+--     -- Steepで型チェックを再実行するためのキーマップ定義
+--     vim.keymap.set("n", "<space>ct", function()
+--       client.request("$/typecheck", { guid = "typecheck-" .. os.time() }, function()
+--       end, bufnr)
+--     end, { silent = true, buffer = bufnr })
+--   end,
+--   on_new_config = function(config, root_dir)
+--     config.cmd = {"bundle", "exec", "steep", "langserver"}
+--     return config
+--   end,
+-- })
 
 mason_lspconfig.setup_handlers({
   function(server_name)
@@ -563,12 +595,17 @@ cmp.setup({
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lua' },
-    { name = 'luasnip' },
+    -- { name = 'luasnip' },
     { name = 'cmdline' },
-    { name = 'git' },
+    { name = 'vsnip' },
   }),
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
   formatting = {
-    fields = { 'abbr', 'kind', 'menu' },
+    -- fields = { 'abbr', 'kind', 'menu' },
     format = lspkind.cmp_format({
       mode = 'text',
     }),
@@ -576,75 +613,162 @@ cmp.setup({
 })
 
 -- fern.vim
-vim.keymap.set({ 'n' }, 'td', ':<C-u>Fern . -drawer -reveal=%<CR>')
-
-vim.keymap.set({ 'n' }, '<Leader>e', '<Cmd>Fern . -drawer<CR>')
-vim.keymap.set({ 'n' }, '<Leader>E', '<Cmd>Fern . -drawer -reveal=%<CR>')
-
 -- lambdalisue/fern.vim
--- vim.g.fern#renderer = 'nerdfont'
-vim.cmd('let g:fern#renderer = "nerdfont"')
+vim.g["fern#renderer"] = 'nerdfont'
 
-vim.api.nvim_create_augroup( 'my-glyph-palette', {} )
+vim.api.nvim_create_augroup('my-glyph-palette', {})
 vim.api.nvim_create_autocmd('FileType', { pattern = "fern", command = "call glyph_palette#apply()", group = 'my-glyph-palette' })
 vim.api.nvim_create_autocmd('FileType', { pattern = "nerdtree,startify", command = "call glyph_palette#apply()", group = 'my-glyph-palette' })
 
--- vim.cmd(
--- [[
--- function! s:init_fern() abort
---   set nonumber
---   nmap <buffer> o <Plug>(fern-action-open:edit)
---   nmap <buffer> go <Plug>(fern-action-open:edit)<C-w>p
---   nmap <buffer> t <Plug>(fern-action-open:tabedit)
---   nmap <buffer> T <Plug>(fern-action-open:tabedit)gT
---   nmap <buffer> i <Plug>(fern-action-open:split)
---   nmap <buffer> gi <Plug>(fern-action-open:split)<C-w>p
---   nmap <buffer> s <Plug>(fern-action-open:vsplit)
---   nmap <buffer> gs <Plug>(fern-action-open:vsplit)<C-w>p
---   nmap <buffer> ma <Plug>(fern-action-new-path)
---   nmap <buffer> P gg
---
---   nmap <buffer> C <Plug>(fern-action-enter)
---   nmap <buffer> u <Plug>(fern-action-leave)
---   nmap <buffer> r <Plug>(fern-action-reload)
---   nmap <buffer> R gg<Plug>(fern-action-reload)<C-o>
---   nmap <buffer> cd <Plug>(fern-action-cd)
---   nmap <buffer> CD gg<Plug>(fern-action-cd)<C-o>
---
---   nmap <buffer> I <Plug>(fern-action-hidden-toggle)
---
---   nmap <buffer> q :<C-u>quit<CR>
---   nmap <buffer> <C-l> <C-w>l
---
---   nmap <buffer> <Plug>(fern-action-open) <Plug>(fern-action-open:select)
--- endfunction
--- ]])
+vim.api.nvim_create_augroup('fern-custom', {})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = "fern",
+  group = 'fern-custom',
+  callback = function()
+    vim.opt.number = false
+    local opts = { silent = true, buffer = true, noremap = false }
+    local key = vim.keymap
 
--- vim.api.nvim_create_augroup('fern-custom', {})
--- vim.api.nvim_create_autocmd('FileType', { pattern = "fern", command = "call s:init_fern()", group = 'fern-custom' })
+    key.set({ 'n' }, 'o', '<Plug>(fern-action-open:edit)', opts)
+    key.set({ 'n' }, 'go', '<Plug>(fern-action-open:edit)<C-w>p', opts)
+    key.set({ 'n' }, 't', '<Plug>(fern-action-open:tabedit)', opts)
+    key.set({ 'n' }, 'T', '<Plug>(fern-action-open:tabedit)gT', opts)
+    key.set({ 'n' }, 'v', '<Plug>(fern-action-open:split)', opts)
+    key.set({ 'n' }, 'gv', '<Plug>(fern-action-open:split)<C-w>p', opts)
+    key.set({ 'n' }, 's', '<Plug>(fern-action-open:vsplit)', opts)
+    key.set({ 'n' }, 'gs', '<Plug>(fern-action-open:vsplit)<C-w>p', opts)
+    key.set({ 'n' }, 'ma', '<Plug>(fern-action-new-path)', opts)
+    key.set({ 'n' }, 'P', 'gg', opts)
+    key.set({ 'n' }, 'C', '<Plug>(fern-action-enter)', opts)
+    key.set({ 'n' }, 'u', '<Plug>(fern-action-leave)', opts)
+    key.set({ 'n' }, 'r', '<Plug>(fern-action-reload)', opts)
+    key.set({ 'n' }, 'R', 'gg<Plug>(fern-action-reload)<C-o>', opts)
+    key.set({ 'n' }, 'cd', '<Plug>(fern-action-cd)', opts)
+    key.set({ 'n' }, 'CD', 'gg<Plug>(fern-action-cd)<C-o>', opts)
+    key.set({ 'n' }, 'I', '<Plug>(fern-action-hidden-toggle)', opts)
+    key.set({ 'n' }, 'q', '<Cmd>quit<CR>', opts)
+    key.set({ 'n' }, '<C-l>', '<C-w>l', opts)
+    key.set({ 'n' }, '<Plug>(fern-action-open)', '<Plug>(fern-action-open:select)', opts)
+    -- fern-preview
+    key.set({ 'n' }, 'p', '<Plug>(fern-action-preview:toggle)', opts)
+    key.set({ 'n' }, '<C-p>', '<Plug>(fern-action-preview:toggle)', opts)
+    key.set({ 'n' }, '<C-d>', '<Plug>(fern-action-preview:scroll:down:half)', opts)
+    key.set({ 'n' }, '<C-u>', '<Plug>(fern-action-preview:scroll:up:half)', opts)
+  end
+})
 
--- vim.api.nvim_create_augroup('my-fern-startup', {})
--- vim.api.nvim_create_autocmd('VimEnter', { pattern = "*", nested = true, command = "Fern . -drawer -reveal=% -stay", group = 'my-fern-startup' })
+vim.api.nvim_create_augroup('my-fern-startup', {})
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = 'my-fern-startup',
+  pattern = "*",
+  nested = true,
+  command = "Fern . -drawer -reveal=% -stay"
+})
 
--- treesitter
-require('nvim-treesitter.configs').setup({
-  ensure_installed = {
-    'typescript',
-    'tsx',
-  },
-  highlight = {
-    enable = true,
-    disable = {
-      'toml',
-      'c_sharp',
+-- other.vim
+require("other-nvim").setup({
+  rememberBuffers = false,
+  mappings = {
+    {
+      pattern = "/app/models/(.*).rb",
+      target = {
+        { target = "/app/api/**/%1.rb", context = "api" },
+        { target = "/app/controllers/**/%1_controller.rb", context = "controller", transformer = "pluralize" },
+        { target = "/app/controllers/%1_controller.rb", context = "controller", transformer = "pluralize" },
+        { target = "/app/views/%1/**/*.html.*", context = "view", transformer = "pluralize" },
+        { target = "/app/policies/**/%1_policy.rb", context = "policy" },
+        { target = "/spec/mailers/%1_spec.rb", context = "mailer" },
+        { target = "/spec/models/%1_spec.rb", context = "spec" },
+        { target = "/app/decorators/%1_decorator.rb", context = "decorator" },
+        { target = "/spec/**/%1_spec.rb", context = "spec" },
+        { target = "/spec/factories/%1.rb", context = "factory", transformer = "pluralize" },
+        { target = "/sig/**/%1.rbs", context = "rbs" },
+        { target = "/app/components*/%1_component.rb", context = "component" },
+        { target = "/app/components*/%1_component.html.*", context = "view" },
+      },
+    },
+    {
+      pattern = "/spec/models/(.*)_spec.rb",
+      target = {
+        { target = "/spec/factories/%1.rb", context = "factory", transformer = "pluralize" },
+        { target = "/app/models/%1.rb", context = "models" },
+      },
+    },
+    {
+      pattern = "/spec/factories/(.*).rb",
+      target = {
+        { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
+        { target = "/spec/models/%1_spec.rb", context = "spec", transformer = "singularize" },
+      },
+    },
+    {
+      pattern = "/app/services/**/(.*).rb",
+      target = {
+        { target = "/spec/services/**/%1_spec.rb", context = "spec" },
+      },
+    },
+    {
+      pattern = "/spec/services/**/(.*)_spec.rb",
+      target = {
+        { target = "/app/services/**/%1.rb", context = "services" },
+      },
+    },
+    {
+      pattern = "/app/controllers/*/(.*)_controller.rb",
+      target = {
+        { target = "/spec/controllers/%1_spec.rb", context = "spec" },
+        { target = "/spec/requests/%1_spec.rb", context = "spec" },
+        { target = "/app/services/**/%1.rb", context = "services", transformer = "pluralize" },
+        { target = "/app/services/**/%1/*.rb", context = "services", transformer = "pluralize" },
+        { target = "/spec/factories/%1.rb", context = "factories", transformer = "singularize" },
+        { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
+        { target = "/app/models/%1.rb", context = "spec", transformer = "singularize" },
+        { target = "/app/views/%1/**/*.html.*", context = "view" },
+        { target = "/app/components*/%1_component.rb", context = "component", transformer = "singularize" },
+        { target = "/app/components*/%1_component.html.*", context = "view", transformer = "singularize" },
+      },
+    },
+    {
+      pattern = "/app/components*/(.*)_component.rb",
+      target = {
+        { target = "/spec/components*/%1_spec.rb", context = "spec" },
+        { target = "/app/models/%1.rb", context = "models" },
+      },
+    },
+    {
+      pattern = "/app/views/(.*)/.*.html.*",
+      target = {
+        { target = "/spec/factories/%1.rb", context = "factories", transformer = "singularize" },
+        { target = "/app/models/%1.rb", context = "models", transformer = "singularize" },
+        { target = "/app/controllers/**/%1_controller.rb", context = "controller", transformer = "pluralize" },
+      },
+    },
+    {
+      pattern = "/lib/(.*).rb",
+      target = {
+        { target = "/spec/%1_spec.rb", context = "spec" },
+        { target = "/sig/%1.rbs", context = "sig" },
+      },
+    },
+    {
+      pattern = "/sig/**/(.*).rbs",
+      target = {
+        { target = "/app/models/%1.rb", context = "model" },
+        { target = "/lib/%1.rb", context = "lib" },
+        { target = "/**/%1.rb" },
+      },
+    },
+    {
+      pattern = "/spec/(.*)_spec.rb",
+      target = {
+        { target = "/lib/%1.rb", context = "lib" },
+        { target = "/sig/%1.rbs", context = "sig" },
+      },
     },
   },
 })
 
-
--- vim.opt.clipboard = "unnamedplus"
-vim.opt.clipboard:append{'unnamedplus'}
-
+vim.opt.clipboard:append('unnamedplus')
 vim.opt.encoding="UTF-8"
 
 -- default setting
@@ -653,10 +777,8 @@ vim.opt.sh = 'bash'
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 vim.opt.showmatch = true
--- set matchpairs+=<:>
--- vim.opt.matchpairs = '<:>'
+vim.opt.matchpairs:append('<:>')
 vim.opt.matchtime = 1
-vim.opt.relativenumber = true
 vim.opt.confirm = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
@@ -739,10 +861,6 @@ vim.keymap.set({ 'v' }, 'y', 'y`>')
 -- " ddでレジスタを更新しても対応
 vim.keymap.set({ 'n' }, 'PP', '"0p')
 
--- if has('mac')
---   set clipboard+=unnamedplus
--- endif
---
 -- Tab
 vim.keymap.set({ 'n' }, 't', '<Nop>')
 vim.keymap.set({ 'n' }, 'tt', ':<C-u>tabnew<CR>:tabmove<CR>', { silent = true })
@@ -753,23 +871,42 @@ vim.keymap.set({ 'n' }, 'tp', ':<C-u>tabprevious<CR>', { silent = true })
 vim.keymap.set({ 'n' }, 'tj', ":<C-u>tab stjump <C-R>=expand('<cword>')<CR><CR>zz", { silent = true })
 
 -- 日付追加
-vim.keymap.set({ 'i' }, ',df', "strftime('%Y-%m-%d %H:%M')", {expr = true})
-vim.keymap.set({ 'i' }, ',dd', "strftime('%Y-%m-%d')", {expr = true})
-vim.keymap.set({ 'i' }, ',dt', "strftime('%H:%M')", {expr = true})
+vim.keymap.set({ 'i' }, ',df', "strftime('%Y-%m-%d %H:%M')", { expr = true })
+vim.keymap.set({ 'i' }, ',dd', "strftime('%Y-%m-%d')", { expr = true })
+vim.keymap.set({ 'i' }, ',dt', "strftime('%H:%M')", { expr = true })
+
+local filetypeERuby = vim.api.nvim_create_augroup("filetypeERuby", {})
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = "eruby",
+  callback = function()
+    vim.keymap.set({ 'i' }, '%%', "<%=  %><Left><Left><Left>", { buffer = true, silent = true })
+    vim.keymap.set({ 'i' }, '%-', "<%-  -%><Left><Left><Left><Left>", { buffer = true, silent = true })
+    vim.opt.iskeyword:append("?")
+  end,
+  group = filetypeERuby
+})
 
 -- filetype of ruby
--- autocmd BufNewFile,BufRead *.jbuilder set filetype=ruby
--- autocmd BufNewFile,BufRead .pryrc     set filetype=ruby
--- autocmd FileType ruby setl iskeyword+=?
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  pattern = { "*.jbuilder", ".pryrc" },
+  callback = function()
+    vim.bo.filetype = "ruby"
+  end
+})
 
--- " sudo権限で保存
--- cnoremap w!! w !sudo tee > /dev/null %<CR>
---
--- augroup fileTypeIndent
---   autocmd!
---   autocmd BufNewFile, BufRead *.tsv setlocal noexpandtab
--- augroup END
---
--- autocmd ColorScheme * highlight NormalFloat ctermbg=17 guibg=#374549
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = "ruby",
+  callback = function()
+    vim.opt.iskeyword:append("?")
+  end
+})
+
+local fileTypeIndent = vim.api.nvim_create_augroup("fileTypeIndent", { clear = true })
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  pattern = "*.tsv",
+  command = "setlocal noexpandtab",
+  group = fileTypeIndent
+})
+
 vim.opt.termguicolors = true
 vim.cmd.colorscheme('zephyr')
