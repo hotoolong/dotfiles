@@ -481,6 +481,20 @@ mason_lspconfig.setup_handlers({
   end,
 })
 
+vim.api.nvim_create_augroup('extra-whitespace', {})
+vim.api.nvim_create_autocmd({'VimEnter', 'WinEnter'}, {
+    group = 'extra-whitespace',
+    pattern = '*',
+    command = [[call matchadd('ExtraWhitespace', '[\u00A0\u2000-\u200B\u3000]')]]
+})
+vim.api.nvim_create_autocmd({'ColorScheme'}, {
+  group = 'extra-whitespace',
+  pattern = '*',
+  callback = function()
+    vim.cmd.highlight({ "default", "ExtraWhitespace", "ctermbg=70 guibg=#008800" })
+  end,
+})
+
 vim.api.nvim_create_autocmd({ 'CursorHold' }, {
   pattern = { '*' },
   callback = function()
