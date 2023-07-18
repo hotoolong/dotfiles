@@ -344,6 +344,16 @@ require('lazy').setup({
           }
         end
       })
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = { "javascript" },
+        callback = function()
+          vim.b.switch_custom_definitions = {
+            { 'let', 'const' },
+            { '===', '!==' },
+          }
+        end
+      })
+
     end
   },
   'mattn/vim-maketable',
