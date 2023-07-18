@@ -18,6 +18,8 @@ fish_add_path $HOME/bin
 
 source $BREW_PREFIX/opt/asdf/asdf.fish
 
+if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
+
 # fundle setting
 fundle plugin 'edc/bass'
 fundle plugin 'tuvistavie/fish-asdf'
