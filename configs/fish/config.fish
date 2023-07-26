@@ -226,12 +226,12 @@ function gg --description 'Customizing file grep'
   or return
 
   if set -lq _flag_text
-    rg --vimgrep --color always $argv
+    rg --hidden --vimgrep --color always $argv
     return
   end
 
   set -l out ( \
-    rg --vimgrep --color always $argv | \
+    rg --hidden --vimgrep --color always $argv | \
         fzf --ansi --multi \
         --preview="set -l line (echo {1} | cut -d':' -f 2);set -l file (echo {1} | cut -d':' -f 1);bat --highlight-line \$line --line-range (if [ \$line -gt 10 ]; math \$line - 10;else; echo 1;end): --color=always \$file" \
   )
