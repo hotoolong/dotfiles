@@ -166,7 +166,6 @@ require('lazy').setup({
   },
   {
     'rgroli/other.nvim',
-    dir = '/Users/hotoolong/ghq/github.com/rgroli/other.nvim',
     keys = {
       { "<leader>o", "<Cmd>Other<CR>", { silent = true } },
     }
