@@ -16,6 +16,7 @@ fish_add_path $GOPATH/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/bin
 
+source $BREW_PREFIX/opt/asdf/libexec/asdf.fish
 source $BREW_PREFIX/opt/asdf/share/fish/vendor_completions.d/asdf.fish
 
 if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
