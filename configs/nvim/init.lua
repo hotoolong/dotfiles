@@ -110,6 +110,7 @@ require('lazy').setup({
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
   'hrsh7th/vim-vsnip',
+  'rafamadriz/friendly-snippets',
   {
     'hrsh7th/vim-vsnip-integ',
     dependencies = { 'hrsh7th/vim-vsnip' }
