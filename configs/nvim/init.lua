@@ -110,7 +110,6 @@ require('lazy').setup({
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
   'hrsh7th/vim-vsnip',
-  'rafamadriz/friendly-snippets',
   {
     'hrsh7th/vim-vsnip-integ',
     dependencies = { 'hrsh7th/vim-vsnip' }
@@ -409,6 +408,14 @@ vim.keymap.set({ 'n', 'x' }, '<Plug>(lsp)', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, 'm', '<Plug>(lsp)')
 vim.keymap.set({ 'n', 'x' }, '<Plug>(ff)', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, ',', '<Plug>(ff)')
+
+-- vim-vsnip
+vim.cmd([[
+  imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+  smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+  imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+  smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+]])
 
 -- telescope.nvim
 local actions = require "telescope.actions"
