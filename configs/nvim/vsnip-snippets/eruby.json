@@ -1,0 +1,10 @@
+{
+  "insert ruby code": {
+    "prefix": "%%",
+    "body": ["<%= $1 %>"]
+  },
+  "insert ruby code": {
+    "prefix": "%%",
+    "body": ["<%- $1 %>"]
+  },
+}
