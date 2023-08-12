@@ -115,7 +115,15 @@ require('lazy').setup({
     dependencies = { 'hrsh7th/vim-vsnip' }
   },
   'hrsh7th/cmp-vsnip',
-  'folke/trouble.nvim',
+  {
+    'folke/trouble.nvim',
+    keys = {
+      { "<leader>tr", function() require("trouble").toggle() end },
+      { "<leader>tw", function() require("trouble").open("workspace_diagnostics") end },
+      { "<leader>td", function() require("trouble").open("document_diagnostics") end },
+      { "<leader>tl", function() require("trouble").open("lsp_references") end },
+    },
+  },
   'lambdalisue/glyph-palette.vim',
   {
     'lambdalisue/fern.vim',
@@ -130,7 +138,7 @@ require('lazy').setup({
       'lambdalisue/nerdfont.vim',
       'lambdalisue/fern-git-status.vim'
     },
-    config = function ()
+    config = function()
       vim.g["fern#renderer#nerdfont#indent_markers"] = 1
     end
   },
@@ -150,7 +158,7 @@ require('lazy').setup({
     "nvim-telescope/telescope-live-grep-args.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
     -- keys = {
-    --   { "<Plug>(ff)g", require('telescope').extensions.live_grep_args.live_grep_args() }
+    --   { "<Plug>(ff)g", require('telescope').extensions.live_grep_args.live_grep_args }
     -- },
     config = function()
       local telescope = require("telescope")
@@ -410,6 +418,7 @@ vim.keymap.set({ 'n', 'x' }, '<Plug>(ff)', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, ',', '<Plug>(ff)')
 
 -- vim-vsnip
+vim.g.vsnip_snippet_dir = '~/.config/nvim/vsnip-snippets'
 vim.cmd([[
   imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
   smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
@@ -892,16 +901,16 @@ vim.keymap.set({ 'i' }, ',df', "strftime('%Y-%m-%d %H:%M')", { expr = true })
 vim.keymap.set({ 'i' }, ',dd', "strftime('%Y-%m-%d')", { expr = true })
 vim.keymap.set({ 'i' }, ',dt', "strftime('%H:%M')", { expr = true })
 
-local filetypeERuby = vim.api.nvim_create_augroup("filetypeERuby", {})
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = "eruby",
-  callback = function()
-    vim.keymap.set({ 'i' }, '%%', "<%=  %><Left><Left><Left>", { buffer = true, silent = true })
-    vim.keymap.set({ 'i' }, '%-', "<%-  -%><Left><Left><Left><Left>", { buffer = true, silent = true })
-    vim.opt.iskeyword:append("?")
-  end,
-  group = filetypeERuby
-})
+-- local filetypeERuby = vim.api.nvim_create_augroup("filetypeERuby", {})
+-- vim.api.nvim_create_autocmd({ "FileType" }, {
+--   pattern = "eruby",
+--   callback = function()
+--     vim.keymap.set({ 'i' }, '%%', "<%=  %><Left><Left><Left>", { buffer = true, silent = true })
+--     vim.keymap.set({ 'i' }, '%-', "<%-  -%><Left><Left><Left><Left>", { buffer = true, silent = true })
+--     vim.opt.iskeyword:append("?")
+--   end,
+--   group = filetypeERuby
+-- })
 
 -- filetype of ruby
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
