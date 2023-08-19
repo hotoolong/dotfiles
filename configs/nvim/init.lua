@@ -512,7 +512,9 @@ mason_lspconfig.setup({
   automatic_installation = true,
 })
 
-lsp_config.steep.setup({})
+lsp_config.steep.setup({
+  root_dir = lsp_config.util.root_pattern("Gemfile", ".git", "Steepfile")
+})
 -- lsp_config.steep.setup({
 --   -- 補完に対応したcapabilitiesを渡す
 --   -- capabilities = capabilities,
