@@ -48,6 +48,7 @@ end
 alias ls 'ls -la'
 alias less 'less -qR'
 alias tree "tree -NC" # N: 文字化け対策, C:色をつける
+alias be 'bundle exec'
 alias rspec 'bundle exec rspec'
 alias rails 'bundle exec rails'
 alias railsc 'bundle exec rails c'
