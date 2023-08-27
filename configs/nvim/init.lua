@@ -118,10 +118,10 @@ require('lazy').setup({
   {
     'folke/trouble.nvim',
     keys = {
-      { "<leader>tr", function() require("trouble").toggle() end },
-      { "<leader>tw", function() require("trouble").open("workspace_diagnostics") end },
-      { "<leader>td", function() require("trouble").open("document_diagnostics") end },
-      { "<leader>tl", function() require("trouble").open("lsp_references") end },
+      { "<leader>xx", function() require("trouble").toggle() end },
+      { "<leader>xw", function() require("trouble").open("workspace_diagnostics") end },
+      { "<leader>xd", function() require("trouble").open("document_diagnostics") end },
+      { "<leader>xl", function() require("trouble").open("lsp_references") end },
     },
   },
   'lambdalisue/glyph-palette.vim',
