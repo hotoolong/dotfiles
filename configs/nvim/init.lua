@@ -97,8 +97,6 @@ require('lazy').setup({
   --     'hrsh7th/cmp-nvim-lsp-signature-help',
   --     'hrsh7th/cmp-buffer',
   --     'hrsh7th/cmp-path',
-  --     'hrsh7th/vim-vsnip',
-  --     'hrsh7th/cmp-vsnip',
   --   },
   --   -- config = function()
   --   --   -- ...
@@ -109,12 +107,6 @@ require('lazy').setup({
   'hrsh7th/cmp-nvim-lsp-signature-help',
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
-  'hrsh7th/vim-vsnip',
-  {
-    'hrsh7th/vim-vsnip-integ',
-    dependencies = { 'hrsh7th/vim-vsnip' }
-  },
-  'hrsh7th/cmp-vsnip',
   {
     'folke/trouble.nvim',
     keys = {
@@ -367,7 +359,15 @@ require('lazy').setup({
   'pechorin/any-jump.vim',
   {
     "rafamadriz/friendly-snippets",
-    dependencies = { 'hrsh7th/vim-vsnip', 'hrsh7th/cmp-vsnip' },
+    dependencies = { 'L3MON4D3/LuaSnip' },
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    version = "2.*",
+    build = "make install_jsregexp"
+  },
+  {
+    "saadparwaiz1/cmp_luasnip",
   },
   {
     'sheerun/vim-polyglot',
@@ -417,14 +417,18 @@ vim.keymap.set({ 'n', 'x' }, 'm', '<Plug>(lsp)')
 vim.keymap.set({ 'n', 'x' }, '<Plug>(ff)', '<Nop>')
 vim.keymap.set({ 'n', 'x' }, ',', '<Plug>(ff)')
 
--- vim-vsnip
-vim.g.vsnip_snippet_dir = '~/.config/nvim/vsnip-snippets'
-vim.cmd([[
-  imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-  smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-  imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-  smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-]])
+-- LuaSnip
+local ls = require('luasnip')
+vim.keymap.set({ "i" }, "<Tab>", function() ls.expand() end, {silent = true})
+vim.keymap.set({ "i", "s" }, "<Tab>", function() ls.jump( 1) end, {silent = true})
+vim.keymap.set({ "i", "s" }, "<S-Tab>", function() ls.jump(-1) end, {silent = true})
+
+vim.keymap.set({ "i", "s" }, "<C-E>", function()
+  if ls.choice_active() then
+    ls.change_choice(1)
+  end
+end, {silent = true})
+require("luasnip.loaders.from_vscode").lazy_load()
 
 -- telescope.nvim
 local actions = require "telescope.actions"
@@ -623,14 +627,13 @@ cmp.setup({
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lua' },
-    -- { name = 'luasnip' },
+    { name = 'luasnip' },
     { name = 'cmdline' },
-    { name = 'vsnip' },
   }),
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
+      require('luasnip').lsp_expand(args.body)
+    end
   },
   formatting = {
     -- fields = { 'abbr', 'kind', 'menu' },
