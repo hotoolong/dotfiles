@@ -18,6 +18,10 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = ' '
 
 require('lazy').setup({
+  {
+    'hotoolong/opengithub.nvim',
+    dir = "~/ghq/github.com/hotoolong/opengithub.nvim/"
+  },
   { 'vim-jp/vimdoc-ja', ft = 'help' },
   {
     'williamboman/mason.nvim',
@@ -384,6 +388,20 @@ require('lazy').setup({
       require("nvim-surround").setup({})
     end
   },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
+  },
   -- {'romgrk/barbar.nvim',
   --   dependencies = {
   --     'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
@@ -536,6 +554,25 @@ lsp_config.steep.setup({
 --     return config
 --   end,
 -- })
+
+local configs = require 'lspconfig.configs'
+if not configs.typeprof2 then
+  configs.typeprof2 = {
+    default_config = {
+      cmd = { '/Users/hotoolong/ghq/github.com/mame/typeprof2/bin/typeprof', '--lsp' },
+      filetypes = { 'ruby' },
+      root_dir = function(fname)
+        return lsp_config.util.find_git_ancestor(fname)
+      end,
+      settings = {},
+    }
+  }
+end
+
+lsp_config.typeprof2.setup({
+  filetypes = { 'ruby', 'ruby.rspec', 'eruby', 'rakefile' },
+  -- cmd = { '/Users/hotoolong/ghq/github.com/mame/typeprof2/bin/typeprof', '--lsp' }
+})
 
 mason_lspconfig.setup_handlers({
   function(server_name)
