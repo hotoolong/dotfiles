@@ -6,7 +6,7 @@ SETUP_FILES=`ls -1a | grep -E '^\.' | grep -v -E '^(.|..|.git|.gitignore|.config
 CONFIGS=`ls -1a ${SCRIPT_DIR}/configs/. | grep -v -E '^(.|..|.git)$'`
 BINS=`ls -1a ${SCRIPT_DIR}/bin/. | grep -v -E '^(.|..|.git)$'`
 
-function create_symbolic_link () {
+function create_symbolic_link() {
   ln -snvi "$1" "$2"
 }
 
@@ -21,7 +21,7 @@ function create_config_symbolic_links() {
   if [ ! -d "${HOME}/.config" ]; then
     mkdir "${HOME}/.config"
   fi
-  
+
   for file in ${CONFIGS[@]}
   do
     create_symbolic_link "${SCRIPT_DIR}/configs/${file}" "${HOME}/.config/${file}"
