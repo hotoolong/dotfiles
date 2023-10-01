@@ -16,9 +16,6 @@ fish_add_path $GOPATH/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/bin
 
-source $BREW_PREFIX/opt/asdf/libexec/asdf.fish
-source $BREW_PREFIX/opt/asdf/share/fish/vendor_completions.d/asdf.fish
-
 if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
 
 # fundle setting
@@ -31,6 +28,15 @@ if command -q nvim
   set -gx EDITOR (which nvim)
 else
   set -gx EDITOR vim
+end
+
+if command -q asdf
+  source $BREW_PREFIX/opt/asdf/libexec/asdf.fish
+  source $BREW_PREFIX/opt/asdf/share/fish/vendor_completions.d/asdf.fish
+
+  if command -q python
+    fish_add_path (asdf where python)/bin
+  end
 end
 
 function vi
