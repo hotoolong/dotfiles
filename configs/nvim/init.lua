@@ -402,6 +402,9 @@ require('lazy').setup({
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
+  {
+    'rcarriga/nvim-notify',
+  },
   -- {'romgrk/barbar.nvim',
   --   dependencies = {
   --     'lewis6991/gitsigns.nvim', -- OPTIONAL: for git status
