@@ -209,7 +209,7 @@ function gb --description 'git branch'
         --header='C-d: delete, Enter: switch, Tab: choice' \
         --expect=ctrl-m,ctrl-d \
         --multi \
-        --preview="[ {1} = '*' ] && git diff --color (git-main-branch) {2} || git diff --color (git-main-branch) {1}" \
+        --preview="[ {1} = '*' ] && git diff --color (git merge-base (git-main-branch) {2})..{2} || git diff --color (git merge-base (git-main-branch) {1})..{1}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
