@@ -21,6 +21,7 @@ if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
 # fundle setting
 fundle plugin 'edc/bass'
 fundle plugin 'tuvistavie/fish-asdf'
+fundle plugin 'jethrokuan/z'
 fundle init
 
 # set EDITOR
