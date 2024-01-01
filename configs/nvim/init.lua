@@ -420,6 +420,24 @@ require('lazy').setup({
   --   end,
   --   version = '^1.0.0', -- optional: only update when a new 1.x version is released
   -- },
+  {
+    "shellRaining/hlchunk.nvim",
+    event = { "UIEnter" },
+    config = function()
+      require("hlchunk").setup({
+        chunk = {
+          chars = {
+            horizontal_line = "─",
+            vertical_line = "│",
+            left_top = "╭",
+            left_bottom = "╰",
+            right_arrow = ">",
+          },
+          style = "#806d9c",
+        },
+      })
+    end
+  },
 })
 
 -- set options
