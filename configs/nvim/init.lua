@@ -435,6 +435,9 @@ require('lazy').setup({
           },
           style = "#806d9c",
         },
+        blank = {
+          enable = false
+        }
       })
     end
   },
