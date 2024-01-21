@@ -629,12 +629,7 @@ vim.api.nvim_create_autocmd({'ColorScheme'}, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ 'CursorHold' }, {
-  pattern = '*',
-  callback = function()
-    require('lspsaga.diagnostic').show_cursor_diagnostics()
-  end,
-})
+vim.api.nvim_create_autocmd('CursorHold', { pattern = "*", command = "Lspsaga show_cursor_diagnostics" })
 
 vim.api.nvim_create_autocmd({ 'FileType' }, {
   pattern = { 'typescript', 'typescriptreact', 'typescript.tsx' },
@@ -651,16 +646,16 @@ local function show_documentation()
   if ft == 'vim' or ft == 'help' then
     vim.cmd([[execute 'h ' . expand('<cword>') ]])
   else
-    require('lspsaga.hover').render_hover_doc()
+    vim.cmd('Lspsaga hover_doc')
   end
 end
 
 vim.keymap.set({ 'n' }, 'K', show_documentation)
-vim.keymap.set({ 'n' }, '<Plug>(lsp)a', require('lspsaga.codeaction').code_action)
-vim.keymap.set({ 'n' }, '<Plug>(lsp)rn', require('lspsaga.rename').rename)
+vim.keymap.set({ 'n' }, '<Plug>(lsp)a', '<Cmd>Lspsaga code_action<CR>')
+vim.keymap.set({ 'n' }, '<Plug>(lsp)rn', '<Cmd>Lspsaga lsp_rename ++project<CR>')
 vim.keymap.set({ 'n' }, '<Plug>(lsp)q', '<Cmd>Telescope diagnostics<CR>')
-vim.keymap.set({ 'n' }, '<Plug>(lsp)n', require('lspsaga.diagnostic').navigate('next'))
-vim.keymap.set({ 'n' }, '<Plug>(lsp)p', require('lspsaga.diagnostic').navigate('prev'))
+vim.keymap.set({ 'n' }, '<Plug>(lsp)n', '<cmd>Lspsaga diagnostic_jump_next<CR>')
+vim.keymap.set({ 'n' }, '<Plug>(lsp)p', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
 vim.keymap.set({ 'n' }, '<Plug>(lsp)f', vim.lsp.buf.format)
 vim.keymap.set({ 'n' }, '<Plug>(lsp)i', '<Cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set({ 'n' }, '<Plug>(lsp)t', '<Cmd>Telescope lsp_type_definitions<CR>')
