@@ -73,7 +73,7 @@ require('lazy').setup({
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
   {
-    'tami5/lspsaga.nvim',
+    'nvimdev/lspsaga.nvim',
     event = "LspAttach",
     config = function()
       require("lspsaga").setup({})
