@@ -44,6 +44,11 @@ require('lazy').setup({
       "williamboman/mason.nvim",
     }
   },
+  {
+    'nvimtools/none-ls.nvim',
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = true,
+  },
   'stevearc/dressing.nvim',
   {
     'nvim-treesitter/nvim-treesitter',
