@@ -26,9 +26,7 @@ require('lazy').setup({
   {
     'williamboman/mason.nvim',
     build = ':MasonUpdate', -- :MasonUpdate updates registry contents
-    config = function()
-      require('mason').setup()
-    end,
+    config = true,
   },
   {
     'williamboman/mason-lspconfig',
@@ -114,9 +112,7 @@ require('lazy').setup({
   {
     'nvimdev/lspsaga.nvim',
     event = "LspAttach",
-    config = function()
-      require("lspsaga").setup({})
-    end,
+    config = true,
     dependencies = {
       'nvim-tree/nvim-web-devicons',
       'nvim-treesitter/nvim-treesitter'
@@ -423,9 +419,7 @@ require('lazy').setup({
     version = "*",
     event = "VeryLazy",
     dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-treesitter/nvim-treesitter-textobjects' },
-    config = function()
-      require("nvim-surround").setup({})
-    end
+    config = true
   },
   {
     "folke/flash.nvim",
