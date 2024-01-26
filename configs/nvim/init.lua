@@ -39,9 +39,13 @@ require('lazy').setup({
   },
   {
     'jayp0521/mason-null-ls.nvim',
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       'nvimtools/none-ls.nvim',
       "williamboman/mason.nvim",
+    },
+    opts = {
+      handlers = {}
     }
   },
   {
