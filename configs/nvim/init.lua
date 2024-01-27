@@ -92,13 +92,6 @@ require('lazy').setup({
           'graphql',
         },
         sync_install = true,
-        highlight = {
-          enable = true,
-          disable = {
-            'toml',
-            'c_sharp',
-          },
-        },
         indent = {
           enable = true, -- Enable indentation by tresitter
         }
