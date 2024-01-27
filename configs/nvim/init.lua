@@ -655,7 +655,14 @@ vim.api.nvim_create_autocmd({'ColorScheme'}, {
   end,
 })
 
-vim.api.nvim_create_autocmd('CursorHold', { pattern = "*", command = "Lspsaga show_cursor_diagnostics ++unfocus" })
+vim.api.nvim_create_autocmd('CursorHold', {
+  pattern = "*",
+  callback = function()
+    if pcall(require, 'lspsaga') then
+      vim.cmd([[Lspsaga show_cursor_diagnostics ++unfocus]])
+    end
+  end,
+})
 
 vim.api.nvim_create_autocmd({ 'FileType' }, {
   pattern = { 'typescript', 'typescriptreact', 'typescript.tsx' },
