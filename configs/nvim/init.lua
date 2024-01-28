@@ -594,7 +594,6 @@ mason_lspconfig.setup({
     'tailwindcss',
     'solargraph',
     'ruby_ls',
-    -- 'standardrb',
     'yamlls',
     'lua_ls',
   },
