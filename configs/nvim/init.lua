@@ -497,6 +497,23 @@ vim.keymap.set({ "i", "s" }, "<C-E>", function()
   end
 end, {silent = true})
 require("luasnip.loaders.from_vscode").lazy_load()
+ls.add_snippets("eruby", {
+    ls.s("%%", {
+      ls.t("<%= "),
+      ls.i(1),
+      ls.t(" %>"),
+    }),
+    ls.s("%%", {
+      ls.t("<%- "),
+      ls.i(1),
+      ls.t(" %>"),
+    }),
+  })
+ls.add_snippets("ruby", {
+    ls.s("bind", {
+      ls.t("binding.irb")
+    }),
+  })
 
 -- telescope.nvim
 local actions = require "telescope.actions"
