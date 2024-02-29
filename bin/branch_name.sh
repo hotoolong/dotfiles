@@ -6,4 +6,7 @@ if [ "$#" -eq 0 ]; then
   exit 1
 fi
 
-echo "$*" | tr ' ' '_'
+words=$(echo "$*" | tr ' ' '_')
+first_char=$(echo "${words:0:1}" | tr '[:upper:]' '[:lower:]')
+rest_of_char="${words:1}"
+echo "${first_char}${rest_of_char}"
