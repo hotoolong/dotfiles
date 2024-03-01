@@ -151,6 +151,10 @@ function gcom --description 'git switch <default branch>'
   git switch (git-default-branch)
 end
 
+function grm --description 'git rebase <default branch>'
+  git rebase (git-default-branch)
+end
+
 function gst --description 'git status -s'
   if ! is_git_dir
     return
