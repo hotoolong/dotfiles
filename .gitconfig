@@ -25,3 +25,5 @@
 	rebase = true
 [credential]
 	helper = osxkeychain
+[alias]
+	undo = reset --soft HEAD^
