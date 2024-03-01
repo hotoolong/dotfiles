@@ -129,12 +129,25 @@ function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
 end
 
-function git-main-branch --description 'git main branch'
-  git remote show origin | grep 'HEAD branch' | awk '{print $NF}'
+function git-default-branch --description 'get git default branch'
+  if ! is_git_dir
+    return
+  end
+  set -l branch (gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name" 2>/dev/null)
+  if test $status -eq 0
+    echo $branch
+    return
+  end
+  set branch (git remote show origin 2>/dev/null)
+  if test $status -eq 0
+    echo $branch | grep 'HEAD branch' | awk '{print $NF}'
+    return
+  end
+  git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
 end
 
-function gcom --description 'git switch <main branch>'
-  git switch (git-main-branch)
+function gcom --description 'git switch <default branch>'
+  git switch (git-default-branch)
 end
 
 function gst --description 'git status -s'
@@ -210,7 +223,7 @@ function gb --description 'git branch'
         --header='C-d: delete, Enter: switch, Tab: choice' \
         --expect=ctrl-m,ctrl-d \
         --multi \
-        --preview="[ {1} = '*' ] && git diff --color (git merge-base (git-main-branch) {2})..{2} || git diff --color (git merge-base (git-main-branch) {1})..{1}" \
+        --preview="[ {1} = '*' ] && git diff --color (git merge-base (git-default-branch) {2})..{2} || git diff --color (git merge-base (git-default-branch) {1})..{1}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
@@ -437,7 +450,7 @@ function fzf-git-recent-all-branches
   git for-each-ref --sort=creatordate | \
     fzf $fzf_query \
       --prompt='Select Branch >' \
-      --preview="git diff master {3} " | \
+      --preview="git diff (git-default-branch) {3} " | \
     read -l selected_branch
 
   if test -n $selected_branch
