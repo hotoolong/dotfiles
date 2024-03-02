@@ -570,7 +570,6 @@ require('fidget').setup()
 null_ls.setup({
   sources = {
     null_ls.builtins.formatting.stylua,
-    null_ls.builtins.diagnostics.eslint,
     null_ls.builtins.completion.spell,
     null_ls.builtins.completion.tags,
     null_ls.builtins.formatting.prettier,
@@ -589,7 +588,6 @@ null_ls.setup({
 mason_lspconfig.setup({
   ensure_installed = {
     'tsserver',
-    'eslint',
     'tailwindcss',
     'solargraph',
     'ruby_ls',
@@ -676,16 +674,6 @@ vim.api.nvim_create_autocmd('CursorHold', {
     if pcall(require, 'lspsaga') then
       vim.cmd([[Lspsaga show_cursor_diagnostics ++unfocus]])
     end
-  end,
-})
-
-vim.api.nvim_create_autocmd({ 'FileType' }, {
-  pattern = { 'typescript', 'typescriptreact', 'typescript.tsx' },
-  callback = function()
-    vim.keymap.set({ 'n' }, '<Plug>(lsp)f', function()
-      vim.cmd([[EslintFixAll]])
-      vim.lsp.buf.format({ name = 'null-ls' })
-    end)
   end,
 })
 
