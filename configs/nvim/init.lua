@@ -590,7 +590,6 @@ mason_lspconfig.setup({
   ensure_installed = {
     'tsserver',
     'eslint',
-    'denols',
     'tailwindcss',
     'solargraph',
     'ruby_ls',
