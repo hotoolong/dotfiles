@@ -274,7 +274,7 @@ require('lazy').setup({
       vim.g.quickrun_config = {
         _ = { runner = "neovim_job" },
         rspec = {
-          commnad = "rspec",
+          command = "rspec",
           exec = 'bundle exec %c --no-color %s',
           filetype = 'rspec-result'
         },
