@@ -5,7 +5,7 @@ set -gx PGDATA /usr/local/var/postgres
 set -gx NEXTWORD_DATA_PATH $HOME/.nextword-data
 set -gx HOMEBREW_NO_AUTO_UPDATE 1
 set -gx BREW_PREFIX (brew --prefix)
-set -gx OPENSSL_DIR $BREW_PREFIX/opt/openssl@1.1
+set -gx OPENSSL_DIR $BREW_PREFIX/opt/openssl@3
 set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
 set -gx TMUX_SHELL (which fish)
 set -gx fish_prompt_pwd_full_dirs 2
