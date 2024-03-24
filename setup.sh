@@ -8,6 +8,7 @@ BINS=`ls -1a ${SCRIPT_DIR}/bin/. | grep -v -E '^(.|..|.git)$'`
 
 function create_symbolic_link() {
   if [ ! -e "$2" ]; then
+    echo "create Symbolic link" "$2"
     ln -s "$1" "$2"
   else
     echo "skip Symbolic link" "$2"
