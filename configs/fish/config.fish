@@ -534,3 +534,4 @@ eval (gh completion -s fish| source)
 status --is-interactive && source (rbenv init -|psub)
 direnv hook fish | source
 zoxide init fish | source
+fzf --fish | source
