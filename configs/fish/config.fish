@@ -378,7 +378,7 @@ function fzf-select-ghq-repository
 
   set -l out (
     for i in (ghq root -all)
-      fd --type d --min-depth 2 --max-depth 4 --hidden --search-path $i '.git$' | \
+      fd --type d --min-depth 2 --max-depth 4 --hidden --no-ignore --search-path $i '.git$' | \
       sed -e "s/\/.git\/\$//"
     end | \
     fzf $fzf_query \
