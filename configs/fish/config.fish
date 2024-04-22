@@ -9,6 +9,7 @@ set -gx OPENSSL_DIR $BREW_PREFIX/opt/openssl@3
 set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
 set -gx TMUX_SHELL (which fish)
 set -gx fish_prompt_pwd_full_dirs 2
+set -gx LIBRARY_PATH $BREW_PREFIX/opt/zstd/lib
 fish_add_path $BREW_PREFIX/bin
 fish_add_path $BREW_PREFIX/sbin
 fish_add_path $OPENSSL_DIR/bin
