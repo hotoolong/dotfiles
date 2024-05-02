@@ -634,25 +634,6 @@ lsp_config.steep.setup({
 --   end,
 -- })
 
-local configs = require 'lspconfig.configs'
-if not configs.typeprof2 then
-  configs.typeprof2 = {
-    default_config = {
-      cmd = { '/Users/hotoolong/ghq/github.com/mame/typeprof2/bin/typeprof', '--lsp' },
-      filetypes = { 'ruby' },
-      root_dir = function(fname)
-        return lsp_config.util.find_git_ancestor(fname)
-      end,
-      settings = {},
-    }
-  }
-end
-
-lsp_config.typeprof2.setup({
-  filetypes = { 'ruby', 'ruby.rspec', 'eruby', 'rakefile' },
-  -- cmd = { '/Users/hotoolong/ghq/github.com/mame/typeprof2/bin/typeprof', '--lsp' }
-})
-
 mason_lspconfig.setup_handlers({
   function(server_name)
     local opts = {
