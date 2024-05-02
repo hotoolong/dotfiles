@@ -849,6 +849,16 @@ require("other-nvim").setup({
       },
     },
     {
+      pattern = "spec/system/*/(.*)_spec.rb",
+      target = {
+        { target = "app/services/**/%1.rb", context = "services", transformer = "singularize" },
+        { target = "app/services/**/%1/*.rb", context = "services", transformer = "singularize" },
+        { target = "spec/factories/%1.rb", context = "factories" },
+        { target = "app/models/%1.rb", context = "models", transformer = "singularize" },
+        { target = "app/views/%1/**/*.html.*", context = "view" },
+      },
+    },
+    {
       pattern = "app/components*/(.*)_component.rb",
       target = {
         { target = "spec/components*/%1_spec.rb", context = "spec" },
