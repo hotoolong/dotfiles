@@ -231,7 +231,13 @@ require('lazy').setup({
   },
   'jlcrochet/vim-rbs',
   'noprompt/vim-yardoc',
-  'tpope/vim-rails',
+  {
+    'tpope/vim-rails',
+    dependencies = 'tpope/vim-bundler',
+    init = function ()
+      require("plugins.rails").init()
+    end
+  },
   'slim-template/vim-slim',
   -- status line
   {
