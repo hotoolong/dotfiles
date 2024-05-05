@@ -268,7 +268,7 @@ require('lazy').setup({
     keys = {
       { ",gm", "<Plug>(git-messenger)" },
     },
-    config = function()
+    init = function()
       vim.g.git_messenger_no_default_mappings = true
       vim.g.git_messenger_include_diff = "current"
       vim.g.git_messenger_always_into_popup = true
@@ -286,7 +286,7 @@ require('lazy').setup({
   },
   {
     'iberianpig/tig-explorer.vim',
-    config = function ()
+    init = function ()
       vim.cmd([[cnoreabbrev Blame TigBlame]])
     end
   },
@@ -311,13 +311,13 @@ require('lazy').setup({
   'dag/vim-fish',
   {
     'hotoolong/translate.nvim',
-    config = function()
+    init = function()
       vim.g.translate_copy_result = 1
     end
   },
   {
     'simeji/winresizer',
-    config = function()
+    init = function()
       vim.g.winresizer_start_key = '<C-z>'
     end
   },
@@ -327,7 +327,7 @@ require('lazy').setup({
     keys = {
       { '\\r', '<Cmd>write<CR><Cmd>QuickRun<CR>', { silent = true } },
     },
-    config = function ()
+    init = function()
       vim.g.quickrun_config = {
         _ = { runner = "neovim_job" },
         rspec = {
@@ -341,8 +341,6 @@ require('lazy').setup({
           filetype = 'rspec-result'
         }
       }
-    end,
-    init = function()
       vim.api.nvim_create_autocmd( { "BufWinEnter", "BufNewFile" }, {
         pattern = "*_spec.rb",
         callback = function()
