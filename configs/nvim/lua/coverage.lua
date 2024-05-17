@@ -59,8 +59,9 @@ end
 vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
     if vim.bo.filetype == "ruby" or vim.bo.filetype == "eruby" then
-      read_coverage_data(coverage_file_path)
-      mark_uncovered_lines()
+      if read_coverage_data(coverage_file_path) then
+        mark_uncovered_lines()
+      end
     end
   end
 })
