@@ -136,15 +136,19 @@ function git-default-branch --description 'get git default branch'
   if ! is_git_dir
     return
   end
-  set -l branch (gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name" 2>/dev/null)
+  gh auth status > /dev/null 2>&1
   if test $status -eq 0
-    echo $branch
-    return
-  end
-  set branch (git remote show origin 2>/dev/null)
-  if test $status -eq 0
-    echo $branch | grep 'HEAD branch' | awk '{print $NF}'
-    return
+    set -l branch (gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name" 2>/dev/null)
+    if test $status -eq 0
+      echo $branch
+      return
+    end
+  else
+    set branch (git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}')
+    if test $status -eq 0
+      echo $branch
+      return
+    end
   end
   git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
 end
