@@ -23,8 +23,13 @@ local function read_coverage_data(file_path)
       local content = file:read("*a")
       file:close()
       local data = vim.json.decode(content)
-      coverage_data = data["RSpec"]["coverage"]
-      coverage_file_mtime = current_mtime
+      for _, value in pairs(data) do
+        if type(value) == "table" and value["coverage"] then
+          coverage_data = value["coverage"]
+          coverage_file_mtime = current_mtime
+          break
+        end
+      end
     else
       coverage_data = nil
       coverage_file_mtime = nil
