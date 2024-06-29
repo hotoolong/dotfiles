@@ -51,7 +51,10 @@ require('lazy').setup({
     dependencies = { "nvim-lua/plenary.nvim" },
     config = true,
   },
-  'stevearc/dressing.nvim',
+  {
+    'stevearc/dressing.nvim',
+    config = true,
+  },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ":TSUpdate",
@@ -112,11 +115,17 @@ require('lazy').setup({
     }
   },
   'ryanoasis/vim-devicons',
-  'ray-x/lsp_signature.nvim',
+  {
+    'ray-x/lsp_signature.nvim',
+    config = function()
+      require('lsp_signature').setup({ hint_enable = false })
+    end
+  },
   'onsails/lspkind-nvim',
   {
     'j-hui/fidget.nvim',
-    tag = 'legacy'
+    tag = 'legacy',
+    config = true,
   },
   -- {
   --   "hrsh7th/nvim-cmp",
@@ -580,10 +589,6 @@ local lsp_config = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
 local mason_null_ls = require('mason-null-ls')
 local null_ls = require('null-ls')
-
-require('dressing').setup()
-require('lsp_signature').setup({ hint_enable = false })
-require('fidget').setup()
 
 null_ls.setup({
   sources = {
