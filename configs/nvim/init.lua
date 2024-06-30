@@ -117,9 +117,9 @@ require('lazy').setup({
   'ryanoasis/vim-devicons',
   {
     'ray-x/lsp_signature.nvim',
-    config = function()
-      require('lsp_signature').setup({ hint_enable = false })
-    end
+    opts = {
+      hint_enable = false
+    }
   },
   'onsails/lspkind-nvim',
   {
@@ -252,18 +252,16 @@ require('lazy').setup({
   {
     'nvim-lualine/lualine.nvim',
     dependencies = 'nvim-tree/nvim-web-devicons',
-    config = function ()
-      require('lualine').setup({
-        sections = {
-          lualine_c = {
-            {
-              'filename',
-              path = 1,
-            }
+    opts = {
+      sections = {
+        lualine_c = {
+          {
+            'filename',
+            path = 1,
           }
         }
-      })
-    end
+      }
+    }
   },
   -- js
   'moll/vim-node',
