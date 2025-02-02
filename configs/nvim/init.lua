@@ -411,6 +411,14 @@ require('lazy').setup({
           }
         end
       })
+      vim.api.nvim_create_autocmd({ "FileType" }, {
+        pattern = { "ruby.rspec" },
+        callback = function()
+          vim.b.switch_custom_definitions = {
+            { 'be_falsey', 'be_truthy' },
+          }
+        end
+      })
 
     end
   },
