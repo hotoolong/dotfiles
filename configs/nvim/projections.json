@@ -1,0 +1,24 @@
+{
+  "app/decorators/*.rb": {
+    "type": "decorator",
+    "alternate": "spec/decorators/{}_spec.rb"
+  },
+  "spec/decorators/*_spec.rb": {
+    "type": "test",
+    "alternate": "app/decorators/{}.rb"
+  },
+  "app/components/*.rb": {
+    "type": "component",
+    "alternate": "spec/components/{}_spec.rb",
+    "template": "app/components/{}.html.erb"
+  },
+  "spec/components/*_spec.rb": {
+    "type": "test",
+    "alternate": "app/components/{}.rb"
+  },
+  "app/components/*.html.erb": {
+    "type": "template",
+    "alternate": "app/components/{}.rb"
+  }
+}
+
