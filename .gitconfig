@@ -29,3 +29,6 @@
 	undo = reset --soft HEAD^
 [rebase]
 	autostash = true
+[fetch]
+	prune = true
+	autostash = true
