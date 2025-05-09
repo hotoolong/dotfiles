@@ -27,3 +27,5 @@
 	helper = osxkeychain
 [alias]
 	undo = reset --soft HEAD^
+[rebase]
+	autostash = true
