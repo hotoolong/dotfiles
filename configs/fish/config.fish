@@ -481,9 +481,9 @@ function fzf-git-stash
     fzf --exit-0 \
       --ansi \
       --no-sort \
-      --expect=ctrl-a,ctrl-d,ctrl-m,ctrl-s \
+      --expect=ctrl-a,ctrl-d,ctrl-m,ctrl-r \
       --preview="echo {} | cut -d':' -f1 | xargs git stash show -p --color=always" \
-      --header='C-a: apply C-d: drop, C-m(Enter): pop, C-s: show'
+      --header='C-a: apply C-d: show, C-m(Enter): pop, C-r: drop'
   )
   [ $status != 0 ] && commandline -f repaint && return
 
@@ -495,13 +495,13 @@ function fzf-git-stash
       commandline "git stash apply $stash_num"
       commandline -f execute
     case 'ctrl-d'
-      commandline "git stash drop $stash_num"
+      commandline "git stash show -p --color=always $stash_num"
       commandline -f execute
     case 'ctrl-m'
       commandline "git stash pop $stash_num"
       commandline -f execute
-    case 'ctrl-s'
-      commandline "git stash show -p --color=always $stash_num"
+    case 'ctrl-r'
+      commandline "git stash drop $stash_num"
       commandline -f execute
     end
   end
