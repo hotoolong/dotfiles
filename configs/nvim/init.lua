@@ -300,6 +300,10 @@ require('lazy').setup({
   {
     'rhysd/conflict-marker.vim',
     init = function()
+      -- default mapping
+      -- ct :ConflictMarkerThemselves
+      -- co :ConflictMarkerOurselves
+      -- cb :ConflictMarkerBoth
       -- disable the default highlight group
       vim.g.conflict_marker_highlight_group = ''
 
