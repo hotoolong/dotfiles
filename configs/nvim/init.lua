@@ -651,21 +651,12 @@ lsp_config.steep.setup({
 --   end,
 -- })
 
-mason_lspconfig.setup_handlers({
-  function(server_name)
-    local opts = {
-      capabilities = require('cmp_nvim_lsp').default_capabilities(),
+vim.lsp.config('lua_ls', {
+  settings = {
+    Lua = {
+      diagnostics = { globals = { 'vim' } }
     }
-
-    if server_name == "lua_ls" then
-      opts.settings = {
-        Lua = {
-          diagnostics = { globals = { 'vim' } },
-        }
-      }
-    end
-    lsp_config[server_name].setup(opts)
-  end,
+  }
 })
 
 vim.api.nvim_create_augroup('extra-whitespace', {})
