@@ -6,6 +6,14 @@ SETUP_FILES=`ls -1a | grep -E '^\.' | grep -v -E '^(.|..|.git|.gitignore|.config
 CONFIGS=`ls -1a ${SCRIPT_DIR}/configs/. | grep -v -E '^(.|..|.git)$'`
 BINS=`ls -1a ${SCRIPT_DIR}/bin/. | grep -v -E '^(.|..|.git)$'`
 
+if [[ "$SHELL" != */fish ]]; then
+    echo "Warning: Default shell is not fish (current: $SHELL)"
+    echo "To make changes, execute the following command"
+    echo "cat /etc/shells"
+    echo "echo (which fish) | sudo tee -a /etc/shells"
+    echo "chsh -s (which fish)"
+fi
+
 function create_symbolic_link() {
   if [ ! -e "$2" ]; then
     echo "create Symbolic link" "$2"
