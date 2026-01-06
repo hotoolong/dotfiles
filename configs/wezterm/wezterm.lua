@@ -1,6 +1,22 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
+local prefixes = {
+  '/opt/homebrew',
+  '/home/linuxbrew/.linuxbrew',
+  '/usr/local',
+}
+
+for _, prefix in ipairs(prefixes) do
+  local fish = prefix .. '/bin/fish'
+  local f = io.open(fish, 'r')
+  if f then
+    f:close()
+    config.default_prog = { fish }
+    break
+  end
+end
+
 config.automatically_reload_config = true
 config.font_size = 12.0
 config.use_ime = true
