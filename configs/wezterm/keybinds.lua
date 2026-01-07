@@ -72,6 +72,10 @@ return {
     -- 貼り付け
     { key = "v", mods = "SUPER", action = act.PasteFrom("Clipboard") },
 
+    -- 単語移動（シェルのAlt+b/f相当）
+    { key = "b", mods = "SUPER", action = act.SendKey({ key = "b", mods = "ALT" }) },
+    { key = "f", mods = "SUPER", action = act.SendKey({ key = "f", mods = "ALT" }) },
+
     -- Pane作成 leader + r or d
     { key = "\"", mods = "LEADER", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
     { key = "%", mods = "LEADER", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
