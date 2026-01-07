@@ -595,7 +595,6 @@ vim.keymap.set('n', '<Plug>(ff)b', builtin.buffers, {})
 vim.keymap.set('n', '<Plug>(ff)h', builtin.help_tags, {})
 
 -- nvim-lsp
-local lsp_config = require('lspconfig')
 local mason_lspconfig = require('mason-lspconfig')
 local mason_null_ls = require('mason-null-ls')
 local null_ls = require('null-ls')
@@ -620,7 +619,7 @@ null_ls.setup({
 
 mason_lspconfig.setup({
   ensure_installed = {
-    'tsserver',
+    'ts_ls',
     'tailwindcss',
     'solargraph',
     'ruby_lsp',
@@ -630,8 +629,8 @@ mason_lspconfig.setup({
   automatic_installation = true,
 })
 
-lsp_config.steep.setup({
-  root_dir = lsp_config.util.root_pattern("Gemfile", ".git", "Steepfile")
+vim.lsp.config('steep', {
+  root_markers = { 'Steepfile', 'Gemfile', '.git' },
 })
 -- lsp_config.steep.setup({
 --   -- 補完に対応したcapabilitiesを渡す
@@ -657,6 +656,17 @@ vim.lsp.config('lua_ls', {
       diagnostics = { globals = { 'vim' } }
     }
   }
+})
+
+-- LSPサーバーを有効化
+vim.lsp.enable({
+  'ts_ls',
+  'tailwindcss',
+  'solargraph',
+  'ruby_lsp',
+  'yamlls',
+  'lua_ls',
+  'steep',
 })
 
 vim.api.nvim_create_augroup('extra-whitespace', {})
