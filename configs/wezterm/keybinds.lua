@@ -88,6 +88,7 @@ return {
     { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
     { key = "n", mods = "LEADER", action = act.ActivatePaneDirection("Next") },
     { key = "p", mods = "LEADER", action = act.ActivatePaneDirection("Prev") },
+    { key = "o", mods = "LEADER", action = act.ActivatePaneDirection("Next") },
     -- Pane選択
     { key = "[", mods = "CTRL|SHIFT", action = act.PaneSelect },
     -- 選択中のPaneのみ表示
