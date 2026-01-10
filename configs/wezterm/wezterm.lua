@@ -18,6 +18,11 @@ for _, prefix in ipairs(prefixes) do
 end
 
 config.automatically_reload_config = true
+config.font = wezterm.font_with_fallback({
+  "Source Han Code JP",
+  "Menlo",
+  "Hiragino Kaku Gothic Pro",
+})
 config.font_size = 12.0
 config.use_ime = true
 config.window_background_opacity = 0.85
