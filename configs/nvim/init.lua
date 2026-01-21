@@ -619,6 +619,7 @@ null_ls.setup({
 
 mason_lspconfig.setup({
   ensure_installed = {
+    'herb_ls',
     'ts_ls',
     'tailwindcss',
     'solargraph',
