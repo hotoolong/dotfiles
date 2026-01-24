@@ -505,6 +505,9 @@ require('lazy').setup({
       }
     }
   },
+  {
+    'jghauser/mkdir.nvim'
+  },
 })
 
 -- set options
