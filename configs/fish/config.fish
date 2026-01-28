@@ -85,19 +85,23 @@ function migrate
   if string length -q -- $out
     set -l key $out[1]
     set -l time (echo $out[2] | awk -F ' ' '{ print $2 }')
+    set -l cmd
     if test $key = 'ctrl-a'
-      commandline "bundle exec rails db:migrate"
+      set cmd "bundle exec rails db:migrate"
     else if test $key = 'ctrl-u'
-      commandline "bundle exec rails db:migrate:up VERSION=$time"
+      set cmd "bundle exec rails db:migrate:up VERSION=$time"
     else if test $key = 'ctrl-d'
-      commandline "bundle exec rails db:migrate:down VERSION=$time"
+      set cmd "bundle exec rails db:migrate:down VERSION=$time"
     else if test $key = 'ctrl-r'
-      commandline "bundle exec rails db:migrate:redo VERSION=$time"
+      set cmd "bundle exec rails db:migrate:redo VERSION=$time"
     else if test $key = 'ctrl-m'
       set -l target_file (ls -1 ./db/migrate | grep $time)
-      commandline "$EDITOR db/migrate/$target_file"
+      set cmd "$EDITOR db/migrate/$target_file"
     end
-    commandline -f execute
+    if test -n $cmd
+      builtin history append -- $cmd
+      eval $cmd
+    end
   end
 end
 
@@ -190,29 +194,29 @@ function gst --description 'git status -s'
   if string length -q -- $out
     set -l key $out[1]
     set -l file (echo $out[2] | awk -F ' ' '{ print $NF }')
+    set -l cmd
 
     if test $key = 'ctrl-v'
-      commandline -f repaint
-      commandline "git mv $file "
+      set cmd "git mv $file "
     else if test $key = 'ctrl-m'
-      commandline "$EDITOR $file"
-      commandline -f execute
+      set cmd "$EDITOR $file"
     else if test $key = 'ctrl-c'
-      commandline "git commit -v"
-      commandline -f execute
+      set cmd "git commit -v"
     else if test $key = 'ctrl-p'
-      commandline "git add -p $file"
-      commandline -f execute
+      set cmd "git add -p $file"
     else if test $key = 'ctrl-d'
       set -l state (echo $out[2] | cut -c 1-2)
       if [ $state = 'M ' -o $state = 'A ' ]
-        commandline "git diff --staged $file"
+        set cmd "git diff --staged $file"
       else
-        commandline "git diff $file"
+        set cmd "git diff $file"
       end
-      commandline -f execute
     else
       commandline -f repaint
+    end
+    if test -n $cmd
+      builtin history append -- $cmd
+      eval $cmd
     end
   end
 end
@@ -240,15 +244,19 @@ function gb --description 'git branch'
 
   if string length -q -- $out
     set -l key $out[1]
+    set -l cmd
     if test $key = 'ctrl-d'
       for select_data in $out[2..-1]
         set -l branch_name (echo $select_data | sed -e 's/^[ \*]*//g')
-        git branch -D $branch_name
+        eval "git branch -D $branch_name"
       end
     else if test $key = 'ctrl-m'
       set -l branch_name (echo $out[2] | sed -e 's/^[ \*]*//g')
-      commandline "git switch $branch_name"
-      commandline -f execute
+      set cmd "git switch $branch_name"
+    end
+    if test -n $cmd
+      builtin history append -- $cmd
+      eval $cmd
     end
   end
 end
@@ -273,8 +281,9 @@ function gg --description 'Customizing file grep'
   if test -n (count $out)
     set -l line (echo $out | cut -d':' -f 2)
     set -l file (echo $out | cut -d':' -f 1)
-    commandline "$EDITOR +$line $file -c 'let @/ = \"$argv[1]\"'"
-    commandline -f execute
+    set -l cmd "$EDITOR +$line $file -c 'let @/ = \"$argv[1]\"'"
+    builtin history append -- $cmd
+    eval $cmd
   end
 end
 
@@ -331,8 +340,9 @@ function fzf-github-issue
     return
   end
   set -l issue_id (echo $out | awk '{ print $1 }')
-  commandline "gh issue view -w $issue_id"
-  commandline -f execute
+  set -l cmd "gh issue view -w $issue_id"
+  builtin history append -- $cmd
+  eval $cmd
 end
 
 function fzf-github-pull-request
@@ -357,21 +367,21 @@ function fzf-github-pull-request
   )
   [ $status != 0 ] && commandline -f repaint && return
   set -l pr_id (echo $out[2] | awk '{ print $1 }')
+  set -l cmd
   if test $out[1] = 'ctrl-e'
-    commandline "gh pr checkout $pr_id"
-    commandline -f execute
+    set cmd "gh pr checkout $pr_id"
   else if test $out[1] = 'ctrl-v'
-    commandline "gh pr review $pr_id --approve"
-    commandline -f execute
+    set cmd "gh pr review $pr_id --approve"
   else if test $out[1] = 'ctrl-w'
-    commandline "gh pr view --web $pr_id"
-    commandline -f execute
+    set cmd "gh pr view --web $pr_id"
   else if test $out[1] = 'ctrl-d'
-    commandline "gh pr diff $pr_id"
-    commandline -f execute
+    set cmd "gh pr diff $pr_id"
   else if test $out[1] = 'ctrl-m'
-    commandline "gh pr view -c $pr_id"
-    commandline -f execute
+    set cmd "gh pr view -c $pr_id"
+  end
+  if test -n $cmd
+    builtin history append -- $cmd
+    eval $cmd
   end
 end
 
@@ -394,8 +404,9 @@ function fzf-select-ghq-repository
   [ $status != 0 ] && commandline -f repaint && return
 
   if test -n $out
-    commandline "cd $out"
-    commandline -f execute
+    set -l cmd "cd $out"
+    builtin history append -- $cmd
+    eval $cmd
   end
 end
 
@@ -416,8 +427,9 @@ function trend-ruby-week
 
   if test -n $out
     set -l repo (echo $out | awk '{ print $2 }')
-    commandline "gh repo view -w $repo"
-    commandline -f execute
+    set -l cmd "gh repo view -w $repo"
+    builtin history append -- $cmd
+    eval $cmd
   end
 end
 
@@ -438,8 +450,9 @@ function fzf-find-file
   )
   [ $status != 0 ] && commandline -f repaint && return
   if test -n $target_file
-    commandline "$EDITOR $target_file"
-    commandline -f execute
+    set -l cmd "$EDITOR $target_file"
+    builtin history append -- $cmd
+    eval $cmd
   end
 end
 
@@ -465,8 +478,9 @@ function fzf-git-recent-all-branches
     read -l selected_branch
 
   if test -n $selected_branch
-    commandline "git checkout $selected_branch"
-    commandline -f execute
+    set -l cmd "git checkout $selected_branch"
+    builtin history append -- $cmd
+    eval $cmd
   end
   commandline -f repaint
 end
@@ -489,20 +503,21 @@ function fzf-git-stash
 
   if test -n $out[1]
     set -l stash_num (echo $out[2] | cut -d ':' -f 1)
+    set -l cmd
     echo $stash_num
     switch $out[1]
     case 'ctrl-a'
-      commandline "git stash apply $stash_num"
-      commandline -f execute
+      set cmd "git stash apply $stash_num"
     case 'ctrl-d'
-      commandline "git stash show -p --color=always $stash_num"
-      commandline -f execute
+      set cmd "git stash show -p --color=always $stash_num"
     case 'ctrl-m'
-      commandline "git stash pop $stash_num"
-      commandline -f execute
+      set cmd "git stash pop $stash_num"
     case 'ctrl-r'
-      commandline "git stash drop $stash_num"
-      commandline -f execute
+      set cmd "git stash drop $stash_num"
+    end
+    if test -n "$cmd"
+      builtin history append -- $cmd
+      eval $cmd
     end
   end
 end
