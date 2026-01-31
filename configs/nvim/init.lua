@@ -206,6 +206,14 @@ require('lazy').setup({
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
   },
   {
+    'rebelot/kanagawa.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {
+      theme = "dragon",
+    },
+  },
+  {
     'rgroli/other.nvim',
     keys = {
       { "<leader>o", "<Cmd>Other<CR>", { silent = true } },
@@ -1063,4 +1071,4 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 require("coverage")
 
 vim.opt.termguicolors = true
-vim.cmd.colorscheme('zephyr')
+vim.cmd.colorscheme('kanagawa-dragon')
