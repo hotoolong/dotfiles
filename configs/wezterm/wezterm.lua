@@ -56,9 +56,9 @@ config.window_frame = {
   active_titlebar_bg = "none",
 }
 
--- タブバーを背景色に合わせる
+-- タブバーを背景色に合わせる (Kanagawa Dragon)
 config.window_background_gradient = {
-  colors = { "#000000" },
+  colors = { "#181616" },
 }
 
 -- タブの追加ボタンを非表示
@@ -68,9 +68,40 @@ config.window_background_gradient = {
 config.show_close_tab_button_in_tabs = false
 
 -- タブ同士の境界線を非表示
+-- Kanagawa Dragon カラースキーム
 config.colors = {
+  foreground = "#c5c9c5",
+  background = "#181616",
+  cursor_bg = "#c5c9c5",
+  cursor_fg = "#181616",
+  cursor_border = "#c5c9c5",
+  selection_bg = "#2d4f67",
+  selection_fg = "#c5c9c5",
+  scrollbar_thumb = "#282727",
+  split = "#282727",
+  ansi = {
+    "#0d0c0c", -- black
+    "#c4746e", -- red
+    "#8a9a7b", -- green
+    "#c4b28a", -- yellow
+    "#8ba4b0", -- blue
+    "#a292a3", -- magenta
+    "#8ea4a2", -- cyan
+    "#c5c9c5", -- white
+  },
+  brights = {
+    "#625e5a", -- bright black
+    "#e46876", -- bright red
+    "#87a987", -- bright green
+    "#e6c384", -- bright yellow
+    "#7fb4ca", -- bright blue
+    "#938aa9", -- bright magenta
+    "#7aa89f", -- bright cyan
+    "#dcd7ba", -- bright white
+  },
   tab_bar = {
     inactive_tab_edge = "none",
+    background = "#181616",
   },
 }
 
