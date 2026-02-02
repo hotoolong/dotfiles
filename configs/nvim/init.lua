@@ -814,6 +814,30 @@ vim.api.nvim_create_autocmd('VimEnter', {
   nested = true,
   command = "Fern . -drawer -reveal=% -stay"
 })
+vim.api.nvim_create_autocmd('BufEnter', {
+  group = 'my-fern-startup',
+  pattern = '*',
+  callback = function()
+    vim.schedule(function()
+      local dominated_by_fern = true
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local config = vim.api.nvim_win_get_config(win)
+        -- exclude floating windows
+        if config.relative == '' then
+          local buf = vim.api.nvim_win_get_buf(win)
+          local ft = vim.api.nvim_get_option_value('filetype', { buf = buf })
+          if ft ~= 'fern' then
+            dominated_by_fern = false
+            break
+          end
+        end
+      end
+      if dominated_by_fern then
+        vim.cmd('quit')
+      end
+    end)
+  end
+})
 
 -- other.vim
 require("other-nvim").setup({
