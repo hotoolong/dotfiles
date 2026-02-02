@@ -78,7 +78,7 @@ config.colors = {
   selection_bg = "#2d4f67",
   selection_fg = "#c5c9c5",
   scrollbar_thumb = "#282727",
-  split = "#282727",
+  split = "#c4b28a",
   ansi = {
     "#0d0c0c", -- black
     "#c4746e", -- red
