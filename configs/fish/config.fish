@@ -537,12 +537,8 @@ bind \cg\cp fzf-github-pull-request
 abbr today date "+%Y%m%d%H%M%S"
 
 # cd
-if not functions -q standard_cd
-  functions --copy cd standard_cd
-end
-
 function cd
-  standard_cd $argv && ls
+  builtin cd $argv && ls
 end
 
 # reload
