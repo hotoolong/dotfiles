@@ -343,6 +343,7 @@ function fzf-github-issue
   set -l cmd "gh issue view -w $issue_id"
   builtin history append -- $cmd
   eval $cmd
+  commandline -f repaint
 end
 
 function fzf-github-pull-request
@@ -383,6 +384,7 @@ function fzf-github-pull-request
     builtin history append -- $cmd
     eval $cmd
   end
+  commandline -f repaint
 end
 
 function fzf-select-ghq-repository
@@ -408,6 +410,7 @@ function fzf-select-ghq-repository
     builtin history append -- $cmd
     eval $cmd
   end
+  commandline -f repaint
 end
 
 function trend-ruby-week
@@ -454,6 +457,7 @@ function fzf-find-file
     builtin history append -- $cmd
     eval $cmd
   end
+  commandline -f repaint
 end
 
 function fzf-select-history
