@@ -17,6 +17,7 @@ fish_add_path $GOPATH/bin
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/bin
 fish_add_path $BREW_PREFIX/opt/gawk/libexec/gnubin
+fish_add_path $HOME/.local/bin
 
 if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
 
