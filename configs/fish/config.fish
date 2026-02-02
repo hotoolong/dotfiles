@@ -541,8 +541,9 @@ bind \cg\cp fzf-github-pull-request
 abbr today date "+%Y%m%d%H%M%S"
 
 # cd
-function cd
-  builtin cd $argv && ls
+# After cd, automatically execute ls
+function auto_ls --on-variable PWD
+  ls
 end
 
 # reload
