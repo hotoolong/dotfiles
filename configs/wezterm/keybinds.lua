@@ -1,5 +1,6 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
+local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
 
 -- Show which key table is active in the status area
 wezterm.on("update-right-status", function(window, pane)
@@ -121,6 +122,49 @@ return {
       key = "a",
       mods = "LEADER",
       action = act.ActivateKeyTable({ name = "activate_pane", timeout_milliseconds = 1000 }),
+    },
+    -- セッション保存 (LEADER + S)
+    {
+      key = "S",
+      mods = "LEADER|SHIFT",
+      action = wezterm.action_callback(function(win, pane)
+        local ok, err = pcall(function()
+          local state = resurrect.workspace_state.get_workspace_state()
+          resurrect.state_manager.save_state(state)
+        end)
+        if ok then
+          pane:send_text("echo '[Wezterm] Session saved!'\n")
+        else
+          pane:send_text("echo '[Wezterm] Error: " .. tostring(err) .. "'\n")
+        end
+      end),
+    },
+    -- セッション復元 (LEADER + R)
+    {
+      key = "R",
+      mods = "LEADER|SHIFT",
+      action = wezterm.action_callback(function(win, pane)
+        resurrect.fuzzy_loader.fuzzy_load(win, pane, function(id, label)
+          local ok, err = pcall(function()
+            -- id format: "workspace/default.json" -> type="workspace", name="default"
+            local type = string.match(id, "^([^/]+)")
+            local name = string.match(id, "^[^/]+/(.+)%.json$")
+            local state = resurrect.state_manager.load_state(name, type)
+            resurrect.workspace_state.restore_workspace(state, {
+              window = win:mux_window(),
+              relative = true,
+              restore_text = true,
+              on_pane_restore = resurrect.tab_state.default_on_pane_restore,
+            })
+          end)
+          if ok then
+            win:toast_notification("Wezterm", "Session restored!", nil, 3000)
+          else
+            wezterm.log_error("Restore error: " .. tostring(err))
+            win:toast_notification("Wezterm", "Restore failed: " .. tostring(err), nil, 5000)
+          end
+        end)
+      end),
     },
   },
   -- キーテーブル
