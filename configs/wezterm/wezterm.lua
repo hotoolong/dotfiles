@@ -25,7 +25,6 @@ config.font = wezterm.font_with_fallback({
 })
 config.font_size = 13.0
 config.use_ime = true
-config.window_background_opacity = 0.85
 config.macos_window_background_blur = 20
 
 config.initial_cols = 200
