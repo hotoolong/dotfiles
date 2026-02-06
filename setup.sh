@@ -2,9 +2,9 @@
 # set +x
 
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
-SETUP_FILES=`ls -1a | grep -E '^\.' | grep -v -E '^(.|..|.git|.gitignore|.config|bin)$'`
-CONFIGS=`ls -1a ${SCRIPT_DIR}/configs/. | grep -v -E '^(.|..|.git)$'`
-BINS=`ls -1a ${SCRIPT_DIR}/bin/. | grep -v -E '^(.|..|.git)$'`
+SETUP_FILES=`ls -1a | grep -E '^\.' | grep -v -E '^(\.|\.\.|\.git|\.gitignore|\.config|bin)$'`
+CONFIGS=`ls -1a ${SCRIPT_DIR}/configs/. | grep -v -E '^(\.|\.\.|\.git)$'`
+BINS=`ls -1a ${SCRIPT_DIR}/bin/. | grep -v -E '^(\.|\.\.|\.git)$'`
 
 if [[ "$SHELL" != */fish ]]; then
     echo "Warning: Default shell is not fish (current: $SHELL)"
