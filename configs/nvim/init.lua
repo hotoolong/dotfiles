@@ -516,6 +516,13 @@ require('lazy').setup({
   {
     'jghauser/mkdir.nvim'
   },
+  {
+    "ph1losof/shelter.nvim",
+    lazy = false,
+    config = function()
+      require("shelter").setup({})
+    end,
+  },
 })
 
 -- set options
