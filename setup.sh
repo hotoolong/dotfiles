@@ -51,6 +51,17 @@ function create_bin_symbolic_links() {
   done
 }
 
+function install_rust() {
+  if command -v rustc &> /dev/null; then
+    rustup update stable
+    echo "Rust ($(rustc --version))"
+  else
+    echo "install Rust"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source "$HOME/.cargo/env"
+  fi
+}
+
 function error() {
   echo 'error'
   exit 1
@@ -59,5 +70,6 @@ function error() {
 (
   create_symbolic_links &&
   create_config_symbolic_links &&
-  create_bin_symbolic_links
+  create_bin_symbolic_links &&
+  install_rust
 ) || error
