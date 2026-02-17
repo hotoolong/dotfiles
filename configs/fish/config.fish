@@ -558,3 +558,6 @@ status --is-interactive && source (rbenv init -|psub)
 direnv hook fish | source
 zoxide init fish | source
 fzf --fish | source
+
+# Loading Environment-Specific Settings
+test -f ~/.config/fish/local.fish && source ~/.config/fish/local.fish

@@ -7,4 +7,5 @@
 /configs/nvim/lazy-lock.json
 /configs/nvim/lua/config/local.lua
 /configs/nvim/lua/plugins/local.lua
+/configs/fish/local.fish
 .DS_Store
