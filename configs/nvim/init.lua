@@ -25,4 +25,7 @@ require('lazy').setup('plugins')
 
 require('coverage')
 
+-- 環境固有の設定 (gitignore対象、ファイルがなくてもエラーにならない)
+pcall(require, 'config.local')
+
 vim.cmd.colorscheme('kanagawa-dragon')

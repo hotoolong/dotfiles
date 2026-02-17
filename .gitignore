@@ -5,4 +5,6 @@
 /configs/karabiner/automatic_backups/*.json
 /Brewfile.lock.json
 /configs/nvim/lazy-lock.json
+/configs/nvim/lua/config/local.lua
+/configs/nvim/lua/plugins/local.lua
 .DS_Store
