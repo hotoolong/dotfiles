@@ -51,6 +51,43 @@ function create_bin_symbolic_links() {
   done
 }
 
+function setup_claude_code() {
+  if ! command -v claude &> /dev/null; then
+    echo "skip Claude Code setup (claude command not found)"
+    return 0
+  fi
+
+  local claude_dir="${SCRIPT_DIR}/configs/claude"
+
+  echo "Setting up Claude Code..."
+
+  # Register marketplaces
+  if [ -f "${claude_dir}/marketplaces" ]; then
+    while IFS= read -r marketplace || [ -n "$marketplace" ]; do
+      [ -z "$marketplace" ] && continue
+      if claude plugin marketplace list 2>/dev/null | grep -q "$marketplace"; then
+        echo "skip marketplace: $marketplace (already registered)"
+      else
+        echo "add marketplace: $marketplace"
+        claude plugin marketplace add "$marketplace"
+      fi
+    done < "${claude_dir}/marketplaces"
+  fi
+
+  # Install plugins
+  if [ -f "${claude_dir}/plugins" ]; then
+    while IFS= read -r plugin || [ -n "$plugin" ]; do
+      [ -z "$plugin" ] && continue
+      if claude plugin list 2>/dev/null | grep -q "$plugin"; then
+        echo "skip plugin: $plugin (already installed)"
+      else
+        echo "install plugin: $plugin"
+        claude plugin install "$plugin"
+      fi
+    done < "${claude_dir}/plugins"
+  fi
+}
+
 function install_rust() {
   if command -v rustc &> /dev/null; then
     rustup update stable
@@ -71,5 +108,6 @@ function error() {
   create_symbolic_links &&
   create_config_symbolic_links &&
   create_bin_symbolic_links &&
-  install_rust
+  install_rust &&
+  setup_claude_code
 ) || error
