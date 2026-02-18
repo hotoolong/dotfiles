@@ -133,6 +133,11 @@ alias ggpushf 'git push --force-with-lease --force-if-includes origin (git-curre
 abbr ghp 'gh pr view'
 abbr ghi 'gh issue view'
 
+function ghprl --description 'gh pr list with labels and assignees'
+  gh pr list $argv --json number,title,author,labels,assignees \
+    --template '{{tablerow "NUMBER" "TITLE" "AUTHOR" "LABELS" "ASSIGNEES"}}{{range .}}{{tablerow .number .title .author.login (pluck "name" .labels | join ", ") (pluck "login" .assignees | join ", ")}}{{end}}'
+end
+
 function is_git_dir
   git rev-parse --is-inside-work-tree > /dev/null 2>&1
 end
