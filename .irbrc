@@ -3,6 +3,8 @@ begin
 rescue LoadError
 end
 
+if Gem::Version.new(IRB::VERSION) < Gem::Version.new('1.12.0')
+
 # see https://github.com/k0kubun/dotfiles/commit/41716e66098fb30b845018716358567ac22ecd31#diff-4c4f336928651c6d17c19ca7d17e270b
 def IRB.ls(obj, locals, grep)
   dump = proc do |name, strs|
@@ -284,3 +286,5 @@ if defined?(IRB::Color) # used by IRB::ExtendCommand::Ls
     end
   })
 end
+
+end # if IRB::VERSION < 1.12.0
