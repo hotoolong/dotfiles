@@ -87,8 +87,8 @@ return {
     { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
     { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
     { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
-    { key = "n", mods = "LEADER", action = act.ActivatePaneDirection("Next") },
-    { key = "p", mods = "LEADER", action = act.ActivatePaneDirection("Prev") },
+    { key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },
+    { key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },
     { key = "o", mods = "LEADER", action = act.ActivatePaneDirection("Next") },
     -- Pane選択
     { key = "[", mods = "CTRL|SHIFT", action = act.PaneSelect },
