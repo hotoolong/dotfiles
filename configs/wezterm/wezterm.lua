@@ -69,7 +69,7 @@ config.show_close_tab_button_in_tabs = false
 
 -- タブ同士の境界線を非表示
 -- Kanagawa Dragon カラースキーム
-config.colors = {
+local kanagawa_colors = {
   foreground = "#c5c9c5",
   background = "#181616",
   cursor_bg = "#c5c9c5",
@@ -104,6 +104,33 @@ config.colors = {
     background = "#181616",
   },
 }
+config.colors = kanagawa_colors
+
+-- split色を変更したcolorsテーブルを生成する
+local function colors_with_split(split_color)
+  local colors = {}
+  for k, v in pairs(kanagawa_colors) do
+    colors[k] = v
+  end
+  colors.split = split_color
+  return colors
+end
+
+-- Claude Code の状態に応じてペイン分割線の色を変更する
+wezterm.on("user-var-changed", function(window, pane, name, value)
+  if name ~= "claude_status" then
+    return
+  end
+  local overrides = window:get_config_overrides() or {}
+  if value == "waiting" then
+    overrides.colors = colors_with_split("#e46876") -- Kanagawa autumnRed - 入力待ち
+  elseif value == "processing" then
+    overrides.colors = colors_with_split("#957fb8") -- Kanagawa oniViolet - 処理中
+  else
+    overrides.colors = nil -- 元の色に戻す
+  end
+  window:set_config_overrides(overrides)
+end)
 
 -- タブの形をカスタマイズ
 -- タブの左側の装飾
@@ -115,10 +142,15 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   local background = "#5c6d74"
   local foreground = "#FFFFFF"
   local edge_background = "none"
+
+  local claude_status = (tab.active_pane.user_vars or {}).claude_status
+
   if tab.is_active then
     background = "#ae8b2d"
-    foreground = "#FFFFFF"
+  elseif claude_status == "waiting" then
+    background = "#c4746e" -- 非アクティブタブ - 入力待ち
   end
+
   local edge_foreground = background
   local title = "   " .. wezterm.truncate_right(tab.active_pane.title, max_width - 1) .. "   "
   return {
