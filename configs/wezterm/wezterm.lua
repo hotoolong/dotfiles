@@ -148,7 +148,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   if tab.is_active then
     background = "#ae8b2d"
   elseif claude_status == "waiting" then
-    background = "#c4746e" -- 非アクティブタブ - 入力待ち
+    background = "#98bb6c" -- 非アクティブタブ - 入力待ち
   end
 
   local edge_foreground = background
