@@ -4,6 +4,7 @@
 /configs/fish/completions
 /configs/karabiner/automatic_backups/*.json
 /Brewfile.lock.json
+/Brewfile.local
 /configs/nvim/lazy-lock.json
 /configs/nvim/lua/config/local.lua
 /configs/nvim/lua/plugins/local.lua

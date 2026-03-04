@@ -102,12 +102,10 @@ cask "alt-tab"
 cask "chromedriver"
 cask "clipy"
 cask "deepl"
-cask "docker-desktop"
 cask "font-hack-nerd-font"
 cask "font-moralerspace"
 cask "font-moralerspace-hw"
 cask "karabiner-elements"
-cask "kindle"
 cask "slack"
 cask "utm"
 cask "vagrant"
@@ -119,3 +117,9 @@ vscode "ms-ceintl.vscode-language-pack-ja"
 vscode "ms-vscode-remote.remote-containers"
 vscode "shopify.ruby-lsp"
 vscode "soutaro.steep-vscode"
+
+# PC固有のパッケージは Brewfile.local に記述（git管理外）
+local_brewfile = File.join(__dir__, "Brewfile.local")
+if File.exist?(local_brewfile)
+  instance_eval(File.read(local_brewfile))
+end
