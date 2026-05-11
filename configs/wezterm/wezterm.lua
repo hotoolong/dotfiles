@@ -66,6 +66,8 @@ config.window_background_gradient = {
 -- nightlyのみ使用可能
 -- タブの閉じるボタンを非表示
 config.show_close_tab_button_in_tabs = false
+-- タブの最大幅
+config.tab_max_width = 30
 
 -- タブ同士の境界線を非表示
 -- Kanagawa Dragon カラースキーム
