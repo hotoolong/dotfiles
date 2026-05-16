@@ -65,7 +65,7 @@ return {
       })
 
       local function show_documentation()
-        local ft = vim.opt.filetype._value
+        local ft = vim.bo.filetype
         if ft == 'vim' or ft == 'help' then
           vim.cmd([[execute 'h ' . expand('<cword>') ]])
         else
