@@ -7,7 +7,7 @@ local coverage_file_path = "coverage/.resultset.json"
 local coverage_file_mtime = nil
 
 local function get_file_mtime(file_path)
-  local file_stat = vim.loop.fs_stat(file_path)
+  local file_stat = vim.uv.fs_stat(file_path)
   if file_stat then
     return file_stat.mtime.sec
   else
