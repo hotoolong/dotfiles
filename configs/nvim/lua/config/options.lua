@@ -25,7 +25,9 @@ vim.opt.backspace = "indent,eol,start"
 vim.opt.textwidth = 0 -- 一行に長い文章を書いていても自動折り返しをしない
 vim.opt.display = 'lastline'
 vim.opt.pumheight = 10
-vim.opt.pummaxwidth = 80
+if vim.fn.has('nvim-0.12') == 1 then
+  vim.opt.pummaxwidth = 80
+end
 vim.opt.backupskip = "/tmp/*,/private/tmp/*"
 vim.opt.swapfile = false
 vim.opt.tags:append('.git/tags')
@@ -52,3 +54,4 @@ if vim.fn.has('persistent_undo') == 1 then
 end
 
 vim.opt.termguicolors = true
+vim.opt.winborder = 'rounded'
