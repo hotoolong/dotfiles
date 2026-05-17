@@ -82,12 +82,6 @@ return {
     end
   },
   {
-    'ray-x/lsp_signature.nvim',
-    opts = {
-      hint_enable = false
-    }
-  },
-  {
     'j-hui/fidget.nvim',
     tag = 'legacy',
     config = true,
