@@ -10,6 +10,7 @@ set -gx RUBY_CONFIGURE_OPTS --with-openssl-dir=$OPENSSL_DIR
 set -gx TMUX_SHELL (which fish)
 set -gx fish_prompt_pwd_full_dirs 2
 set -gx LIBRARY_PATH $BREW_PREFIX/opt/zstd/lib
+fish_add_path /usr/local/bin
 fish_add_path $BREW_PREFIX/bin
 fish_add_path $BREW_PREFIX/sbin
 fish_add_path $OPENSSL_DIR/bin
@@ -293,7 +294,7 @@ function gg --description 'Customizing file grep'
   end
 end
 
-function gga --description "Costomizing file grep in all repositories"
+function gga --description "Customizing file grep in all repositories"
   set -l options t/text
   argparse -n gga $options -- $argv
   or return
@@ -311,11 +312,11 @@ function git-current-branch
   string replace 'refs/heads/' "" $ref
 end
 
-function gsel --description 'git pull origin $(branch)'
+function gsel --description 'Select file from git status by line number'
   echo (git status -s | head -n $argv[1] | tail -n 1 | awk '{print $2}')
 end
 
-function gdd --description 'git pull origin $(branch)'
+function gdd --description 'Show git diff for file selected by line number'
   set file_name (git status -s | head -n $argv[1] | tail -n 1 | awk '{print $2}')
   echo (gd $file_name)
 end
@@ -558,7 +559,7 @@ function reload
   exec $SHELL
 end
 
-eval (gh completion -s fish| source)
+gh completion -s fish| source
 status --is-interactive && source (rbenv init -|psub)
 direnv hook fish | source
 zoxide init fish | source
