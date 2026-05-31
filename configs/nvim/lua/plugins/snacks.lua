@@ -23,6 +23,11 @@ return {
     keys = {
       { "<Plug>(ff)f", function() Snacks.picker.files() end, desc = "Find Files" },
       { "<Plug>(ff)g", function() Snacks.picker.grep() end, desc = "Grep" },
+      { "<Plug>(ff)/", function()
+        local search = vim.fn.getreg("/")
+        search = search:gsub([[\<]], ""):gsub([[\>]], ""):gsub([[\V]], "")
+        Snacks.picker.grep({ search = search })
+      end, desc = "Grep last search" },
       { "<Plug>(ff)G", function() Snacks.picker.resume() end, desc = "Resume" },
       { "<Plug>(ff)m", function() Snacks.picker.recent() end, desc = "Recent Files" },
       { "<Plug>(ff)s", function() Snacks.picker.git_status() end, desc = "Git Status" },
