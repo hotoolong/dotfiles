@@ -51,6 +51,41 @@ return {
   },
   { 'rcarriga/nvim-notify' },
   {
+    "y3owk1n/undo-glow.nvim",
+    event = { "VeryLazy" },
+    opts = {
+      animation = {
+        enabled = true,
+        duration = 300,
+        animation_type = "zoom",
+        window_scoped = true,
+      },
+      highlights = {
+        undo = { hl_color = { bg = "#693232" } },
+        redo = { hl_color = { bg = "#2F4640" } },
+        yank = { hl_color = { bg = "#7A683A" } },
+        paste = { hl_color = { bg = "#325B5B" } },
+        search = { hl_color = { bg = "#5C475C" } },
+        cursor = { hl_color = { bg = "#793D54" } },
+      },
+      priority = 2048 * 3,
+    },
+    keys = {
+      { "u", function() require("undo-glow").undo() end, mode = "n", desc = "Undo" },
+      { "U", function() require("undo-glow").redo() end, mode = "n", desc = "Redo" },
+      { "p", function() require("undo-glow").paste_below() end, mode = "n", desc = "Paste below" },
+      { "P", function() require("undo-glow").paste_above() end, mode = "n", desc = "Paste above" },
+      { "n", function() require("undo-glow").search_next({ animation = { animation_type = "strobe" } }) end, mode = "n", desc = "Search next" },
+      { "N", function() require("undo-glow").search_prev({ animation = { animation_type = "strobe" } }) end, mode = "n", desc = "Search prev" },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd("TextYankPost", {
+        desc = "Highlight on yank",
+        callback = function() require("undo-glow").yank() end,
+      })
+    end,
+  },
+  {
     'liuchengxu/vista.vim',
     cmd = 'Vista',
     keys = {
