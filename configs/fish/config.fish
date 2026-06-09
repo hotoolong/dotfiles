@@ -100,11 +100,14 @@ function migrate
       set -l target_file (ls -1 ./db/migrate | grep $time)
       set cmd "$EDITOR db/migrate/$target_file"
     end
-    if test -n "$cmd"
-      builtin history append -- $cmd
-      eval $cmd
-    end
+    run_cmd $cmd
   end
+end
+
+function run_cmd --description 'append cmd to history then eval'
+  test -z "$argv" && return
+  builtin history append -- $argv
+  eval $argv
 end
 
 function kill_all_spring
@@ -221,10 +224,7 @@ function gst --description 'git status -s'
     else
       commandline -f repaint
     end
-    if test -n "$cmd"
-      builtin history append -- $cmd
-      eval $cmd
-    end
+    run_cmd $cmd
   end
 end
 
@@ -261,10 +261,7 @@ function gb --description 'git branch'
       set -l branch_name (echo $out[2] | sed -e 's/^[ \*]*//g')
       set cmd "git switch $branch_name"
     end
-    if test -n "$cmd"
-      builtin history append -- $cmd
-      eval $cmd
-    end
+    run_cmd $cmd
   end
 end
 
@@ -289,8 +286,7 @@ function gg --description 'Customizing file grep'
     set -l line (echo $out | cut -d':' -f 2)
     set -l file (echo $out | cut -d':' -f 1)
     set -l cmd "$EDITOR +$line $file -c 'let @/ = \"$argv[1]\"'"
-    builtin history append -- $cmd
-    eval $cmd
+    run_cmd $cmd
   end
 end
 
@@ -347,8 +343,7 @@ function fzf-github-issue
   end
   set -l issue_id (echo $out | awk '{ print $1 }')
   set -l cmd "gh issue view -w $issue_id"
-  builtin history append -- $cmd
-  eval $cmd
+  run_cmd $cmd
   commandline -f repaint
 end
 
@@ -386,10 +381,7 @@ function fzf-github-pull-request
   else if test $out[1] = 'ctrl-m'
     set cmd "gh pr view -c $pr_id"
   end
-  if test -n "$cmd"
-    builtin history append -- $cmd
-    eval $cmd
-  end
+  run_cmd $cmd
   commandline -f repaint
 end
 
@@ -437,8 +429,7 @@ function trend-ruby-week
   if test -n $out
     set -l repo (echo $out | awk '{ print $2 }')
     set -l cmd "gh repo view -w $repo"
-    builtin history append -- $cmd
-    eval $cmd
+    run_cmd $cmd
   end
 end
 
@@ -460,8 +451,7 @@ function fzf-find-file
   [ $status != 0 ] && commandline -f repaint && return
   if test -n $target_file
     set -l cmd "$EDITOR $target_file"
-    builtin history append -- $cmd
-    eval $cmd
+    run_cmd $cmd
   end
   commandline -f repaint
 end
@@ -489,8 +479,7 @@ function fzf-git-recent-all-branches
 
   if test -n $selected_branch
     set -l cmd "git checkout $selected_branch"
-    builtin history append -- $cmd
-    eval $cmd
+    run_cmd $cmd
   end
   commandline -f repaint
 end
@@ -525,10 +514,7 @@ function fzf-git-stash
     case 'ctrl-r'
       set cmd "git stash drop $stash_num"
     end
-    if test -n "$cmd"
-      builtin history append -- $cmd
-      eval $cmd
-    end
+    run_cmd $cmd
   end
 end
 alias stash=fzf-git-stash
