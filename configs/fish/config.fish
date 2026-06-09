@@ -269,7 +269,7 @@ function gg --description 'Customizing file grep'
   )
   [ $status != 0 ] && commandline -f repaint && return
 
-  if test -n (count $out)
+  if string length -q -- $out
     set -l line (echo $out | cut -d':' -f 2)
     set -l file (echo $out | cut -d':' -f 1)
     set -l cmd "$EDITOR +$line $file -c 'let @/ = \"$argv[1]\"'"
