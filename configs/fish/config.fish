@@ -413,13 +413,13 @@ function fzf-select-ghq-repository
 
   if test -n $out
     set -l cmd "cd $out"
-    builtin history append -- $cmd
-    eval $cmd
+    run_cmd $cmd
   end
   commandline -f repaint
 end
 
 function trend-ruby-week
+  set -l query (commandline --current-buffer)
   if test -n $query
     set fzf_query --query "$query"
   end
