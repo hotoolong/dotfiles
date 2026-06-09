@@ -317,8 +317,7 @@ function gsel --description 'Select file from git status by line number'
 end
 
 function gdd --description 'Show git diff for file selected by line number'
-  set file_name (git status -s | head -n $argv[1] | tail -n 1 | awk '{print $2}')
-  echo (gd $file_name)
+  echo (gd (gsel $argv[1]))
 end
 
 # fzf
