@@ -110,6 +110,13 @@ function run_cmd --description 'append cmd to history then eval'
   eval $argv
 end
 
+function fzf_query_args --description 'build fzf --query args from current command line'
+  set -l query (commandline --current-buffer)
+  test -z "$query" && return
+  echo --query
+  echo $query
+end
+
 function kill_all_spring
   ps aux | grep 'spring ' | grep -v grep | awk '{ print $2 }' | xargs kill -9
 end
@@ -233,10 +240,7 @@ function commit --description 'git commit -m'
 end
 
 function gb --description 'git branch'
-  set -l query (commandline --current-buffer)
-  if test -n $query
-    set fzf_query --query "$query"
-  end
+  set -l fzf_query (fzf_query_args)
 
   set -l out ( \
     git branch | \
@@ -319,10 +323,7 @@ end
 # fzf
 
 function fzf-github-issue
-  set -l query (commandline --current-buffer)
-  if test -n $query
-    set fzf_query --query "$query"
-  end
+  set -l fzf_query (fzf_query_args)
 
   set -l base_command gh issue list --limit 100
   set -l bind_commands "ctrl-a:reload($base_command --state all)"
@@ -348,10 +349,7 @@ function fzf-github-issue
 end
 
 function fzf-github-pull-request
-  set -l query (commandline --current-buffer)
-  if test -n $query
-    set fzf_query --query "$query"
-  end
+  set -l fzf_query (fzf_query_args)
 
   set -l base_command gh pr list --limit 100
   set -l bind_commands "ctrl-a:reload($base_command --state all)"
@@ -386,10 +384,7 @@ function fzf-github-pull-request
 end
 
 function fzf-select-ghq-repository
-  set -l query (commandline --current-buffer)
-  if test -n $query
-    set fzf_query --query "$query"
-  end
+  set -l fzf_query (fzf_query_args)
 
   set -l out (
     for i in (ghq root --all)
@@ -411,10 +406,7 @@ function fzf-select-ghq-repository
 end
 
 function trend-ruby-week
-  set -l query (commandline --current-buffer)
-  if test -n $query
-    set fzf_query --query "$query"
-  end
+  set -l fzf_query (fzf_query_args)
 
   set -l out (
     git trend -l ruby -s week | tail -n +3 | \
@@ -466,10 +458,7 @@ function fzf-select-history
 end
 
 function fzf-git-recent-all-branches
-  set -l query (commandline --current-buffer)
-  if test -n $query
-    set fzf_query --query "$query"
-  end
+  set -l fzf_query (fzf_query_args)
 
   git for-each-ref --sort=creatordate | \
     fzf $fzf_query \
