@@ -120,7 +120,7 @@ alias g 'git'
 alias ga 'git add'
 alias gc 'git commit -v'
 alias gd 'git diff'
-alias gdm 'git diff --merge-base (git-default-branch)'
+alias gdm 'git diff --merge-base (__ht_git-default-branch)'
 alias gco 'git checkout'
 alias gsw 'git switch'
 alias gdc 'git diff --cached'
@@ -136,39 +136,16 @@ function ghprl --description 'gh pr list with labels and assignees'
     --template '{{tablerow "NUMBER" "TITLE" "AUTHOR" "LABELS" "ASSIGNEES"}}{{range .}}{{tablerow .number .title .author.login (pluck "name" .labels | join ", ") (pluck "login" .assignees | join ", ")}}{{end}}'
 end
 
-function git-default-branch --description 'get git default branch'
-  if ! __ht_is_git_dir
-    return
-  end
-  gh auth status > /dev/null 2>&1
-  if test $status -eq 0
-    set -l branch (gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name" 2>/dev/null)
-    if test $status -eq 0
-      echo $branch
-      return
-    end
-  else
-    set branch (git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}')
-    if test $status -eq 0
-      echo $branch
-      return
-    end
-  end
-  git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
-end
-
 function gcom --description 'git switch <default branch>'
-  git switch (git-default-branch)
+  git switch (__ht_git-default-branch)
 end
 
 function grm --description 'git rebase <default branch>'
-  git rebase (git-default-branch)
+  git rebase (__ht_git-default-branch)
 end
 
 function gst --description 'git status -s'
-  if ! __ht_is_git_dir
-    return
-  end
+  __ht_is_git_dir; or return
   set -l base_command
   if command -q unbuffer
     set base_command unbuffer git status -s
@@ -232,7 +209,7 @@ function gb --description 'git branch'
         --header='C-d: delete, Enter: switch, Tab: choice' \
         --expect=ctrl-m,ctrl-d \
         --multi \
-        --preview="[ {1} = '*' ] && git diff --color (git merge-base (git-default-branch) {2})..{2} || git diff --color (git merge-base (git-default-branch) {1})..{1}" \
+        --preview="[ {1} = '*' ] && git diff --color (git merge-base (__ht_git-default-branch) {2})..{2} || git diff --color (git merge-base (__ht_git-default-branch) {1})..{1}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
 
@@ -436,7 +413,7 @@ function fzf-git-recent-all-branches
   git for-each-ref --sort=creatordate | \
     fzf $fzf_query \
       --prompt='Select Branch >' \
-      --preview="git diff (git-default-branch) {3} " | \
+      --preview="git diff (__ht_git-default-branch) {3} " | \
     read -l selected_branch
 
   if test -n $selected_branch
@@ -447,10 +424,7 @@ function fzf-git-recent-all-branches
 end
 
 function fzf-git-stash
-  if ! __ht_is_git_dir
-    return
-  end
-
+  __ht_is_git_dir; or return
   set -l out (
     git stash list | \
     fzf --exit-0 \
@@ -480,6 +454,25 @@ function fzf-git-stash
   end
 end
 alias stash=fzf-git-stash
+
+function __ht_git-default-branch --description 'get git default branch'
+  __ht_is_git_dir; or return
+  gh auth status > /dev/null 2>&1
+  if test $status -eq 0
+    set -l branch (gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name" 2>/dev/null)
+    if test $status -eq 0
+      echo $branch
+      return
+    end
+  else
+    set branch (git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}')
+    if test $status -eq 0
+      echo $branch
+      return
+    end
+  end
+  git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
+end
 
 function __ht_git-current-branch
   set -l ref (git symbolic-ref --quiet HEAD 2> /dev/null)
