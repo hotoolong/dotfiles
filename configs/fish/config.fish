@@ -100,7 +100,7 @@ function migrate
       set -l target_file (ls -1 ./db/migrate | grep $time)
       set cmd "$EDITOR db/migrate/$target_file"
     end
-    if test -n $cmd
+    if test -n "$cmd"
       builtin history append -- $cmd
       eval $cmd
     end
@@ -221,7 +221,7 @@ function gst --description 'git status -s'
     else
       commandline -f repaint
     end
-    if test -n $cmd
+    if test -n "$cmd"
       builtin history append -- $cmd
       eval $cmd
     end
@@ -261,7 +261,7 @@ function gb --description 'git branch'
       set -l branch_name (echo $out[2] | sed -e 's/^[ \*]*//g')
       set cmd "git switch $branch_name"
     end
-    if test -n $cmd
+    if test -n "$cmd"
       builtin history append -- $cmd
       eval $cmd
     end
@@ -387,7 +387,7 @@ function fzf-github-pull-request
   else if test $out[1] = 'ctrl-m'
     set cmd "gh pr view -c $pr_id"
   end
-  if test -n $cmd
+  if test -n "$cmd"
     builtin history append -- $cmd
     eval $cmd
   end
