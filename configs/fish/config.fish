@@ -100,21 +100,8 @@ function migrate
       set -l target_file (ls -1 ./db/migrate | grep $time)
       set cmd "$EDITOR db/migrate/$target_file"
     end
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
-end
-
-function run_cmd --description 'append cmd to history then eval'
-  test -z "$argv" && return
-  builtin history append -- $argv
-  eval $argv
-end
-
-function fzf_query_args --description 'build fzf --query args from current command line'
-  set -l query (commandline --current-buffer)
-  test -z "$query" && return
-  echo --query
-  echo $query
 end
 
 function kill_all_spring
@@ -136,9 +123,9 @@ alias gdm 'git diff --merge-base (git-default-branch)'
 alias gco 'git checkout'
 alias gsw 'git switch'
 alias gdc 'git diff --cached'
-alias ggpull 'git pull origin (git-current-branch)'
-alias ggpush 'git push origin (git-current-branch)'
-alias ggpushf 'git push --force-with-lease --force-if-includes origin (git-current-branch)'
+alias ggpull 'git pull origin (__ht_git-current-branch)'
+alias ggpush 'git push origin (__ht_git-current-branch)'
+alias ggpushf 'git push --force-with-lease --force-if-includes origin (__ht_git-current-branch)'
 
 abbr gd 'git diff'
 abbr ghp 'gh pr view'
@@ -149,12 +136,8 @@ function ghprl --description 'gh pr list with labels and assignees'
     --template '{{tablerow "NUMBER" "TITLE" "AUTHOR" "LABELS" "ASSIGNEES"}}{{range .}}{{tablerow .number .title .author.login (pluck "name" .labels | join ", ") (pluck "login" .assignees | join ", ")}}{{end}}'
 end
 
-function is_git_dir
-  git rev-parse --is-inside-work-tree > /dev/null 2>&1
-end
-
 function git-default-branch --description 'get git default branch'
-  if ! is_git_dir
+  if ! __ht_is_git_dir
     return
   end
   gh auth status > /dev/null 2>&1
@@ -183,7 +166,7 @@ function grm --description 'git rebase <default branch>'
 end
 
 function gst --description 'git status -s'
-  if ! is_git_dir
+  if ! __ht_is_git_dir
     return
   end
   set -l base_command
@@ -231,7 +214,7 @@ function gst --description 'git status -s'
     else
       commandline -f repaint
     end
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
 end
 
@@ -240,7 +223,7 @@ function commit --description 'git commit -m'
 end
 
 function gb --description 'git branch'
-  set -l fzf_query (fzf_query_args)
+  set -l fzf_query (__ht_fzf_query_args)
 
   set -l out ( \
     git branch | \
@@ -265,7 +248,7 @@ function gb --description 'git branch'
       set -l branch_name (echo $out[2] | sed -e 's/^[ \*]*//g')
       set cmd "git switch $branch_name"
     end
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
 end
 
@@ -290,7 +273,7 @@ function gg --description 'Customizing file grep'
     set -l line (echo $out | cut -d':' -f 2)
     set -l file (echo $out | cut -d':' -f 1)
     set -l cmd "$EDITOR +$line $file -c 'let @/ = \"$argv[1]\"'"
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
 end
 
@@ -300,16 +283,6 @@ function gga --description "Customizing file grep in all repositories"
   or return
 
   gg $argv[1] (ghq root --all)
-end
-
-function git-current-branch
-  set -l ref (git symbolic-ref --quiet HEAD 2> /dev/null)
-  set -l ret $status
-  if [ $ret != 0 ]
-    [ $ret == 128 ] &&  return  # no git repo.
-    set -l ref (git rev-parse --short HEAD 2> /dev/null); or return
-  end
-  string replace 'refs/heads/' "" $ref
 end
 
 function gsel --description 'Select file from git status by line number'
@@ -323,7 +296,7 @@ end
 # fzf
 
 function fzf-github-issue
-  set -l fzf_query (fzf_query_args)
+  set -l fzf_query (__ht_fzf_query_args)
 
   set -l base_command gh issue list --limit 100
   set -l bind_commands "ctrl-a:reload($base_command --state all)"
@@ -344,12 +317,12 @@ function fzf-github-issue
   end
   set -l issue_id (echo $out | awk '{ print $1 }')
   set -l cmd "gh issue view -w $issue_id"
-  run_cmd $cmd
+  __ht_run_cmd $cmd
   commandline -f repaint
 end
 
 function fzf-github-pull-request
-  set -l fzf_query (fzf_query_args)
+  set -l fzf_query (__ht_fzf_query_args)
 
   set -l base_command gh pr list --limit 100
   set -l bind_commands "ctrl-a:reload($base_command --state all)"
@@ -379,12 +352,12 @@ function fzf-github-pull-request
   else if test $out[1] = 'ctrl-m'
     set cmd "gh pr view -c $pr_id"
   end
-  run_cmd $cmd
+  __ht_run_cmd $cmd
   commandline -f repaint
 end
 
 function fzf-select-ghq-repository
-  set -l fzf_query (fzf_query_args)
+  set -l fzf_query (__ht_fzf_query_args)
 
   set -l out (
     for i in (ghq root --all)
@@ -400,13 +373,13 @@ function fzf-select-ghq-repository
 
   if test -n $out
     set -l cmd "cd $out"
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
   commandline -f repaint
 end
 
 function trend-ruby-week
-  set -l fzf_query (fzf_query_args)
+  set -l fzf_query (__ht_fzf_query_args)
 
   set -l out (
     git trend -l ruby -s week | tail -n +3 | \
@@ -421,7 +394,7 @@ function trend-ruby-week
   if test -n $out
     set -l repo (echo $out | awk '{ print $2 }')
     set -l cmd "gh repo view -w $repo"
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
 end
 
@@ -443,7 +416,7 @@ function fzf-find-file
   [ $status != 0 ] && commandline -f repaint && return
   if test -n $target_file
     set -l cmd "$EDITOR $target_file"
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
   commandline -f repaint
 end
@@ -458,7 +431,7 @@ function fzf-select-history
 end
 
 function fzf-git-recent-all-branches
-  set -l fzf_query (fzf_query_args)
+  set -l fzf_query (__ht_fzf_query_args)
 
   git for-each-ref --sort=creatordate | \
     fzf $fzf_query \
@@ -468,13 +441,13 @@ function fzf-git-recent-all-branches
 
   if test -n $selected_branch
     set -l cmd "git checkout $selected_branch"
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
   commandline -f repaint
 end
 
 function fzf-git-stash
-  if ! is_git_dir
+  if ! __ht_is_git_dir
     return
   end
 
@@ -503,10 +476,37 @@ function fzf-git-stash
     case 'ctrl-r'
       set cmd "git stash drop $stash_num"
     end
-    run_cmd $cmd
+    __ht_run_cmd $cmd
   end
 end
 alias stash=fzf-git-stash
+
+function __ht_git-current-branch
+  set -l ref (git symbolic-ref --quiet HEAD 2> /dev/null)
+  set -l ret $status
+  if [ $ret != 0 ]
+    [ $ret == 128 ] &&  return  # no git repo.
+    set -l ref (git rev-parse --short HEAD 2> /dev/null); or return
+  end
+  string replace 'refs/heads/' "" $ref
+end
+
+function __ht_is_git_dir
+  git rev-parse --is-inside-work-tree > /dev/null 2>&1
+end
+
+function __ht_run_cmd --description 'append cmd to history then eval'
+  test -z "$argv" && return
+  builtin history append -- $argv
+  eval $argv
+end
+
+function __ht_fzf_query_args --description 'build fzf --query args from current command line'
+  set -l query (commandline --current-buffer)
+  test -z "$query" && return
+  echo --query
+  echo $query
+end
 
 # bind
 
@@ -523,7 +523,7 @@ abbr today date "+%Y%m%d%H%M%S"
 
 # cd
 # After cd, automatically execute ls
-function auto_ls --on-variable PWD
+function __ht_auto_ls --on-variable PWD
   ls
 end
 
