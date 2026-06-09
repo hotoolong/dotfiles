@@ -383,11 +383,11 @@ function ruby-all-version-execute
 end
 
 function fzf-find-file
-  set -l query (commandline --current-buffer)
+  set -l fzf_query (__ht_fzf_query_args)
 
   set -l target_file (
     fd --type f --search-path . | \
-    fzf --prompt='Select files > ' --query "$query" \
+    fzf --prompt='Select files > ' $fzf_query \
         --preview="bat --color=always {}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
@@ -399,8 +399,8 @@ function fzf-find-file
 end
 
 function fzf-select-history
-  set -l query (commandline --current-buffer)
-  history | fzf --query "$query" | read -l line
+  set -l fzf_query (__ht_fzf_query_args)
+  history | fzf $fzf_query | read -l line
 
   if [ $line ]
     commandline $line
