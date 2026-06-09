@@ -132,15 +132,18 @@ abbr ghp 'gh pr view'
 abbr ghi 'gh issue view'
 
 function ghprl --description 'gh pr list with labels and assignees'
+  __ht_is_git_dir; or return
   gh pr list $argv --json number,title,author,labels,assignees \
     --template '{{tablerow "NUMBER" "TITLE" "AUTHOR" "LABELS" "ASSIGNEES"}}{{range .}}{{tablerow .number .title .author.login (pluck "name" .labels | join ", ") (pluck "login" .assignees | join ", ")}}{{end}}'
 end
 
 function gcom --description 'git switch <default branch>'
+  __ht_is_git_dir; or return
   git switch (__ht_git-default-branch)
 end
 
 function grm --description 'git rebase <default branch>'
+  __ht_is_git_dir; or return
   git rebase (__ht_git-default-branch)
 end
 
@@ -196,10 +199,12 @@ function gst --description 'git status -s'
 end
 
 function commit --description 'git commit -m'
+  __ht_is_git_dir; or return
   command git commit -m "$argv"
 end
 
 function gb --description 'git branch'
+  __ht_is_git_dir; or return
   set -l fzf_query (__ht_fzf_query_args)
 
   set -l out ( \
@@ -263,16 +268,19 @@ function gga --description "Customizing file grep in all repositories"
 end
 
 function gsel --description 'Select file from git status by line number'
+  __ht_is_git_dir; or return
   echo (git status -s | head -n $argv[1] | tail -n 1 | awk '{print $2}')
 end
 
 function gdd --description 'Show git diff for file selected by line number'
+  __ht_is_git_dir; or return
   echo (gd (gsel $argv[1]))
 end
 
 # fzf
 
 function fzf-github-issue
+  __ht_is_git_dir; or return
   set -l fzf_query (__ht_fzf_query_args)
 
   set -l base_command gh issue list --limit 100
@@ -299,6 +307,7 @@ function fzf-github-issue
 end
 
 function fzf-github-pull-request
+  __ht_is_git_dir; or return
   set -l fzf_query (__ht_fzf_query_args)
 
   set -l base_command gh pr list --limit 100
