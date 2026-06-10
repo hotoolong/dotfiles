@@ -302,7 +302,7 @@ function fzf-github-issue
         --bind $bind_str \
         --header='C-a: all, C-o: open, C-c: closed' \
   )
-  if test -z $out
+  if test -z "$out"
     return
   end
   set -l issue_id (echo $out | awk '{ print $1 }')
@@ -362,7 +362,7 @@ function fzf-select-ghq-repository
   )
   [ $status != 0 ] && commandline -f repaint && return
 
-  if test -n $out
+  if test -n "$out"
     set -l cmd "cd $out"
     __ht_run_cmd $cmd
   end
@@ -382,7 +382,7 @@ function trend-ruby-week
   )
   [ $status != 0 ] && commandline -f repaint && return
 
-  if test -n $out
+  if test -n "$out"
     set -l repo (echo $out | awk '{ print $2 }')
     set -l cmd "gh repo view -w $repo"
     __ht_run_cmd $cmd
@@ -405,7 +405,7 @@ function fzf-find-file
         --preview="bat --color=always {}" \
   )
   [ $status != 0 ] && commandline -f repaint && return
-  if test -n $target_file
+  if test -n "$target_file"
     set -l cmd "$EDITOR $target_file"
     __ht_run_cmd $cmd
   end
@@ -430,7 +430,7 @@ function fzf-git-recent-all-branches
       --preview="git diff (__ht_git-default-branch) {3} " | \
     read -l selected_branch
 
-  if test -n $selected_branch
+  if test -n "$selected_branch"
     set -l cmd "git checkout $selected_branch"
     __ht_run_cmd $cmd
   end
@@ -450,7 +450,7 @@ function fzf-git-stash
   )
   [ $status != 0 ] && commandline -f repaint && return
 
-  if test -n $out[1]
+  if test -n "$out[1]"
     set -l stash_num (echo $out[2] | cut -d ':' -f 1)
     set -l cmd
     echo $stash_num
@@ -474,13 +474,13 @@ function __ht_git-default-branch --description 'get git default branch'
   gh auth status > /dev/null 2>&1
   if test $status -eq 0
     set -l branch (gh repo view --json "defaultBranchRef" --jq ".defaultBranchRef.name" 2>/dev/null)
-    if test $status -eq 0
+    if test -n "$branch"
       echo $branch
       return
     end
   else
-    set branch (git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}')
-    if test $status -eq 0
+    set -l branch (git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}')
+    if test -n "$branch"
       echo $branch
       return
     end
@@ -491,9 +491,9 @@ end
 function __ht_git-current-branch
   set -l ref (git symbolic-ref --quiet HEAD 2> /dev/null)
   set -l ret $status
-  if [ $ret != 0 ]
-    [ $ret == 128 ] &&  return  # no git repo.
-    set -l ref (git rev-parse --short HEAD 2> /dev/null); or return
+  if test $ret -ne 0
+    test $ret -eq 128; and return  # no git repo.
+    set ref (git rev-parse --short HEAD 2> /dev/null); or return
   end
   string replace 'refs/heads/' "" $ref
 end
