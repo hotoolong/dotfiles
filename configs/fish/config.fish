@@ -136,10 +136,10 @@ alias ggpushf 'git push --force-with-lease --force-if-includes origin (__ht_git-
 abbr ghp 'gh pr view'
 abbr ghi 'gh issue view'
 
-function ghprl --description 'gh pr list with labels and assignees'
+function ghprl --description 'gh pr list with labels, assignees and reviewers'
   __ht_is_git_dir; or return
-  gh pr list $argv --json number,title,author,labels,assignees \
-    --template '{{tablerow "NUMBER" "TITLE" "AUTHOR" "LABELS" "ASSIGNEES"}}{{range .}}{{tablerow .number .title .author.login (pluck "name" .labels | join ", ") (pluck "login" .assignees | join ", ")}}{{end}}'
+  gh pr list $argv --json number,title,author,labels,assignees,reviewRequests \
+    --template '{{tablerow "NUMBER" "TITLE" "AUTHOR" "LABELS" "ASSIGNEES" "REVIEWERS"}}{{range .}}{{$reviewers := ""}}{{range .reviewRequests}}{{if $reviewers}}{{$reviewers = print $reviewers ", "}}{{end}}{{$reviewers = print $reviewers (or .login .name)}}{{end}}{{tablerow .number .title .author.login (pluck "name" .labels | join ", ") (pluck "login" .assignees | join ", ") $reviewers}}{{end}}'
 end
 
 function gcom --description 'git switch <default branch>'
