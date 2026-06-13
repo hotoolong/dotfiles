@@ -30,6 +30,7 @@ return {
       end, desc = "Grep last search" },
       { "<Plug>(ff)G", function() Snacks.picker.resume() end, desc = "Resume" },
       { "<Plug>(ff)m", function() Snacks.picker.recent() end, desc = "Recent Files" },
+      { "<C-w>z", function() Snacks.zen.zoom() end, desc = "Zoom Window" },
       { "<Plug>(ff)s", function() Snacks.picker.git_status() end, desc = "Git Status" },
       { "<Plug>(ff)b", function() Snacks.picker.buffers() end, desc = "Buffers" },
       { "<Plug>(ff)h", function() Snacks.picker.help() end, desc = "Help Tags" },
