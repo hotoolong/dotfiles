@@ -7,6 +7,7 @@ return {
     },
     init = function()
       vim.g["fern#renderer"] = 'nerdfont'
+      vim.g["fern#default_hidden"] = 1
 
       vim.api.nvim_create_augroup('my-glyph-palette', {})
       vim.api.nvim_create_autocmd('FileType', { pattern = "fern", command = "call glyph_palette#apply()", group = 'my-glyph-palette' })
