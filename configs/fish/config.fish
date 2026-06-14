@@ -26,7 +26,12 @@ if not functions -q fundle; eval (curl -sfL https://git.io/fundle-install); end
 fundle plugin 'edc/bass'
 fundle plugin 'tuvistavie/fish-asdf'
 fundle plugin 'jethrokuan/z'
+fundle plugin 'PatrickF1/fzf.fish'
+fundle plugin '0rax/fish-bd'
 fundle init
+
+# fzf.fish (PatrickF1): bind Ctrl+T to directory/file search; disable its history binding to keep the custom Ctrl+R
+functions -q fzf_configure_bindings; and fzf_configure_bindings --directory=\ct --history=''
 
 # set EDITOR
 if command -q nvim
@@ -539,7 +544,6 @@ gh completion -s fish| source
 status --is-interactive && source (rbenv init -|psub)
 direnv hook fish | source
 zoxide init fish | source
-fzf --fish | source
 
 # Loading Environment-Specific Settings
 test -f ~/.config/fish/local.fish && source ~/.config/fish/local.fish
