@@ -87,21 +87,22 @@ function migrate
        --expect=ctrl-a,ctrl-u,ctrl-d,ctrl-r,ctrl-m \
        --header='C-a: all, C-u: up, C-d: down, C-r: redo, C-m(Enter): edit' \
     )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
 
   if string length -q -- $out
     set -l key $out[1]
     set -l time (echo $out[2] | awk -F ' ' '{ print $2 }')
     set -l cmd
-    if test $key = 'ctrl-a'
+    switch $key
+    case 'ctrl-a'
       set cmd "bundle exec rails db:migrate"
-    else if test $key = 'ctrl-u'
+    case 'ctrl-u'
       set cmd "bundle exec rails db:migrate:up VERSION=$time"
-    else if test $key = 'ctrl-d'
+    case 'ctrl-d'
       set cmd "bundle exec rails db:migrate:down VERSION=$time"
-    else if test $key = 'ctrl-r'
+    case 'ctrl-r'
       set cmd "bundle exec rails db:migrate:redo VERSION=$time"
-    else if test $key = 'ctrl-m'
+    case 'ctrl-m'
       set -l target_file (ls -1 ./db/migrate | grep $time)
       set cmd "$EDITOR db/migrate/$target_file"
     end
@@ -174,29 +175,30 @@ function gst --description 'git status -s'
         --bind $bind_str \
         --header='C-a: add, C-p: partial, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv, C-d: diff, C-o: restore' \
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
 
   if string length -q -- $out
     set -l key $out[1]
     set -l file (echo $out[2] | awk -F ' ' '{ print $NF }')
     set -l cmd
 
-    if test $key = 'ctrl-v'
+    switch $key
+    case 'ctrl-v'
       set cmd "git mv $file "
-    else if test $key = 'ctrl-m'
+    case 'ctrl-m'
       set cmd "$EDITOR $file"
-    else if test $key = 'ctrl-c'
+    case 'ctrl-c'
       set cmd "git commit -v"
-    else if test $key = 'ctrl-p'
+    case 'ctrl-p'
       set cmd "git add -p $file"
-    else if test $key = 'ctrl-d'
+    case 'ctrl-d'
       set -l state (echo $out[2] | cut -c 1-2)
       if [ $state = 'M ' -o $state = 'A ' ]
         set cmd "git diff --staged $file"
       else
         set cmd "git diff $file"
       end
-    else
+    case '*'
       commandline -f repaint
     end
     __ht_run_cmd $cmd
@@ -221,17 +223,18 @@ function gb --description 'git branch'
         --multi \
         --preview="[ {1} = '*' ] && git diff --color (git merge-base (__ht_git-default-branch) {2})..{2} || git diff --color (git merge-base (__ht_git-default-branch) {1})..{1}" \
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
 
   if string length -q -- $out
     set -l key $out[1]
     set -l cmd
-    if test $key = 'ctrl-d'
+    switch $key
+    case 'ctrl-d'
       for select_data in $out[2..-1]
         set -l branch_name (echo $select_data | sed -e 's/^[ \*]*//g')
         eval "git branch -D $branch_name"
       end
-    else if test $key = 'ctrl-m'
+    case 'ctrl-m'
       set -l branch_name (echo $out[2] | sed -e 's/^[ \*]*//g')
       set cmd "git switch $branch_name"
     end
@@ -254,7 +257,7 @@ function gg --description 'Customizing file grep'
         fzf --ansi --multi \
         --preview="set -l line (echo {1} | cut -d':' -f 2);set -l file (echo {1} | cut -d':' -f 1);bat --highlight-line \$line --line-range (if [ \$line -gt 10 ]; math \$line - 10;else; echo 1;end): --color=always \$file" \
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
 
   if string length -q -- $out
     set -l line (echo $out | cut -d':' -f 2)
@@ -329,18 +332,19 @@ function fzf-github-pull-request
         --bind $bind_str \
         --header='enter: view, C-w: open in browser, C-e: checkout, C-d: diff, C-v: approve , C-a: all, C-g: merged' \
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
   set -l pr_id (echo $out[2] | awk '{ print $1 }')
   set -l cmd
-  if test $out[1] = 'ctrl-e'
+  switch $out[1]
+  case 'ctrl-e'
     set cmd "gh pr checkout $pr_id"
-  else if test $out[1] = 'ctrl-v'
+  case 'ctrl-v'
     set cmd "gh pr review $pr_id --approve"
-  else if test $out[1] = 'ctrl-w'
+  case 'ctrl-w'
     set cmd "gh pr view --web $pr_id"
-  else if test $out[1] = 'ctrl-d'
+  case 'ctrl-d'
     set cmd "gh pr diff $pr_id"
-  else if test $out[1] = 'ctrl-m'
+  case 'ctrl-m'
     set cmd "gh pr view -c $pr_id"
   end
   __ht_run_cmd $cmd
@@ -360,7 +364,7 @@ function fzf-select-ghq-repository
       --preview="echo {} | awk -F'/' '{ print \$(NF-1)\"/\"\$NF}' | \
     xargs -I{} gh repo view {}"
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
 
   if test -n "$out"
     set -l cmd "cd $out"
@@ -380,7 +384,7 @@ function trend-ruby-week
       --prompt='Select Repository >' \
       --preview="gh repo view {2}"
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
 
   if test -n "$out"
     set -l repo (echo $out | awk '{ print $2 }')
@@ -404,7 +408,7 @@ function fzf-find-file
     fzf --prompt='Select files > ' $fzf_query \
         --preview="bat --color=always {}" \
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
   if test -n "$target_file"
     set -l cmd "$EDITOR $target_file"
     __ht_run_cmd $cmd
@@ -448,7 +452,7 @@ function fzf-git-stash
       --preview="echo {} | cut -d':' -f1 | xargs git stash show -p --color=always" \
       --header='C-a: apply C-d: show, C-m(Enter): pop, C-r: drop'
   )
-  [ $status != 0 ] && commandline -f repaint && return
+  test $status -ne 0 && commandline -f repaint && return
 
   if test -n "$out[1]"
     set -l stash_num (echo $out[2] | cut -d ':' -f 1)
