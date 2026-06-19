@@ -99,6 +99,22 @@ function install_rust() {
   fi
 }
 
+function install_nix() {
+  if command -v nix &> /dev/null; then
+    echo "Nix ($(nix --version))"
+    return 0
+  fi
+
+  echo "install Nix"
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | \
+    sh -s -- install --no-confirm
+
+  # 同一シェルで以降 nix コマンドを使えるよう環境を読み込む
+  if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+  fi
+}
+
 function error() {
   echo 'error'
   exit 1
@@ -109,5 +125,6 @@ function error() {
   create_config_symbolic_links &&
   create_bin_symbolic_links &&
   install_rust &&
+  install_nix &&
   setup_claude_code
 ) || error
