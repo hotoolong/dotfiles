@@ -8,7 +8,7 @@ return {
   {
     'tpope/vim-rails',
     dependencies = 'tpope/vim-bundler',
-    event = 'VeryLazy',
+    event = { 'BufReadPost', 'BufNewFile' },
     init = function()
       vim.g.rails_gem_projections = {
         ["view_component"] = {
