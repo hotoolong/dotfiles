@@ -15,7 +15,7 @@ for exec_pid in `ls -1 .git/tags.* | awk -F. '{ print $NF }'`; do
   done
 done
 
-trap "rm -f .git/tags.$$" EXIT
+trap 'rm -f .git/tags.$$' EXIT
 
 (
   ctags --tag-relative=yes --sort=yes -R -f .git/tags.$$
