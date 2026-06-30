@@ -170,7 +170,7 @@ function gst --description 'git status -s'
 
   set -l out (command $base_command | \
     fzf --exit-0 --ansi \
-    --preview="set -l git_status (echo {} | cut -c 1-2);[ \$git_status = '??' ] && bat --color=always {2} || [ \$git_status = 'M ' -o \$git_status = 'A ' ] && git diff --color --staged {2} || git diff --color {2}" \
+    --preview="set -l git_status (echo {} | cut -c 1-2);[ \$git_status = '??' ] && { test -d {2} && tree -NC --noreport {2} || bat --color=always {2}; } || [ \$git_status = 'M ' -o \$git_status = 'A ' ] && git diff --color --staged {2} || git diff --color {2}" \
         --expect=ctrl-m,ctrl-v,ctrl-c,ctrl-p,ctrl-d \
         --bind $bind_str \
         --header='C-a: add, C-p: partial, C-u: unstage, C-c: commit, C-m(Enter): edit, C-r: rm, C-v: mv, C-d: diff, C-o: restore' \
