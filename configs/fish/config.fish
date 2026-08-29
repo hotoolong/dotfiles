@@ -1,5 +1,4 @@
 set -gx NOTIFY_COMMAND_COMPLETE_TIMEOUT 10
-set -gx TERM screen-256color-bce;
 set -gx GOPATH $HOME/gocode
 set -gx PGDATA /usr/local/var/postgres
 set -gx NEXTWORD_DATA_PATH $HOME/.nextword-data
