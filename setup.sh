@@ -104,12 +104,14 @@ function install_mise() {
 
   if [ -x "$mise_bin" ]; then
     "$mise_bin" self-update --yes
-    echo "mise ($("$mise_bin" --version))"
-    return 0
+  else
+    echo "install mise"
+    curl --proto '=https' --tlsv1.2 -sSf https://mise.run | sh
   fi
+  echo "mise ($("$mise_bin" --version))"
 
-  echo "install mise"
-  curl --proto '=https' --tlsv1.2 -sSf https://mise.run | sh
+  # カレントの .ruby-version に左右されないよう $HOME 基準でグローバル設定の版を入れる
+  "$mise_bin" install --cd "$HOME" ruby gem:rbgrep
 }
 
 function install_nix() {

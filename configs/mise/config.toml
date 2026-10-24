@@ -1,0 +1,7 @@
+[settings]
+auto_install = false
+idiomatic_version_file_enable_tools = ["ruby"]
+
+[tools]
+ruby = "4.0"
+"gem:rbgrep" = "latest"
