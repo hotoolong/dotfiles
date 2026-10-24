@@ -99,6 +99,19 @@ function install_rust() {
   fi
 }
 
+function install_mise() {
+  local mise_bin="${HOME}/.local/bin/mise"
+
+  if [ -x "$mise_bin" ]; then
+    "$mise_bin" self-update --yes
+    echo "mise ($("$mise_bin" --version))"
+    return 0
+  fi
+
+  echo "install mise"
+  curl --proto '=https' --tlsv1.2 -sSf https://mise.run | sh
+}
+
 function install_nix() {
   if command -v nix &> /dev/null; then
     echo "Nix ($(nix --version))"
@@ -125,6 +138,7 @@ function error() {
   create_config_symbolic_links &&
   create_bin_symbolic_links &&
   install_rust &&
+  install_mise &&
   install_nix &&
   setup_claude_code
 ) || error
