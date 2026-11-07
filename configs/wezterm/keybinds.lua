@@ -56,6 +56,8 @@ return {
     { key = "Tab", mods = "SHIFT|CTRL", action = act.ActivateTabRelative(-1) },
     -- Tab入れ替え
     { key = "{", mods = "LEADER", action = act({ MoveTabRelative = -1 }) },
+    { key = "h", mods = "CTRL|SHIFT", action = act.MoveTabRelative(-1) },
+    { key = "l", mods = "CTRL|SHIFT", action = act.MoveTabRelative(1) },
     -- Tab新規作成
     { key = "t", mods = "SUPER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
     -- Tabを閉じる
