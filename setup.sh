@@ -110,8 +110,9 @@ function install_mise() {
   fi
   echo "mise ($("$mise_bin" --version))"
 
-  # カレントの .ruby-version に左右されないよう $HOME 基準でグローバル設定の版を入れる
-  "$mise_bin" install --cd "$HOME" ruby gem:rbgrep
+  # mise はグローバル設定に加え、実行ディレクトリから / までの .tool-versions 等も読み、引数なし install はその全ツールを入れる。
+  # / で実行するとさかのぼる先がなく、グローバル設定（dotfiles 管理分）だけが対象になる。$HOME だと ~/.tool-versions も入る
+  "$mise_bin" install --cd /
 }
 
 function install_nix() {
